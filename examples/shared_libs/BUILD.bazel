@@ -1,4 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
 load("@rules_rust//rust:defs.bzl", "rust_shared_library")
 
 # A rust_shared_library (forcing the use of pic) that depends on a native
