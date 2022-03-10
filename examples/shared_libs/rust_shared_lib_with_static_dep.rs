@@ -4,6 +4,6 @@ extern "C" {
     pub fn func() -> c_int;
 }
 
-fn f() {
+pub fn f() {
     println!("hi {}", unsafe { func() });
 }
