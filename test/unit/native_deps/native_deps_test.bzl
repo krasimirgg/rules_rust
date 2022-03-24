@@ -109,7 +109,7 @@ def _cdylib_has_native_dep_and_alwayslink_test_impl(ctx):
     action = tut.actions[0]
 
     # skipping first link-arg since it contains unrelated linker flags
-    linker_args = _extract_linker_args(action.argv)[0:]
+    linker_args = _extract_linker_args(action.argv)[1:]
 
     compilation_mode = ctx.var["COMPILATION_MODE"]
     pic_suffix = ".pic" if compilation_mode == "opt" else ""
