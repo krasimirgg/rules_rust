@@ -125,6 +125,14 @@ tasks:
       # - "--linkopt=-fuse-ld=lld"
     build_targets: *default_linux_targets
     test_targets: *default_linux_targets
+  ubuntu2004_clang_lld:
+    name: With Clang and LLD
+    platform: ubuntu2004
+    build_flags:
+      - "--config=rustfmt"
+      - "--config=clippy"
+      - "--repo_env=CC=clang"
+      - "--linkopt=-fuse-ld=lld"
   ubuntu2004_rolling_clang:
     name: Rolling Bazel Version With Clang
     platform: ubuntu2004
