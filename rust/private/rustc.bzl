@@ -714,8 +714,14 @@ def construct_arguments(
     if hasattr(attr, "_error_format"):
         rustc_flags.add("--error-format=" + attr._error_format[ErrorFormatInfo].error_format)
 
+    # Mangle symbols to disambiguate crates with the same name. This could
+    # happen only for non-final artifacts where we compute an output_hash,
+    # e.g., rust_library.
+    #
+    # For "final" artifacts and ones intended for distribution outside of
+    # Bazel, such as rust_binary, rust_static_library and rust_shared_library,
+    # where output_hash is None we don't need to add these flags.
     if output_hash:
-        # Mangle symbols to disambiguate crates with the same name
         extra_filename = "-" + output_hash
         rustc_flags.add("--codegen=metadata=" + extra_filename)
         rustc_flags.add("--codegen=extra-filename=" + extra_filename)
