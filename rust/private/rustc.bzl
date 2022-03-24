@@ -714,12 +714,14 @@ def construct_arguments(
     if hasattr(attr, "_error_format"):
         rustc_flags.add("--error-format=" + attr._error_format[ErrorFormatInfo].error_format)
 
-    # Mangle symbols to disambiguate crates with the same name
-    extra_filename = "-" + output_hash if output_hash else ""
-    rustc_flags.add("--codegen=metadata=" + extra_filename)
+    if output_hash:
+        # Mangle symbols to disambiguate crates with the same name
+        extra_filename = "-" + output_hash
+        rustc_flags.add("--codegen=metadata=" + extra_filename)
+        rustc_flags.add("--codegen=extra-filename=" + extra_filename)
+
     if output_dir:
         rustc_flags.add("--out-dir=" + output_dir)
-    rustc_flags.add("--codegen=extra-filename=" + extra_filename)
 
     compilation_mode = get_compilation_mode_opts(ctx, toolchain)
     rustc_flags.add("--codegen=opt-level=" + compilation_mode.opt_level)
