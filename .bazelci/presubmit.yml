@@ -121,8 +121,6 @@ tasks:
       - "--config=rustfmt"
       - "--config=clippy"
       - "--repo_env=CC=clang"
-      # TODO(hlopko): Make this work (some tests were failing)
-      # - "--linkopt=-fuse-ld=lld"
     build_targets: *default_linux_targets
     test_targets: *default_linux_targets
   ubuntu2004_clang_lld:
@@ -133,6 +131,8 @@ tasks:
       - "--config=clippy"
       - "--repo_env=CC=clang"
       - "--linkopt=-fuse-ld=lld"
+    build_targets: *default_linux_targets
+    test_targets: *default_linux_targets
   ubuntu2004_rolling_clang:
     name: Rolling Bazel Version With Clang
     platform: ubuntu2004
@@ -140,8 +140,6 @@ tasks:
       - "--config=rustfmt"
       - "--config=clippy"
       - "--repo_env=CC=clang"
-      # TODO(hlopko): Make this work (some tests were failing)
-      # - "--linkopt=-fuse-ld=lld"
     build_targets: *default_linux_targets
     test_targets: *default_linux_targets
     soft_fail: yes
