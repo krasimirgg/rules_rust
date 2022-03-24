@@ -126,6 +126,8 @@ tasks:
   ubuntu2004_clang_lld:
     name: With Clang and LLD
     platform: ubuntu2004
+    shell_commands:
+      - "sudo apt -y update && sudo apt -y install lld"
     build_flags:
       - "--config=rustfmt"
       - "--config=clippy"
