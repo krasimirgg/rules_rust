@@ -213,6 +213,8 @@ tasks:
   ubuntu2004_examples_clang_lld:
     name: Examples with Clang and LLD
     platform: ubuntu2004
+    shell_commands:
+      - "sudo apt -y update && sudo apt -y install lld"
     working_directory: examples
     build_flags:
       - "--repo_env=CC=clang"
