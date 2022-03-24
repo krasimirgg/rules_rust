@@ -7,6 +7,9 @@ rust_binary_without_process_wrapper(
     name = "process_wrapper",
     srcs = glob(["*.rs"]),
     visibility = ["//visibility:public"],
+    # Stamping is not supported when building without process_wrapper:
+    # https://github.com/bazelbuild/rules_rust/blob/8df4517d370b0c543a01ba38b63e1d5a4104b035/rust/private/rustc.bzl#L955
+    stamp = 0,
 )
 
 rust_test(
