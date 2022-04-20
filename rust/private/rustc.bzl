@@ -780,7 +780,7 @@ def construct_arguments(
             rustc_flags.add("--codegen=linker=" + ld)
             rustc_flags.add_joined("--codegen", link_args, join_with = " ", format_joined = "link-args=%s")
 
-        _add_native_link_flags(rustc_flags, dep_info, linkstamp_outs, ambiguous_libs, crate_info.type, toolchain, cc_toolchain, feature_configuration, ctx.attr.experimental_use_whole_archive_for_native_deps)
+        _add_native_link_flags(rustc_flags, dep_info, linkstamp_outs, ambiguous_libs, crate_info.type, toolchain, cc_toolchain, feature_configuration, attr.experimental_use_whole_archive_for_native_deps)
 
     # These always need to be added, even if not linking this crate.
     add_crate_link_flags(rustc_flags, dep_info, force_all_deps_direct)
@@ -1350,15 +1350,15 @@ def _add_native_link_flags(args, dep_info, linkstamp_outs, ambiguous_libs, crate
         make_link_flags = _make_link_flags_default
 
     # TODO(hlopko): Remove depset flattening by using lambdas once we are on >=Bazel 5.0
-    args_and_pic_and_ambiguous_libs_and_experimental_use_whole_archive_for_native_deps = [(arg, use_pic, ambiguous_libs, experimental_use_whole_archive_for_native_deps) for arg in dep_info.transitive_noncrates.to_list()]
-    args.add_all(args_and_pic_and_ambiguous_libs_and_experimental_use_whole_archive_for_native_deps, map_each = _libraries_dirnames, uniquify = True, format_each = "-Lnative=%s")
+    args_and_pic_and_ambiguous_libs_and_use_whole_archive_for_native_deps = [(arg, use_pic, ambiguous_libs, experimental_use_whole_archive_for_native_deps) for arg in dep_info.transitive_noncrates.to_list()]
+    args.add_all(args_and_pic_and_ambiguous_libs_and_use_whole_archive_for_native_deps, map_each = _libraries_dirnames, uniquify = True, format_each = "-Lnative=%s")
     if ambiguous_libs:
         # If there are ambiguous libs, the disambiguation symlinks to them are
         # all created in the same directory. Add it to the library search path.
         ambiguous_libs_dirname = ambiguous_libs.values()[0].dirname
         args.add("-Lnative={}".format(ambiguous_libs_dirname))
 
-    args.add_all(args_and_pic_and_ambiguous_libs_and_experimental_use_whole_archive_for_native_deps, map_each = make_link_flags)
+    args.add_all(args_and_pic_and_ambiguous_libs_and_use_whole_archive_for_native_deps, map_each = make_link_flags)
 
     for linkstamp_out in linkstamp_outs:
         args.add_all(["-C", "link-arg=%s" % linkstamp_out.path])
