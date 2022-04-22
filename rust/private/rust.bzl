@@ -962,14 +962,27 @@ def _common_attrs_for_binary_without_process_wrapper(attrs):
 
     return new_attr
 
-# Provides an internal rust_binary to use that we can use to build the process
-# wrapper, this breaks the dependency of rust_binary on the process wrapper by
+# Provides an internal rust_{binary,library} to use that we can use to build the process
+# wrapper, this breaks the dependency of rust_* on the process wrapper by
 # setting it to None, which the functions in rustc detect and build accordingly.
 rust_binary_without_process_wrapper = rule(
     implementation = _rust_binary_impl,
     provides = _common_providers,
     attrs = dict(_common_attrs_for_binary_without_process_wrapper(_common_attrs).items() + _rust_binary_attrs.items()),
     executable = True,
+    fragments = ["cpp"],
+    host_fragments = ["cpp"],
+    toolchains = [
+        str(Label("//rust:toolchain")),
+        "@bazel_tools//tools/cpp:toolchain_type",
+    ],
+    incompatible_use_toolchain_transition = True,
+)
+
+rust_library_without_process_wrapper = rule(
+    implementation = _rust_library_impl,
+    provides = _common_providers,
+    attrs = dict(_common_attrs_for_binary_without_process_wrapper(_common_attrs).items()),
     fragments = ["cpp"],
     host_fragments = ["cpp"],
     toolchains = [
@@ -1038,8 +1051,9 @@ rust_test = rule(
         }
         ```
 
-        To build and run the tests, simply add a `rust_test` rule with no `srcs` and \
-        only depends on the `hello_lib` `rust_library` target:
+        To build and run the tests, simply add a `rust_test` rule with no `srcs`
+        and only depends on the `hello_lib` `rust_library` target via the
+        `crate` attribute:
 
         `hello_lib/BUILD`:
         ```python
@@ -1052,23 +1066,12 @@ rust_test = rule(
 
         rust_test(
             name = "hello_lib_test",
-            deps = [":hello_lib"],
-        )
-        ```
-
-        Run the test with `bazel build //hello_lib:hello_lib_test`.
-
-        To run a crate or lib with the `#[cfg(test)]` configuration, handling inline \
-        tests, you should specify the crate directly like so.
-
-        ```python
-        rust_test(
-            name = "hello_lib_test",
             crate = ":hello_lib",
             # You may add other deps that are specific to the test configuration
             deps = ["//some/dev/dep"],
-        )
         ```
+
+        Run the test with `bazel build //hello_lib:hello_lib_test`.
 
         ### Example: `test` directory
 
@@ -1122,7 +1125,7 @@ rust_test = rule(
         )
         ```
 
-        Run the test with `bazel build //hello_lib:hello_lib_test`.
+        Run the test with `bazel build //hello_lib:greeting_test`.
 """),
 )
 
