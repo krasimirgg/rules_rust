@@ -27,7 +27,6 @@ def _cdylib_has_native_libs_test_impl(ctx):
     env = analysistest.begin(ctx)
     tut = analysistest.target_under_test(env)
     action = tut.actions[0]
-    print(action.argv)
     assert_argv_contains_prefix_suffix(env, action, "-Lnative=", "/native_deps")
     assert_argv_contains(env, action, "--crate-type=cdylib")
     assert_argv_contains(env, action, "-lstatic=native_dep")
