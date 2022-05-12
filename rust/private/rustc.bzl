@@ -1316,7 +1316,7 @@ def _portable_link_flags(lib, use_pic, ambiguous_libs, experimental_use_whole_ar
         # to any rust library is addressed in a different place, where we
         # create symlinks to the rlibs, pretending they are native libraries,
         # and adding references to these symlinks in the native section A.
-        # We rely in the behavior of -Clink-arg to put the give linker args
+        # We rely in the behavior of -Clink-arg to put the linker args
         # at the end of the linker invocation constructed by rustc.
         return [
             "-lstatic%s=%s" % (modifiers, get_lib_name(artifact)),
