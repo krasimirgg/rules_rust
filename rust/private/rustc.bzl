@@ -61,6 +61,20 @@ ExtraExecRustcFlagsInfo = provider(
     fields = {"extra_exec_rustc_flags": "List[string] Extra flags to pass to rustc in exec configuration"},
 )
 
+IsProcMacroDepInfo = provider(
+    doc = "Records if this is a transitive dependency of a proc-macro.",
+    fields = {"is_proc_macro_dep": "Boolean"},
+)
+
+def _is_proc_macro_dep_impl(ctx):
+    return IsProcMacroDepInfo(is_proc_macro_dep = ctx.build_setting_value)
+
+is_proc_macro_dep = rule(
+    doc = "Records if this is a transitive dependency of a proc-macro.",
+    implementation = _is_proc_macro_dep_impl,
+    build_setting = config.bool(flag = True),
+)
+
 def _get_rustc_env(attr, toolchain, crate_name):
     """Gathers rustc environment variables
 
@@ -78,7 +92,11 @@ def _get_rustc_env(attr, toolchain, crate_name):
         patch, pre = patch.split("-", 1)
     else:
         pre = ""
+    is_proc_macro_dep = "0"
+    if hasattr(attr, "_is_proc_macro_dep") and attr._is_proc_macro_dep[IsProcMacroDepInfo].is_proc_macro_dep:
+        is_proc_macro_dep = "1"
     return {
+        "BAZEL_RULES_RUST_IS_PROC_MACRO_DEP": is_proc_macro_dep,
         "CARGO_CFG_TARGET_ARCH": toolchain.target_arch,
         "CARGO_CFG_TARGET_OS": toolchain.os,
         "CARGO_CRATE_NAME": crate_name,

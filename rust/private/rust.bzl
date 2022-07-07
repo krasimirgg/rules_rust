@@ -679,6 +679,7 @@ _common_attrs = {
         default = Label("//util/import"),
         cfg = "exec",
     ),
+    "_is_proc_macro_dep": attr.label(default = Label("//:is_proc_macro_dep")),
     "_process_wrapper": attr.label(
         doc = "A process wrapper for running rustc on all platforms.",
         default = Label("//util/process_wrapper"),
@@ -860,10 +861,31 @@ rust_shared_library = rule(
         """),
 )
 
+def _proc_macro_dep_transition_impl(_settings, _attr):
+    return {"//:is_proc_macro_dep": True}
+
+_proc_macro_dep_transition = transition(
+    inputs = [],
+    outputs = ["//:is_proc_macro_dep"],
+    implementation = _proc_macro_dep_transition_impl,
+)
+
 rust_proc_macro = rule(
     implementation = _rust_proc_macro_impl,
     provides = _common_providers,
-    attrs = dict(_common_attrs.items()),
+    attrs = dict(
+        _common_attrs.items(),
+        _allowlist_function_transition = attr.label(default = Label("//tools/allowlists/function_transition_allowlist")),
+        deps = attr.label_list(
+            doc = dedent("""\
+            List of other libraries to be linked to this library target.
+
+            These can be either other `rust_library` targets or `cc_library` targets if
+            linking a native library.
+        """),
+            cfg = _proc_macro_dep_transition,
+        ),
+    ),
     fragments = ["cpp"],
     host_fragments = ["cpp"],
     toolchains = [

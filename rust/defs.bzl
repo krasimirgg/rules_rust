@@ -45,6 +45,7 @@ load(
     _error_format = "error_format",
     _extra_exec_rustc_flags = "extra_exec_rustc_flags",
     _extra_rustc_flags = "extra_rustc_flags",
+    _is_proc_macro_dep = "is_proc_macro_dep",
 )
 load(
     "//rust/private:rustdoc.bzl",
@@ -106,6 +107,9 @@ extra_rustc_flags = _extra_rustc_flags
 # See @rules_rust//rust/private:rustc.bzl for a complete description.
 
 extra_exec_rustc_flags = _extra_exec_rustc_flags
+# See @rules_rust//rust/private:rustc.bzl for a complete description.
+
+is_proc_macro_dep = _is_proc_macro_dep
 # See @rules_rust//rust/private:rustc.bzl for a complete description.
 
 rust_common = _rust_common
