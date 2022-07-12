@@ -12,7 +12,9 @@ load("//crate_universe/tools/cross_installer:cross_installer_deps.bzl", "cross_i
 
 USE_CRATES_REPOSITORY = False
 
-_REPOSITORY_NAME = "crate_universe_crate_index"
+# Short for 'crate universe index'. Keep this short to reduce the risk to
+# bump into absolute path length issues on Windows.
+_REPOSITORY_NAME = "cui"
 
 _ANNOTATIONS = {
     "libgit2-sys": [crate.annotation(
