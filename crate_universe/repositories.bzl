@@ -13,7 +13,8 @@ load("//crate_universe/tools/cross_installer:cross_installer_deps.bzl", "cross_i
 USE_CRATES_REPOSITORY = False
 
 # Short for 'crate universe index'. Keep this short to reduce the risk to
-# bump into absolute path length issues on Windows.
+# bump into absolute path length issues on Windows. See:
+# https://github.com/bazelbuild/rules_rust/issues/1120
 _REPOSITORY_NAME = "cui"
 
 _ANNOTATIONS = {
