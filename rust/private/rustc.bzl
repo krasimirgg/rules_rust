@@ -1243,7 +1243,7 @@ def rustc_compile_action(
             package_dir = package_dir + ctx.label.package + "/"
 
         if not crate_info.output.path.startswith(package_dir):
-            fail("The package dir path {} should be a suffix of the crate_info.output.path {}", package_dir, crate_info.output.path)
+            fail("The package dir path {} should be a prefix of the crate_info.output.path {}", package_dir, crate_info.output.path)
 
         output_relative_to_package = crate_info.output.path[len(package_dir):]
 
