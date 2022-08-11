@@ -1233,7 +1233,7 @@ def rustc_compile_action(
         # In the cc_common.link action we need to pass the name of the final
         # binary (output) relative to the package of this target.
         # We compute it by stripping the path to the package directory,
-        # which is a suffix of the path of `crate_info.output`.
+        # which is a prefix of the path of `crate_info.output`.
 
         # The path to the package dir, including a trailing "/".
         package_dir = ctx.bin_dir.path + "/"
