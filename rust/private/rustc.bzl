@@ -1484,7 +1484,8 @@ def _compute_rpaths(toolchain, output_dir, dep_info, use_pic):
     """
 
     # Windows has no rpath equivalent, so always return an empty depset.
-    if toolchain.os == "windows":
+    # Fuchsia assembles shared libraries during packaging.
+    if toolchain.os == "windows" or toolchain.os == "fuchsia":
         return depset([])
 
     dylibs = [
