@@ -21,6 +21,7 @@ def cargo_build_script(
         proc_macro_deps = [],
         build_script_env = {},
         data = [],
+        compile_data = [],
         tools = [],
         links = None,
         rundir = None,
@@ -103,6 +104,7 @@ def cargo_build_script(
         proc_macro_deps (list of label, optional): List of rust_proc_macro targets used to build the script.
         build_script_env (dict, optional): Environment variables for build scripts.
         data (list, optional): Files needed by the build script.
+        compile_data (list, optional): Files needed for the compilation of the build script.
         tools (list, optional): Tools (executables) needed by the build script.
         links (str, optional): Name of the native library this crate links against.
         rundir (str, optional): A directory to `cd` to before the cargo_build_script is run. This should be a path relative to the exec root.
@@ -145,6 +147,7 @@ def cargo_build_script(
         deps = deps,
         proc_macro_deps = proc_macro_deps,
         data = data,
+        compile_data = compile_data,
         rustc_env = rustc_env,
         rustc_flags = rustc_flags,
         edition = edition,
