@@ -779,7 +779,6 @@ rust_library = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
     doc = dedent("""\
         Builds a Rust library crate.
 
@@ -879,7 +878,6 @@ rust_static_library = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
     doc = dedent("""\
         Builds a Rust static library.
 
@@ -927,7 +925,6 @@ rust_shared_library = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
     doc = dedent("""\
         Builds a Rust shared library.
 
@@ -979,7 +976,6 @@ rust_proc_macro = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
     doc = dedent("""\
         Builds a Rust proc-macro crate.
     """),
@@ -1060,7 +1056,6 @@ rust_binary = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
     doc = dedent("""\
         Builds a Rust binary crate.
 
@@ -1204,7 +1199,6 @@ rust_binary_without_process_wrapper = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
 )
 
 rust_library_without_process_wrapper = rule(
@@ -1217,7 +1211,6 @@ rust_library_without_process_wrapper = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
 )
 
 def _rust_test_transition_impl(settings, attr):
@@ -1256,7 +1249,6 @@ rust_test = rule(
         str(Label("//rust:toolchain_type")),
         "@bazel_tools//tools/cpp:toolchain_type",
     ],
-    incompatible_use_toolchain_transition = True,
     doc = dedent("""\
         Builds a Rust test crate.
 
