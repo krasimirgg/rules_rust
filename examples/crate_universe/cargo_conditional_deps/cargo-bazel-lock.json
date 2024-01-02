@@ -1,5 +1,5 @@
 {
-  "checksum": "7127321ba0ec6cb4529df5430d13b176bb4d31ee697c50249aa76289748c099c",
+  "checksum": "226cf2d56509f8f6ed6c882d1ddb720e2dff2a297de9dbff39730f73066d7b2c",
   "crates": {
     "autocfg 1.1.0": {
       "name": "autocfg",
@@ -439,7 +439,9 @@
       "aarch64-pc-windows-msvc"
     ],
     "aarch64-unknown-linux-gnu": [
-      "aarch64-unknown-linux-gnu",
+      "aarch64-unknown-linux-gnu"
+    ],
+    "aarch64-unknown-nixos-gnu": [
       "aarch64-unknown-nixos-gnu"
     ],
     "aarch64-unknown-nto-qnx710": [
@@ -559,7 +561,9 @@
       "x86_64-unknown-freebsd"
     ],
     "x86_64-unknown-linux-gnu": [
-      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-gnu"
+    ],
+    "x86_64-unknown-nixos-gnu": [
       "x86_64-unknown-nixos-gnu"
     ],
     "x86_64-unknown-none": [

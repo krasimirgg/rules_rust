@@ -1,5 +1,5 @@
 {
-  "checksum": "9d53d217f13cd36409835470f17d97daaca2881b591cd06ac73731540f3f4aa6",
+  "checksum": "83692c647f250a898adc451d760d975e9a64ebab860e2bbb2db607a5af71110d",
   "crates": {
     "async-trait 0.1.64": {
       "name": "async-trait",
@@ -4877,7 +4877,9 @@
       "aarch64-pc-windows-msvc"
     ],
     "aarch64-unknown-linux-gnu": [
-      "aarch64-unknown-linux-gnu",
+      "aarch64-unknown-linux-gnu"
+    ],
+    "aarch64-unknown-nixos-gnu": [
       "aarch64-unknown-nixos-gnu"
     ],
     "aarch64-unknown-nto-qnx710": [
@@ -5102,7 +5104,9 @@
       "x86_64-unknown-freebsd"
     ],
     "x86_64-unknown-linux-gnu": [
-      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-gnu"
+    ],
+    "x86_64-unknown-nixos-gnu": [
       "x86_64-unknown-nixos-gnu"
     ],
     "x86_64-unknown-none": [

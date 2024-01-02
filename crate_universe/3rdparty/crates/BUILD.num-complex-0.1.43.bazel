@@ -34,7 +34,9 @@ rust_library(
     ],
     crate_root = "src/lib.rs",
     edition = "2015",
-    rustc_flags = ["--cap-lints=allow"],
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
     tags = [
         "cargo-bazel",
         "crate-name=num-complex",
@@ -82,6 +84,6 @@ rust_library(
     version = "0.1.43",
     deps = [
         "@cui__num-traits-0.2.15//:num_traits",
-        "@cui__rustc-serialize-0.3.24//:rustc_serialize",
+        "@cui__rustc-serialize-0.3.25//:rustc_serialize",
     ],
 )

@@ -1,5 +1,5 @@
 {
-  "checksum": "81278aac722061d149e1cecdee4fdfe614f8c42627c6e64792449f3591279102",
+  "checksum": "7d240446239cb4db671e730840a02b0fa1c01f69e49c4022f37dfca7c83cefae",
   "crates": {
     "aho-corasick 0.7.20": {
       "name": "aho-corasick",
@@ -2441,7 +2441,9 @@
       "aarch64-pc-windows-msvc"
     ],
     "aarch64-unknown-linux-gnu": [
-      "aarch64-unknown-linux-gnu",
+      "aarch64-unknown-linux-gnu"
+    ],
+    "aarch64-unknown-nixos-gnu": [
       "aarch64-unknown-nixos-gnu"
     ],
     "aarch64-unknown-nto-qnx710": [
@@ -2551,7 +2553,9 @@
       "x86_64-unknown-freebsd"
     ],
     "x86_64-unknown-linux-gnu": [
-      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-gnu"
+    ],
+    "x86_64-unknown-nixos-gnu": [
       "x86_64-unknown-nixos-gnu"
     ],
     "x86_64-unknown-none": [
