@@ -54,7 +54,7 @@ def _rust_stdlib_filegroup_impl(ctx):
         #
         # alloc depends on the allocator_library if it's configured, but we
         # do that later.
-        dot_a_files = [make_static_lib_symlink(ctx.actions, f) for f in std_rlibs]
+        dot_a_files = [make_static_lib_symlink(ctx.label.package, ctx.actions, f) for f in std_rlibs]
 
         alloc_files = [f for f in dot_a_files if "alloc" in f.basename and "std" not in f.basename]
         between_alloc_and_core_files = [f for f in dot_a_files if "compiler_builtins" in f.basename]
