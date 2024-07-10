@@ -1,5 +1,3 @@
-load("//rust:toolchain.bzl", "rust_stdlib_filegroup")
-
 genrule(
     name = "dummy_rlib",
     outs = ["core.rlib"],

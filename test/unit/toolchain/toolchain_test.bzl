@@ -51,11 +51,16 @@ def _std_libs_support_srcs_outside_package_test_impl(ctx):
     env = analysistest.begin(ctx)
     tut = analysistest.target_under_test(env)
     actions = analysistest.target_actions(env)
-    asserts.equals(env, 2, len(actions))
-    rlib_symlink = actions[0].outputs.to_list()[0]
+
+    symlinks = [a for a in actions if a.mnemonic == "Symlink"]
+    asserts.equals(env, 2, len(symlinks))
+
+    rlib_symlink = symlinks[0].outputs.to_list()[0]
     asserts.equals(env, tut.label.package + "/core.rlib", rlib_symlink.short_path)
-    a_symlink = actions[1].outputs.to_list()[0]
+
+    a_symlink = symlinks[1].outputs.to_list()[0]
     asserts.equals(env, tut.label.package + "/libcore.a", a_symlink.short_path)
+
     return analysistest.end(env)
 
 toolchain_specifies_target_triple_test = analysistest.make(_toolchain_specifies_target_triple_test_impl)
