@@ -454,6 +454,9 @@ def _generate_sysroot(
         sysroot_rust_std = _symlink_sysroot_tree(ctx, name, rust_std)
         transitive_file_sets.extend([sysroot_rust_std])
 
+        # Made available to support $(location) expansion in stdlib_linkflags and extra_rustc_flags.
+        transitive_file_sets.append(depset(ctx.files.rust_std))
+
     # Declare a file in the root of the sysroot to make locating the sysroot easy
     sysroot_anchor = ctx.actions.declare_file("{}/rust.sysroot".format(name))
     ctx.actions.write(
@@ -546,6 +549,16 @@ def _rust_toolchain_impl(ctx):
     expanded_stdlib_linkflags = []
     for flag in ctx.attr.stdlib_linkflags:
         expanded_stdlib_linkflags.append(
+            dedup_expand_location(
+                ctx,
+                flag,
+                targets = rust_std[rust_common.stdlib_info].srcs,
+            ),
+        )
+
+    expanded_extra_rustc_flags = []
+    for flag in ctx.attr.extra_rustc_flags:
+        expanded_extra_rustc_flags.append(
             dedup_expand_location(
                 ctx,
                 flag,
@@ -664,7 +677,7 @@ def _rust_toolchain_impl(ctx):
         rustfmt = sysroot.rustfmt,
         staticlib_ext = ctx.attr.staticlib_ext,
         stdlib_linkflags = stdlib_linkflags_cc_info,
-        extra_rustc_flags = ctx.attr.extra_rustc_flags,
+        extra_rustc_flags = expanded_extra_rustc_flags,
         extra_rustc_flags_for_crate_types = ctx.attr.extra_rustc_flags_for_crate_types,
         extra_exec_rustc_flags = ctx.attr.extra_exec_rustc_flags,
         per_crate_rustc_flags = ctx.attr.per_crate_rustc_flags,
