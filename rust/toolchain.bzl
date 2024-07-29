@@ -778,7 +778,7 @@ rust_toolchain = rule(
             doc = "Extra flags to pass to rustc in exec configuration",
         ),
         "extra_rustc_flags": attr.string_list(
-            doc = "Extra flags to pass to rustc in non-exec configuration",
+            doc = "Extra flags to pass to rustc in non-exec configuration. Subject to location expansion with respect to the srcs of the `rust_std` attribute.",
         ),
         "extra_rustc_flags_for_crate_types": attr.string_list_dict(
             doc = "Extra flags to pass to rustc based on crate type",
