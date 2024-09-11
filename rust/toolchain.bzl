@@ -871,13 +871,6 @@ rust_toolchain = rule(
         "_cc_toolchain": attr.label(
             default = Label("@bazel_tools//tools/cpp:current_cc_toolchain"),
         ),
-        "_toolchain_generated_sysroot": attr.label(
-            default = Label("//rust/settings:toolchain_generated_sysroot"),
-            doc = (
-                "Label to a boolean build setting that lets the rule knows wheter to set --sysroot to rustc. " +
-                "This flag is only relevant when used together with --@rules_rust//rust/settings:toolchain_generated_sysroot."
-            ),
-        ),
         "_experimental_use_coverage_metadata_files": attr.label(
             default = Label("//rust/settings:experimental_use_coverage_metadata_files"),
         ),
@@ -899,6 +892,13 @@ rust_toolchain = rule(
         ),
         "_third_party_dir": attr.label(
             default = Label("//rust/settings:third_party_dir"),
+        ),
+        "_toolchain_generated_sysroot": attr.label(
+            default = Label("//rust/settings:toolchain_generated_sysroot"),
+            doc = (
+                "Label to a boolean build setting that lets the rule knows wheter to set --sysroot to rustc. " +
+                "This flag is only relevant when used together with --@rules_rust//rust/settings:toolchain_generated_sysroot."
+            ),
         ),
     },
     toolchains = [

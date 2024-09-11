@@ -1068,7 +1068,7 @@ def construct_arguments(
         ))
 
     # Ensure the sysroot is set for the target platform
-    if toolchain._experimental_toolchain_generated_sysroot:
+    if toolchain._toolchain_generated_sysroot:
         rustc_flags.add(toolchain.sysroot, format = "--sysroot=%s")
 
     if toolchain._rename_first_party_crates:
