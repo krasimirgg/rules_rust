@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded "><a href="rules.html"><strong aria-hidden="true">1.</strong> Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="defs.html"><strong aria-hidden="true">1.1.</strong> defs</a></li><li class="chapter-item expanded "><a href="rust_doc.html"><strong aria-hidden="true">1.2.</strong> rustdoc</a></li><li class="chapter-item expanded "><a href="rust_clippy.html"><strong aria-hidden="true">1.3.</strong> clippy</a></li><li class="chapter-item expanded "><a href="rust_fmt.html"><strong aria-hidden="true">1.4.</strong> rustfmt</a></li><li class="chapter-item expanded "><a href="rust_proto.html"><strong aria-hidden="true">1.5.</strong> proto</a></li><li class="chapter-item expanded "><a href="rust_bindgen.html"><strong aria-hidden="true">1.6.</strong> bindgen</a></li><li class="chapter-item expanded "><a href="rust_wasm_bindgen.html"><strong aria-hidden="true">1.7.</strong> wasm_bindgen</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">1.8.</strong> cargo</a></li><li class="chapter-item expanded "><a href="rust_analyzer.html"><strong aria-hidden="true">1.9.</strong> rust_analyzer</a></li><li class="chapter-item expanded "><a href="flatten.html"><strong aria-hidden="true">1.10.</strong> all symbols</a></li></ol></li><li class="chapter-item expanded "><a href="external_crates.html"><strong aria-hidden="true">2.</strong> External Crates</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="crate_universe_bzlmod.html"><strong aria-hidden="true">2.1.</strong> crate_universe (bzlmod)</a></li><li class="chapter-item expanded "><a href="crate_universe.html"><strong aria-hidden="true">2.2.</strong> crate_universe (WORKSPACE)</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded "><a href="rules.html"><strong aria-hidden="true">1.</strong> Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rust.html"><strong aria-hidden="true">1.1.</strong> rust</a></li><li class="chapter-item expanded "><a href="rust_doc.html"><strong aria-hidden="true">1.2.</strong> rustdoc</a></li><li class="chapter-item expanded "><a href="rust_clippy.html"><strong aria-hidden="true">1.3.</strong> clippy</a></li><li class="chapter-item expanded "><a href="rust_fmt.html"><strong aria-hidden="true">1.4.</strong> rustfmt</a></li><li class="chapter-item expanded "><a href="rust_proto.html"><strong aria-hidden="true">1.5.</strong> proto</a></li><li class="chapter-item expanded "><a href="rust_bindgen.html"><strong aria-hidden="true">1.6.</strong> bindgen</a></li><li class="chapter-item expanded "><a href="rust_wasm_bindgen.html"><strong aria-hidden="true">1.7.</strong> wasm_bindgen</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">1.8.</strong> cargo</a></li><li class="chapter-item expanded "><a href="rust_analyzer.html"><strong aria-hidden="true">1.9.</strong> rust_analyzer</a></li><li class="chapter-item expanded "><a href="flatten.html"><strong aria-hidden="true">1.10.</strong> all symbols</a></li></ol></li><li class="chapter-item expanded "><a href="external_crates.html"><strong aria-hidden="true">2.</strong> External Crates</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="crate_universe_bzlmod.html"><strong aria-hidden="true">2.1.</strong> crate_universe (bzlmod)</a></li><li class="chapter-item expanded "><a href="crate_universe.html"><strong aria-hidden="true">2.2.</strong> crate_universe (WORKSPACE)</a></li></ol></li><li class="chapter-item expanded "><a href="upstream_tooling.html"><strong aria-hidden="true">3.</strong> Upstream Tooling</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -148,6 +148,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/bazelbuild/rules_rust" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -174,8 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="rules-rust"><a class="header" href="#rules-rust"><a href="https://github.com/bazelbuild/rules_rust">Rules Rust</a></a></h1>
-<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+                        <h1 id="rules-rust"><a class="header" href="#rules-rust">Rules Rust</a></h1>
 <p>This repository provides rules for building <a href="http://www.rust-lang.org/">Rust</a> projects with <a href="https://bazel.build/">Bazel</a>.</p>
 <!-- TODO: Render generated docs on the github pages site again, https://bazelbuild.github.io/rules_rust/ -->
 <p><a name="setup"></a></p>
@@ -239,41 +241,44 @@ also be set in the project's <code>.bazelrc</code> file.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rules"><a class="header" href="#rules">Rules</a></h1>
 <ul>
 <li><a href="defs.html">defs</a>: standard rust rules for building and testing libraries and binaries.</li>
-<li><a href="rust_doc.html">rust_doc</a>: rules for generating and testing rust documentation.</li>
-<li><a href="rust_clippy.html">rust_clippy</a>: rules for running <a href="https://github.com/rust-lang/rust-clippy#readme">clippy</a>.</li>
-<li><a href="rust_fmt.html">rust_fmt</a>: rules for running <a href="https://github.com/rust-lang/rustfmt#readme">rustfmt</a>.</li>
-<li><a href="rust_proto.html">rust_proto</a>: rules for generating <a href="https://developers.google.com/protocol-buffers">protobuf</a> and <a href="https://grpc.io">gRPC</a> stubs.</li>
-<li><a href="rust_bindgen.html">rust_bindgen</a>: rules for generating C++ bindings.</li>
-<li><a href="rust_wasm_bindgen.html">rust_wasm_bindgen</a>: rules for generating <a href="https://www.rust-lang.org/what/wasm">WebAssembly</a> bindings.</li>
+<li><a href="rust_doc.html">rustdoc</a>: rules for generating and testing rust documentation.</li>
+<li><a href="rust_clippy.html">clippy</a>: rules for running <a href="https://github.com/rust-lang/rust-clippy#readme">clippy</a>.</li>
+<li><a href="rust_fmt.html">rustfmt</a>: rules for running <a href="https://github.com/rust-lang/rustfmt#readme">rustfmt</a>.</li>
 <li><a href="cargo.html">cargo</a>: Rules dedicated to Cargo compatibility. ie: <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html"><code>build.rs</code> scripts</a>.</li>
-<li><a href="crate_universe_bzlmod.html">crate_universe (bzlmod)</a>: Rules for generating Bazel targets for external crate dependencies when using bzlmod.</li>
-<li><a href="crate_universe.html">crate_universe (WORKSPACE)</a>: Rules for generating Bazel targets for external crate dependencies when using WORKSPACE files.</li>
+<li><a href="external_crates.html">crate_universe</a>: Rules for generating Bazel targets for external crate dependencies.</li>
 </ul>
-<p>You can also browse the <a href="flatten.html">full API in one page</a>.</p>
 <h2 id="experimental-rules"><a class="header" href="#experimental-rules">Experimental rules</a></h2>
 <ul>
 <li><a href="rust_analyzer.html">rust_analyzer</a>: rules for generating <code>rust-project.json</code> files for <a href="https://rust-analyzer.github.io/">rust-analyzer</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
-<h1 id="defs"><a class="header" href="#defs">Defs</a></h1>
+<h2 id="3rd-party-rules"><a class="header" href="#3rd-party-rules">3rd party rules</a></h2>
 <ul>
-<li><a href="defs.html#rust_binary">rust_binary</a></li>
-<li><a href="defs.html#rust_library">rust_library</a></li>
-<li><a href="defs.html#rust_library_group">rust_library_group</a></li>
-<li><a href="defs.html#rust_static_library">rust_static_library</a></li>
-<li><a href="defs.html#rust_shared_library">rust_shared_library</a></li>
-<li><a href="defs.html#rust_proc_macro">rust_proc_macro</a></li>
-<li><a href="defs.html#rust_test">rust_test</a></li>
-<li><a href="defs.html#rust_test_suite">rust_test_suite</a></li>
-<li><a href="defs.html#error_format">error_format</a></li>
-<li><a href="defs.html#extra_rustc_flag">extra_rustc_flag</a></li>
-<li><a href="defs.html#extra_rustc_flags">extra_rustc_flags</a></li>
-<li><a href="defs.html#capture_clippy_output">capture_clippy_output</a></li>
+<li><a href="rust_bindgen.html">rust_bindgen</a>: rules for generating C++ bindings.</li>
+<li><a href="rust_proto.html">rust_proto</a>: rules for generating <a href="https://developers.google.com/protocol-buffers">protobuf</a> and <a href="https://grpc.io">gRPC</a> stubs.</li>
+<li><a href="rust_wasm_bindgen.html">rust_wasm_bindgen</a>: rules for generating <a href="https://www.rust-lang.org/what/wasm">WebAssembly</a> bindings.</li>
+</ul>
+<h2 id="full-api"><a class="header" href="#full-api">Full API</a></h2>
+<p>You can also browse the <a href="flatten.html">full API in one page</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
+<h1 id="rust"><a class="header" href="#rust">Rust</a></h1>
+<ul>
+<li><a href="rust.html#rust_binary">rust_binary</a></li>
+<li><a href="rust.html#rust_library">rust_library</a></li>
+<li><a href="rust.html#rust_library_group">rust_library_group</a></li>
+<li><a href="rust.html#rust_static_library">rust_static_library</a></li>
+<li><a href="rust.html#rust_shared_library">rust_shared_library</a></li>
+<li><a href="rust.html#rust_proc_macro">rust_proc_macro</a></li>
+<li><a href="rust.html#rust_test">rust_test</a></li>
+<li><a href="rust.html#rust_test_suite">rust_test_suite</a></li>
+<li><a href="rust.html#error_format">error_format</a></li>
+<li><a href="rust.html#extra_rustc_flag">extra_rustc_flag</a></li>
+<li><a href="rust.html#extra_rustc_flags">extra_rustc_flags</a></li>
+<li><a href="rust.html#capture_clippy_output">capture_clippy_output</a></li>
 </ul>
 <p><a id="capture_clippy_output"></a></p>
 <h2 id="capture_clippy_output"><a class="header" href="#capture_clippy_output">capture_clippy_output</a></h2>
 <pre>
-capture_clippy_output(<a href="defs.html#capture_clippy_output-name">name</a>)
+capture_clippy_output(<a href="rust.html#capture_clippy_output-name">name</a>)
 </pre>
 <p>Control whether to print clippy output or store it to a file, using the configured error_format.</p>
 <p><strong>ATTRIBUTES</strong></p>
@@ -284,7 +289,7 @@ capture_clippy_output(<a href="defs.html#capture_clippy_output-name">name</a>)
 <p><a id="error_format"></a></p>
 <h2 id="error_format"><a class="header" href="#error_format">error_format</a></h2>
 <pre>
-error_format(<a href="defs.html#error_format-name">name</a>)
+error_format(<a href="rust.html#error_format-name">name</a>)
 </pre>
 <p>Change the <a href="https://doc.rust-lang.org/rustc/command-line-arguments.html#option-error-format">--error-format</a> flag from the command line with <code>--@rules_rust//:error_format</code>. See rustc documentation for valid values.</p>
 <p><strong>ATTRIBUTES</strong></p>
@@ -295,7 +300,7 @@ error_format(<a href="defs.html#error_format-name">name</a>)
 <p><a id="extra_rustc_flag"></a></p>
 <h2 id="extra_rustc_flag"><a class="header" href="#extra_rustc_flag">extra_rustc_flag</a></h2>
 <pre>
-extra_rustc_flag(<a href="defs.html#extra_rustc_flag-name">name</a>)
+extra_rustc_flag(<a href="rust.html#extra_rustc_flag-name">name</a>)
 </pre>
 <p>Add additional rustc_flag from the command line with <code>--@rules_rust//:extra_rustc_flag</code>. Multiple uses are accumulated and appended after the extra_rustc_flags.</p>
 <p><strong>ATTRIBUTES</strong></p>
@@ -306,7 +311,7 @@ extra_rustc_flag(<a href="defs.html#extra_rustc_flag-name">name</a>)
 <p><a id="extra_rustc_flags"></a></p>
 <h2 id="extra_rustc_flags"><a class="header" href="#extra_rustc_flags">extra_rustc_flags</a></h2>
 <pre>
-extra_rustc_flags(<a href="defs.html#extra_rustc_flags-name">name</a>)
+extra_rustc_flags(<a href="rust.html#extra_rustc_flags-name">name</a>)
 </pre>
 <p>Add additional rustc_flags from the command line with <code>--@rules_rust//:extra_rustc_flags</code>. This flag should only be used for flags that need to be applied across the entire build. For options that apply to individual crates, use the rustc_flags attribute on the individual crate's rule instead. NOTE: These flags not applied to the exec configuration (proc-macros, cargo_build_script, etc); use <code>--@rules_rust//:extra_exec_rustc_flags</code> to apply flags to the exec configuration.</p>
 <p><strong>ATTRIBUTES</strong></p>
@@ -317,10 +322,10 @@ extra_rustc_flags(<a href="defs.html#extra_rustc_flags-name">name</a>)
 <p><a id="rust_binary"></a></p>
 <h2 id="rust_binary"><a class="header" href="#rust_binary">rust_binary</a></h2>
 <pre>
-rust_binary(<a href="defs.html#rust_binary-name">name</a>, <a href="defs.html#rust_binary-deps">deps</a>, <a href="defs.html#rust_binary-srcs">srcs</a>, <a href="defs.html#rust_binary-data">data</a>, <a href="defs.html#rust_binary-aliases">aliases</a>, <a href="defs.html#rust_binary-alwayslink">alwayslink</a>, <a href="defs.html#rust_binary-compile_data">compile_data</a>, <a href="defs.html#rust_binary-crate_features">crate_features</a>, <a href="defs.html#rust_binary-crate_name">crate_name</a>,
-            <a href="defs.html#rust_binary-crate_root">crate_root</a>, <a href="defs.html#rust_binary-crate_type">crate_type</a>, <a href="defs.html#rust_binary-edition">edition</a>, <a href="defs.html#rust_binary-env">env</a>, <a href="defs.html#rust_binary-experimental_use_cc_common_link">experimental_use_cc_common_link</a>, <a href="defs.html#rust_binary-linker_script">linker_script</a>,
-            <a href="defs.html#rust_binary-malloc">malloc</a>, <a href="defs.html#rust_binary-out_binary">out_binary</a>, <a href="defs.html#rust_binary-platform">platform</a>, <a href="defs.html#rust_binary-proc_macro_deps">proc_macro_deps</a>, <a href="defs.html#rust_binary-rustc_env">rustc_env</a>, <a href="defs.html#rust_binary-rustc_env_files">rustc_env_files</a>, <a href="defs.html#rust_binary-rustc_flags">rustc_flags</a>,
-            <a href="defs.html#rust_binary-stamp">stamp</a>, <a href="defs.html#rust_binary-version">version</a>)
+rust_binary(<a href="rust.html#rust_binary-name">name</a>, <a href="rust.html#rust_binary-deps">deps</a>, <a href="rust.html#rust_binary-srcs">srcs</a>, <a href="rust.html#rust_binary-data">data</a>, <a href="rust.html#rust_binary-aliases">aliases</a>, <a href="rust.html#rust_binary-alwayslink">alwayslink</a>, <a href="rust.html#rust_binary-compile_data">compile_data</a>, <a href="rust.html#rust_binary-crate_features">crate_features</a>, <a href="rust.html#rust_binary-crate_name">crate_name</a>,
+            <a href="rust.html#rust_binary-crate_root">crate_root</a>, <a href="rust.html#rust_binary-crate_type">crate_type</a>, <a href="rust.html#rust_binary-edition">edition</a>, <a href="rust.html#rust_binary-env">env</a>, <a href="rust.html#rust_binary-experimental_use_cc_common_link">experimental_use_cc_common_link</a>, <a href="rust.html#rust_binary-linker_script">linker_script</a>,
+            <a href="rust.html#rust_binary-malloc">malloc</a>, <a href="rust.html#rust_binary-out_binary">out_binary</a>, <a href="rust.html#rust_binary-platform">platform</a>, <a href="rust.html#rust_binary-proc_macro_deps">proc_macro_deps</a>, <a href="rust.html#rust_binary-rustc_env">rustc_env</a>, <a href="rust.html#rust_binary-rustc_env_files">rustc_env_files</a>, <a href="rust.html#rust_binary-rustc_flags">rustc_flags</a>,
+            <a href="rust.html#rust_binary-stamp">stamp</a>, <a href="rust.html#rust_binary-version">version</a>)
 </pre>
 <p>Builds a Rust binary crate.</p>
 <p>Example:</p>
@@ -425,9 +430,9 @@ is available under the key <code>dsym_folder</code> in <code>OutputGroupInfo</co
 <p><a id="rust_library"></a></p>
 <h2 id="rust_library"><a class="header" href="#rust_library">rust_library</a></h2>
 <pre>
-rust_library(<a href="defs.html#rust_library-name">name</a>, <a href="defs.html#rust_library-deps">deps</a>, <a href="defs.html#rust_library-srcs">srcs</a>, <a href="defs.html#rust_library-data">data</a>, <a href="defs.html#rust_library-aliases">aliases</a>, <a href="defs.html#rust_library-alwayslink">alwayslink</a>, <a href="defs.html#rust_library-compile_data">compile_data</a>, <a href="defs.html#rust_library-crate_features">crate_features</a>, <a href="defs.html#rust_library-crate_name">crate_name</a>,
-             <a href="defs.html#rust_library-crate_root">crate_root</a>, <a href="defs.html#rust_library-disable_pipelining">disable_pipelining</a>, <a href="defs.html#rust_library-edition">edition</a>, <a href="defs.html#rust_library-proc_macro_deps">proc_macro_deps</a>, <a href="defs.html#rust_library-rustc_env">rustc_env</a>, <a href="defs.html#rust_library-rustc_env_files">rustc_env_files</a>,
-             <a href="defs.html#rust_library-rustc_flags">rustc_flags</a>, <a href="defs.html#rust_library-stamp">stamp</a>, <a href="defs.html#rust_library-version">version</a>)
+rust_library(<a href="rust.html#rust_library-name">name</a>, <a href="rust.html#rust_library-deps">deps</a>, <a href="rust.html#rust_library-srcs">srcs</a>, <a href="rust.html#rust_library-data">data</a>, <a href="rust.html#rust_library-aliases">aliases</a>, <a href="rust.html#rust_library-alwayslink">alwayslink</a>, <a href="rust.html#rust_library-compile_data">compile_data</a>, <a href="rust.html#rust_library-crate_features">crate_features</a>, <a href="rust.html#rust_library-crate_name">crate_name</a>,
+             <a href="rust.html#rust_library-crate_root">crate_root</a>, <a href="rust.html#rust_library-disable_pipelining">disable_pipelining</a>, <a href="rust.html#rust_library-edition">edition</a>, <a href="rust.html#rust_library-proc_macro_deps">proc_macro_deps</a>, <a href="rust.html#rust_library-rustc_env">rustc_env</a>, <a href="rust.html#rust_library-rustc_env_files">rustc_env_files</a>,
+             <a href="rust.html#rust_library-rustc_flags">rustc_flags</a>, <a href="rust.html#rust_library-stamp">stamp</a>, <a href="rust.html#rust_library-version">version</a>)
 </pre>
 <p>Builds a Rust library crate.</p>
 <p>Example:</p>
@@ -507,7 +512,7 @@ INFO: Elapsed time: 1.245s, Critical Path: 1.01s
 <p><a id="rust_library_group"></a></p>
 <h2 id="rust_library_group"><a class="header" href="#rust_library_group">rust_library_group</a></h2>
 <pre>
-rust_library_group(<a href="defs.html#rust_library_group-name">name</a>, <a href="defs.html#rust_library_group-deps">deps</a>)
+rust_library_group(<a href="rust.html#rust_library_group-name">name</a>, <a href="rust.html#rust_library_group-deps">deps</a>)
 </pre>
 <p>Functions as an alias for a set of dependencies.</p>
 <p>Specifically, the following are equivalent:</p>
@@ -544,9 +549,9 @@ rust_library(
 <p><a id="rust_proc_macro"></a></p>
 <h2 id="rust_proc_macro"><a class="header" href="#rust_proc_macro">rust_proc_macro</a></h2>
 <pre>
-rust_proc_macro(<a href="defs.html#rust_proc_macro-name">name</a>, <a href="defs.html#rust_proc_macro-deps">deps</a>, <a href="defs.html#rust_proc_macro-srcs">srcs</a>, <a href="defs.html#rust_proc_macro-data">data</a>, <a href="defs.html#rust_proc_macro-aliases">aliases</a>, <a href="defs.html#rust_proc_macro-alwayslink">alwayslink</a>, <a href="defs.html#rust_proc_macro-compile_data">compile_data</a>, <a href="defs.html#rust_proc_macro-crate_features">crate_features</a>,
-                <a href="defs.html#rust_proc_macro-crate_name">crate_name</a>, <a href="defs.html#rust_proc_macro-crate_root">crate_root</a>, <a href="defs.html#rust_proc_macro-edition">edition</a>, <a href="defs.html#rust_proc_macro-proc_macro_deps">proc_macro_deps</a>, <a href="defs.html#rust_proc_macro-rustc_env">rustc_env</a>, <a href="defs.html#rust_proc_macro-rustc_env_files">rustc_env_files</a>,
-                <a href="defs.html#rust_proc_macro-rustc_flags">rustc_flags</a>, <a href="defs.html#rust_proc_macro-stamp">stamp</a>, <a href="defs.html#rust_proc_macro-version">version</a>)
+rust_proc_macro(<a href="rust.html#rust_proc_macro-name">name</a>, <a href="rust.html#rust_proc_macro-deps">deps</a>, <a href="rust.html#rust_proc_macro-srcs">srcs</a>, <a href="rust.html#rust_proc_macro-data">data</a>, <a href="rust.html#rust_proc_macro-aliases">aliases</a>, <a href="rust.html#rust_proc_macro-alwayslink">alwayslink</a>, <a href="rust.html#rust_proc_macro-compile_data">compile_data</a>, <a href="rust.html#rust_proc_macro-crate_features">crate_features</a>,
+                <a href="rust.html#rust_proc_macro-crate_name">crate_name</a>, <a href="rust.html#rust_proc_macro-crate_root">crate_root</a>, <a href="rust.html#rust_proc_macro-edition">edition</a>, <a href="rust.html#rust_proc_macro-proc_macro_deps">proc_macro_deps</a>, <a href="rust.html#rust_proc_macro-rustc_env">rustc_env</a>, <a href="rust.html#rust_proc_macro-rustc_env_files">rustc_env_files</a>,
+                <a href="rust.html#rust_proc_macro-rustc_flags">rustc_flags</a>, <a href="rust.html#rust_proc_macro-stamp">stamp</a>, <a href="rust.html#rust_proc_macro-version">version</a>)
 </pre>
 <p>Builds a Rust proc-macro crate.</p>
 <p><strong>ATTRIBUTES</strong></p>
@@ -573,10 +578,10 @@ rust_proc_macro(<a href="defs.html#rust_proc_macro-name">name</a>, <a href="defs
 <p><a id="rust_shared_library"></a></p>
 <h2 id="rust_shared_library"><a class="header" href="#rust_shared_library">rust_shared_library</a></h2>
 <pre>
-rust_shared_library(<a href="defs.html#rust_shared_library-name">name</a>, <a href="defs.html#rust_shared_library-deps">deps</a>, <a href="defs.html#rust_shared_library-srcs">srcs</a>, <a href="defs.html#rust_shared_library-data">data</a>, <a href="defs.html#rust_shared_library-aliases">aliases</a>, <a href="defs.html#rust_shared_library-alwayslink">alwayslink</a>, <a href="defs.html#rust_shared_library-compile_data">compile_data</a>, <a href="defs.html#rust_shared_library-crate_features">crate_features</a>,
-                    <a href="defs.html#rust_shared_library-crate_name">crate_name</a>, <a href="defs.html#rust_shared_library-crate_root">crate_root</a>, <a href="defs.html#rust_shared_library-edition">edition</a>, <a href="defs.html#rust_shared_library-experimental_use_cc_common_link">experimental_use_cc_common_link</a>, <a href="defs.html#rust_shared_library-malloc">malloc</a>,
-                    <a href="defs.html#rust_shared_library-platform">platform</a>, <a href="defs.html#rust_shared_library-proc_macro_deps">proc_macro_deps</a>, <a href="defs.html#rust_shared_library-rustc_env">rustc_env</a>, <a href="defs.html#rust_shared_library-rustc_env_files">rustc_env_files</a>, <a href="defs.html#rust_shared_library-rustc_flags">rustc_flags</a>, <a href="defs.html#rust_shared_library-stamp">stamp</a>,
-                    <a href="defs.html#rust_shared_library-version">version</a>)
+rust_shared_library(<a href="rust.html#rust_shared_library-name">name</a>, <a href="rust.html#rust_shared_library-deps">deps</a>, <a href="rust.html#rust_shared_library-srcs">srcs</a>, <a href="rust.html#rust_shared_library-data">data</a>, <a href="rust.html#rust_shared_library-aliases">aliases</a>, <a href="rust.html#rust_shared_library-alwayslink">alwayslink</a>, <a href="rust.html#rust_shared_library-compile_data">compile_data</a>, <a href="rust.html#rust_shared_library-crate_features">crate_features</a>,
+                    <a href="rust.html#rust_shared_library-crate_name">crate_name</a>, <a href="rust.html#rust_shared_library-crate_root">crate_root</a>, <a href="rust.html#rust_shared_library-edition">edition</a>, <a href="rust.html#rust_shared_library-experimental_use_cc_common_link">experimental_use_cc_common_link</a>, <a href="rust.html#rust_shared_library-malloc">malloc</a>,
+                    <a href="rust.html#rust_shared_library-platform">platform</a>, <a href="rust.html#rust_shared_library-proc_macro_deps">proc_macro_deps</a>, <a href="rust.html#rust_shared_library-rustc_env">rustc_env</a>, <a href="rust.html#rust_shared_library-rustc_env_files">rustc_env_files</a>, <a href="rust.html#rust_shared_library-rustc_flags">rustc_flags</a>, <a href="rust.html#rust_shared_library-stamp">stamp</a>,
+                    <a href="rust.html#rust_shared_library-version">version</a>)
 </pre>
 <p>Builds a Rust shared library.</p>
 <p>This shared library will contain all transitively reachable crates and native objects.
@@ -611,9 +616,9 @@ It is meant to be used when producing an artifact that is then consumed by some 
 <p><a id="rust_static_library"></a></p>
 <h2 id="rust_static_library"><a class="header" href="#rust_static_library">rust_static_library</a></h2>
 <pre>
-rust_static_library(<a href="defs.html#rust_static_library-name">name</a>, <a href="defs.html#rust_static_library-deps">deps</a>, <a href="defs.html#rust_static_library-srcs">srcs</a>, <a href="defs.html#rust_static_library-data">data</a>, <a href="defs.html#rust_static_library-aliases">aliases</a>, <a href="defs.html#rust_static_library-alwayslink">alwayslink</a>, <a href="defs.html#rust_static_library-compile_data">compile_data</a>, <a href="defs.html#rust_static_library-crate_features">crate_features</a>,
-                    <a href="defs.html#rust_static_library-crate_name">crate_name</a>, <a href="defs.html#rust_static_library-crate_root">crate_root</a>, <a href="defs.html#rust_static_library-edition">edition</a>, <a href="defs.html#rust_static_library-platform">platform</a>, <a href="defs.html#rust_static_library-proc_macro_deps">proc_macro_deps</a>, <a href="defs.html#rust_static_library-rustc_env">rustc_env</a>,
-                    <a href="defs.html#rust_static_library-rustc_env_files">rustc_env_files</a>, <a href="defs.html#rust_static_library-rustc_flags">rustc_flags</a>, <a href="defs.html#rust_static_library-stamp">stamp</a>, <a href="defs.html#rust_static_library-version">version</a>)
+rust_static_library(<a href="rust.html#rust_static_library-name">name</a>, <a href="rust.html#rust_static_library-deps">deps</a>, <a href="rust.html#rust_static_library-srcs">srcs</a>, <a href="rust.html#rust_static_library-data">data</a>, <a href="rust.html#rust_static_library-aliases">aliases</a>, <a href="rust.html#rust_static_library-alwayslink">alwayslink</a>, <a href="rust.html#rust_static_library-compile_data">compile_data</a>, <a href="rust.html#rust_static_library-crate_features">crate_features</a>,
+                    <a href="rust.html#rust_static_library-crate_name">crate_name</a>, <a href="rust.html#rust_static_library-crate_root">crate_root</a>, <a href="rust.html#rust_static_library-edition">edition</a>, <a href="rust.html#rust_static_library-platform">platform</a>, <a href="rust.html#rust_static_library-proc_macro_deps">proc_macro_deps</a>, <a href="rust.html#rust_static_library-rustc_env">rustc_env</a>,
+                    <a href="rust.html#rust_static_library-rustc_env_files">rustc_env_files</a>, <a href="rust.html#rust_static_library-rustc_flags">rustc_flags</a>, <a href="rust.html#rust_static_library-stamp">stamp</a>, <a href="rust.html#rust_static_library-version">version</a>)
 </pre>
 <p>Builds a Rust static library.</p>
 <p>This static library will contain all transitively reachable crates and native objects.
@@ -646,10 +651,10 @@ It is meant to be used when producing an artifact that is then consumed by some 
 <p><a id="rust_test"></a></p>
 <h2 id="rust_test"><a class="header" href="#rust_test">rust_test</a></h2>
 <pre>
-rust_test(<a href="defs.html#rust_test-name">name</a>, <a href="defs.html#rust_test-deps">deps</a>, <a href="defs.html#rust_test-srcs">srcs</a>, <a href="defs.html#rust_test-data">data</a>, <a href="defs.html#rust_test-aliases">aliases</a>, <a href="defs.html#rust_test-alwayslink">alwayslink</a>, <a href="defs.html#rust_test-compile_data">compile_data</a>, <a href="defs.html#rust_test-crate">crate</a>, <a href="defs.html#rust_test-crate_features">crate_features</a>,
-          <a href="defs.html#rust_test-crate_name">crate_name</a>, <a href="defs.html#rust_test-crate_root">crate_root</a>, <a href="defs.html#rust_test-edition">edition</a>, <a href="defs.html#rust_test-env">env</a>, <a href="defs.html#rust_test-env_inherit">env_inherit</a>, <a href="defs.html#rust_test-experimental_use_cc_common_link">experimental_use_cc_common_link</a>, <a href="defs.html#rust_test-malloc">malloc</a>,
-          <a href="defs.html#rust_test-platform">platform</a>, <a href="defs.html#rust_test-proc_macro_deps">proc_macro_deps</a>, <a href="defs.html#rust_test-rustc_env">rustc_env</a>, <a href="defs.html#rust_test-rustc_env_files">rustc_env_files</a>, <a href="defs.html#rust_test-rustc_flags">rustc_flags</a>, <a href="defs.html#rust_test-stamp">stamp</a>,
-          <a href="defs.html#rust_test-use_libtest_harness">use_libtest_harness</a>, <a href="defs.html#rust_test-version">version</a>)
+rust_test(<a href="rust.html#rust_test-name">name</a>, <a href="rust.html#rust_test-deps">deps</a>, <a href="rust.html#rust_test-srcs">srcs</a>, <a href="rust.html#rust_test-data">data</a>, <a href="rust.html#rust_test-aliases">aliases</a>, <a href="rust.html#rust_test-alwayslink">alwayslink</a>, <a href="rust.html#rust_test-compile_data">compile_data</a>, <a href="rust.html#rust_test-crate">crate</a>, <a href="rust.html#rust_test-crate_features">crate_features</a>,
+          <a href="rust.html#rust_test-crate_name">crate_name</a>, <a href="rust.html#rust_test-crate_root">crate_root</a>, <a href="rust.html#rust_test-edition">edition</a>, <a href="rust.html#rust_test-env">env</a>, <a href="rust.html#rust_test-env_inherit">env_inherit</a>, <a href="rust.html#rust_test-experimental_use_cc_common_link">experimental_use_cc_common_link</a>, <a href="rust.html#rust_test-malloc">malloc</a>,
+          <a href="rust.html#rust_test-platform">platform</a>, <a href="rust.html#rust_test-proc_macro_deps">proc_macro_deps</a>, <a href="rust.html#rust_test-rustc_env">rustc_env</a>, <a href="rust.html#rust_test-rustc_env_files">rustc_env_files</a>, <a href="rust.html#rust_test-rustc_flags">rustc_flags</a>, <a href="rust.html#rust_test-stamp">stamp</a>,
+          <a href="rust.html#rust_test-use_libtest_harness">use_libtest_harness</a>, <a href="rust.html#rust_test-version">version</a>)
 </pre>
 <p>Builds a Rust test crate.</p>
 <p>Examples:</p>
@@ -707,9 +712,7 @@ rust_test(
     deps = ["//some/dev/dep"],
 )
 </code></pre>
-<p>Run the test with <code>bazel test //hello_lib:hello_lib_test</code>. The crate
-will be built using the same crate name as the underlying ":hello_lib"
-crate.</p>
+<p>Run the test with <code>bazel test //hello_lib:hello_lib_test</code>.</p>
 <h3 id="example-test-directory"><a class="header" href="#example-test-directory">Example: <code>test</code> directory</a></h3>
 <p>Integration tests that live in the <a href="http://doc.rust-lang.org/book/testing.html#the-tests-directory"><code>tests</code> directory</a>, they are         essentially built as separate crates. Suppose you have the following directory         structure where <code>greeting.rs</code> is an integration test for the <code>hello_lib</code>         library crate:</p>
 <pre><code class="language-output">[workspace]/
@@ -782,7 +785,7 @@ rust_test(
 <p><a id="rust_test_suite"></a></p>
 <h2 id="rust_test_suite"><a class="header" href="#rust_test_suite">rust_test_suite</a></h2>
 <pre>
-rust_test_suite(<a href="defs.html#rust_test_suite-name">name</a>, <a href="defs.html#rust_test_suite-srcs">srcs</a>, <a href="defs.html#rust_test_suite-shared_srcs">shared_srcs</a>, <a href="defs.html#rust_test_suite-kwargs">kwargs</a>)
+rust_test_suite(<a href="rust.html#rust_test_suite-name">name</a>, <a href="rust.html#rust_test_suite-srcs">srcs</a>, <a href="rust.html#rust_test_suite-shared_srcs">shared_srcs</a>, <a href="rust.html#rust_test_suite-kwargs">kwargs</a>)
 </pre>
 <p>A rule for creating a test suite for a set of <code>rust_test</code> targets.</p>
 <p>This rule can be used for setting up typical rust <a href="https://doc.rust-lang.org/rust-by-example/testing/integration_testing.html">integration tests</a>. Given the following
@@ -801,7 +804,7 @@ directory structure:</p>
         helpers/
             mod.rs
 </code></pre>
-<p>The rule can be used to generate <a href="defs.html#rust_test">rust_test</a> targets for each source file under <code>tests</code>
+<p>The rule can be used to generate <a href="rust.html#rust_test">rust_test</a> targets for each source file under <code>tests</code>
 and a <a href="https://docs.bazel.build/versions/master/be/general.html#test_suite">test_suite</a> which encapsulates all tests.</p>
 <pre><code class="language-python">load("//rust:defs.bzl", "rust_binary", "rust_library", "rust_test_suite")
 
@@ -827,7 +830,7 @@ rust_test_suite(
 <tr><td style="text-align: left"><a id="rust_test_suite-name"></a>name</td><td style="text-align: left">The name of the <code>test_suite</code>.</td><td style="text-align: left">none</td></tr>
 <tr><td style="text-align: left"><a id="rust_test_suite-srcs"></a>srcs</td><td style="text-align: left">All test sources, typically <code>glob(["tests/**/*.rs"])</code>.</td><td style="text-align: left">none</td></tr>
 <tr><td style="text-align: left"><a id="rust_test_suite-shared_srcs"></a>shared_srcs</td><td style="text-align: left">Optional argument for sources shared among tests, typically helper functions.</td><td style="text-align: left"><code>[]</code></td></tr>
-<tr><td style="text-align: left"><a id="rust_test_suite-kwargs"></a>kwargs</td><td style="text-align: left">Additional keyword arguments for the underyling <a href="defs.html#rust_test">rust_test</a> targets. The <code>tags</code> argument is also passed to the generated <code>test_suite</code> target.</td><td style="text-align: left">none</td></tr>
+<tr><td style="text-align: left"><a id="rust_test_suite-kwargs"></a>kwargs</td><td style="text-align: left">Additional keyword arguments for the underyling <a href="rust.html#rust_test">rust_test</a> targets. The <code>tags</code> argument is also passed to the generated <code>test_suite</code> target.</td><td style="text-align: left">none</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
 <h1 id="rust-doc"><a class="header" href="#rust-doc">Rust Doc</a></h1>
@@ -922,7 +925,7 @@ rust_doc_test(
 <li><a href="rust_clippy.html#rust_clippy">rust_clippy</a></li>
 <li><a href="rust_clippy.html#rust_clippy_aspect">rust_clippy_aspect</a></li>
 </ul>
-<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p><a href="https://github.com/rust-lang/rust-clippy#readme">Clippy</a> is a tool for catching common mistakes in Rust code and improving it. An
 expansive list of lints and the justification can be found in their <a href="https://rust-lang.github.io/rust-clippy/">documentation</a>.</p>
 <h3 id="setup-1"><a class="header" href="#setup-1">Setup</a></h3>
@@ -1012,7 +1015,7 @@ rust_test(
 <li><a href="rust_fmt.html#rustfmt_test">rustfmt_test</a></li>
 <li><a href="rust_fmt.html#rustfmt_toolchain">rustfmt_toolchain</a></li>
 </ul>
-<h2 id="overview-2"><a class="header" href="#overview-2">Overview</a></h2>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
 <p><a href="https://github.com/rust-lang/rustfmt#readme">Rustfmt</a> is a tool for formatting Rust code according to style guidelines.
 By default, Rustfmt uses a style which conforms to the <a href="https://github.com/rust-lang-nursery/fmt-rfcs/blob/master/guide/guide.md">Rust style guide</a> that
 has been formalized through the <a href="https://github.com/rust-lang-nursery/fmt-rfcs">style RFC process</a>. A complete list of all
@@ -1100,7 +1103,7 @@ generated source files are also ignored by this aspect.</p>
 <li><a href="rust_proto.html#rust_proto_protobuf_register_toolchains">rust_proto_protobuf_register_toolchains</a></li>
 <li><a href="rust_proto.html#rust_proto_protobuf_transitive_repositories">rust_proto_protobuf_transitive_repositories</a></li>
 </ul>
-<h2 id="overview-3"><a class="header" href="#overview-3">Overview</a></h2>
+<h2 id="overview-2"><a class="header" href="#overview-2">Overview</a></h2>
 <p>These build rules are used for building <a href="https://developers.google.com/protocol-buffers/">protobufs</a>/<a href="https://grpc.io">gRPC</a> in <a href="http://www.rust-lang.org/">Rust</a> with Bazel.</p>
 <p>There are two rule sets. The first ruleset defines the <code>rust_prost_library</code> which generates Rust code
 using the <a href="https://crates.io/crates/prost"><code>prost</code></a> and <a href="https://crates.io/crates/tonic"><code>tonic</code></a> dependencies. The second ruleset defines the <code>rust_proto_library</code> and
@@ -1449,7 +1452,7 @@ rust_proto_protobuf_transitive_repositories()
 <li><a href="rust_bindgen.html#rust_bindgen_dependencies">rust_bindgen_dependencies</a></li>
 <li><a href="rust_bindgen.html#rust_bindgen_register_toolchains">rust_bindgen_register_toolchains</a></li>
 </ul>
-<h2 id="overview-4"><a class="header" href="#overview-4">Overview</a></h2>
+<h2 id="overview-3"><a class="header" href="#overview-3">Overview</a></h2>
 <p>These rules are for using <a href="https://github.com/rust-lang/rust-bindgen">Bindgen</a> to generate <a href="http://www.rust-lang.org/">Rust</a> bindings to C (and some C++) libraries.</p>
 <p>See the <a href="https://github.com/bazelbuild/rules_rust/tree/main/examples/bindgen/BUILD.bazel">bindgen example</a> for a more complete example of use.</p>
 <h3 id="setup-3"><a class="header" href="#setup-3">Setup</a></h3>
@@ -1572,12 +1575,12 @@ rust_bindgen_register_toolchains(<a href="rust_bindgen.html#rust_bindgen_registe
 <li><a href="rust_wasm_bindgen.html#rust_wasm_bindgen">rust_wasm_bindgen</a></li>
 <li><a href="rust_wasm_bindgen.html#RustWasmBindgenInfo">RustWasmBindgenInfo</a></li>
 </ul>
-<h2 id="overview-5"><a class="header" href="#overview-5">Overview</a></h2>
+<h2 id="overview-4"><a class="header" href="#overview-4">Overview</a></h2>
 <p>Bazel rules for generating wasm modules for Javascript using <a href="https://github.com/rustwasm/wasm-bindgen">wasm-bindgen</a>.</p>
 <h2 id="setup-4"><a class="header" href="#setup-4">Setup</a></h2>
 <p>To begin using the <code>wasm-bindgen</code> rules, users can load the necessary dependencies
 in their workspace by adding the following to their <code>WORKSPACE.bazel</code> file.</p>
-<pre><code class="language-starlark">load("@rules_rust//wasm_bindgen:repositories.bzl", "rust_wasm_bindgen_dependencies", "rust_wasm_bindgen_register_toolchains")
+<pre><code class="language-python">load("@rules_rust//wasm_bindgen:repositories.bzl", "rust_wasm_bindgen_dependencies", "rust_wasm_bindgen_register_toolchains")
 
 rust_wasm_bindgen_dependencies()
 
@@ -1600,7 +1603,7 @@ directory contains a <code>defs.bzl</code> file that defines the different varia
 <p><a id="rust_wasm_bindgen"></a></p>
 <h2 id="rust_wasm_bindgen"><a class="header" href="#rust_wasm_bindgen">rust_wasm_bindgen</a></h2>
 <pre>
-rust_wasm_bindgen(<a href="rust_wasm_bindgen.html#rust_wasm_bindgen-name">name</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-bindgen_flags">bindgen_flags</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-target">target</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-wasm_file">wasm_file</a>)
+rust_wasm_bindgen(<a href="rust_wasm_bindgen.html#rust_wasm_bindgen-name">name</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-bindgen_flags">bindgen_flags</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-target">target</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-target_arch">target_arch</a>, <a href="rust_wasm_bindgen.html#rust_wasm_bindgen-wasm_file">wasm_file</a>)
 </pre>
 <p>Generates javascript and typescript bindings for a webassembly module using <a href="https://rustwasm.github.io/docs/wasm-bindgen/">wasm-bindgen</a>.</p>
 <p>An example of this rule in use can be seen at <a href="../examples/wasm">@rules_rust//examples/wasm</a></p>
@@ -1609,6 +1612,7 @@ rust_wasm_bindgen(<a href="rust_wasm_bindgen.html#rust_wasm_bindgen-name">name</
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-name"></a>name</td><td style="text-align: left">A unique name for this target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels#target-names">Name</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-bindgen_flags"></a>bindgen_flags</td><td style="text-align: left">Flags to pass directly to the bindgen executable. See https://github.com/rustwasm/wasm-bindgen/ for details.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-target"></a>target</td><td style="text-align: left">The type of output to generate. See https://rustwasm.github.io/wasm-bindgen/reference/deployment.html for details.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"bundler"</code></td></tr>
+<tr><td style="text-align: left"><a id="rust_wasm_bindgen-target_arch"></a>target_arch</td><td style="text-align: left">The target architecture to use for the wasm-bindgen command line option.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"wasm32"</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-wasm_file"></a>wasm_file</td><td style="text-align: left">The <code>.wasm</code> file or crate to generate bindings for.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
@@ -1836,7 +1840,7 @@ cargo_bootstrap_repository(<a href="cargo.html#cargo_bootstrap_repository-name">
 <tr><td style="text-align: left"><a id="cargo_bootstrap_repository-rust_toolchain_cargo_template"></a>rust_toolchain_cargo_template</td><td style="text-align: left">The template to use for finding the host <code>cargo</code> binary. <code>{version}</code> (eg. '1.53.0'), <code>{triple}</code> (eg. 'x86_64-unknown-linux-gnu'), <code>{arch}</code> (eg. 'aarch64'), <code>{vendor}</code> (eg. 'unknown'), <code>{system}</code> (eg. 'darwin'), <code>{channel}</code> (eg. 'stable'), and <code>{tool}</code> (eg. 'rustc.exe') will be replaced in the string if present.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@rust_{system}_{arch}__{triple}__{channel}_tools//:bin/{tool}"</code></td></tr>
 <tr><td style="text-align: left"><a id="cargo_bootstrap_repository-rust_toolchain_rustc_template"></a>rust_toolchain_rustc_template</td><td style="text-align: left">The template to use for finding the host <code>rustc</code> binary. <code>{version}</code> (eg. '1.53.0'), <code>{triple}</code> (eg. 'x86_64-unknown-linux-gnu'), <code>{arch}</code> (eg. 'aarch64'), <code>{vendor}</code> (eg. 'unknown'), <code>{system}</code> (eg. 'darwin'), <code>{channel}</code> (eg. 'stable'), and <code>{tool}</code> (eg. 'rustc.exe') will be replaced in the string if present.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@rust_{system}_{arch}__{triple}__{channel}_tools//:bin/{tool}"</code></td></tr>
 <tr><td style="text-align: left"><a id="cargo_bootstrap_repository-timeout"></a>timeout</td><td style="text-align: left">Maximum duration of the Cargo build command in seconds</td><td style="text-align: left">Integer</td><td style="text-align: left">optional</td><td style="text-align: left"><code>600</code></td></tr>
-<tr><td style="text-align: left"><a id="cargo_bootstrap_repository-version"></a>version</td><td style="text-align: left">The version of Rust the currently registered toolchain is using. Eg. <code>1.56.0</code>, or <code>nightly/2021-09-08</code></td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"1.80.0"</code></td></tr>
+<tr><td style="text-align: left"><a id="cargo_bootstrap_repository-version"></a>version</td><td style="text-align: left">The version of Rust the currently registered toolchain is using. Eg. <code>1.56.0</code>, or <code>nightly/2021-09-08</code></td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"1.81.0"</code></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
 <h1 id="rust-analyzer"><a class="header" href="#rust-analyzer">Rust Analyzer</a></h1>
@@ -1844,7 +1848,7 @@ cargo_bootstrap_repository(<a href="cargo.html#cargo_bootstrap_repository-name">
 <li><a href="rust_analyzer.html#rust_analyzer_aspect">rust_analyzer_aspect</a></li>
 <li><a href="rust_analyzer.html#rust_analyzer_toolchain">rust_analyzer_toolchain</a></li>
 </ul>
-<h2 id="overview-6"><a class="header" href="#overview-6">Overview</a></h2>
+<h2 id="overview-5"><a class="header" href="#overview-5">Overview</a></h2>
 <p>For <a href="https://rust-analyzer.github.io/manual.html#non-cargo-based-projects">non-Cargo projects</a>,
 <a href="https://rust-analyzer.github.io/">rust-analyzer</a> depends on a <code>rust-project.json</code> file at the
 root of the project that describes its structure. The <code>rust_analyzer</code> rule facilitates generating
@@ -1885,7 +1889,10 @@ to ensure a <code>rust-project.json</code> file is created and up to date when t
         {
             "label": "Generate rust-project.json",
             "command": "bazel",
-            "args": ["run", "@rules_rust//tools/rust_analyzer:gen_rust_project"],
+            "args": [
+                "run",
+                "//tools/rust_analyzer:gen_rust_project"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -2755,9 +2762,7 @@ rust_test(
     deps = ["//some/dev/dep"],
 )
 </code></pre>
-<p>Run the test with <code>bazel test //hello_lib:hello_lib_test</code>. The crate
-will be built using the same crate name as the underlying ":hello_lib"
-crate.</p>
+<p>Run the test with <code>bazel test //hello_lib:hello_lib_test</code>.</p>
 <h3 id="example-test-directory-1"><a class="header" href="#example-test-directory-1">Example: <code>test</code> directory</a></h3>
 <p>Integration tests that live in the <a href="http://doc.rust-lang.org/book/testing.html#the-tests-directory"><code>tests</code> directory</a>, they are         essentially built as separate crates. Suppose you have the following directory         structure where <code>greeting.rs</code> is an integration test for the <code>hello_lib</code>         library crate:</p>
 <pre><code class="language-output">[workspace]/
@@ -2911,7 +2916,7 @@ toolchain(
 <p><a id="rust_wasm_bindgen"></a></p>
 <h2 id="rust_wasm_bindgen-1"><a class="header" href="#rust_wasm_bindgen-1">rust_wasm_bindgen</a></h2>
 <pre>
-rust_wasm_bindgen(<a href="flatten.html#rust_wasm_bindgen-name">name</a>, <a href="flatten.html#rust_wasm_bindgen-bindgen_flags">bindgen_flags</a>, <a href="flatten.html#rust_wasm_bindgen-target">target</a>, <a href="flatten.html#rust_wasm_bindgen-wasm_file">wasm_file</a>)
+rust_wasm_bindgen(<a href="flatten.html#rust_wasm_bindgen-name">name</a>, <a href="flatten.html#rust_wasm_bindgen-bindgen_flags">bindgen_flags</a>, <a href="flatten.html#rust_wasm_bindgen-target">target</a>, <a href="flatten.html#rust_wasm_bindgen-target_arch">target_arch</a>, <a href="flatten.html#rust_wasm_bindgen-wasm_file">wasm_file</a>)
 </pre>
 <p>Generates javascript and typescript bindings for a webassembly module using <a href="https://rustwasm.github.io/docs/wasm-bindgen/">wasm-bindgen</a>.</p>
 <p>An example of this rule in use can be seen at <a href="../examples/wasm">@rules_rust//examples/wasm</a></p>
@@ -2920,6 +2925,7 @@ rust_wasm_bindgen(<a href="flatten.html#rust_wasm_bindgen-name">name</a>, <a hre
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-name"></a>name</td><td style="text-align: left">A unique name for this target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels#target-names">Name</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-bindgen_flags"></a>bindgen_flags</td><td style="text-align: left">Flags to pass directly to the bindgen executable. See https://github.com/rustwasm/wasm-bindgen/ for details.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-target"></a>target</td><td style="text-align: left">The type of output to generate. See https://rustwasm.github.io/wasm-bindgen/reference/deployment.html for details.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"bundler"</code></td></tr>
+<tr><td style="text-align: left"><a id="rust_wasm_bindgen-target_arch"></a>target_arch</td><td style="text-align: left">The target architecture to use for the wasm-bindgen command line option.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"wasm32"</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_wasm_bindgen-wasm_file"></a>wasm_file</td><td style="text-align: left">The <code>.wasm</code> file or crate to generate bindings for.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
@@ -3356,7 +3362,7 @@ rust_register_toolchains(<a href="flatten.html#rust_register_toolchains-dev_comp
 <tr><td style="text-align: left"><a id="rust_register_toolchains-extra_rustc_flags"></a>extra_rustc_flags</td><td style="text-align: left">Dictionary of target triples to list of extra flags to pass to rustc in non-exec configuration.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_register_toolchains-extra_exec_rustc_flags"></a>extra_exec_rustc_flags</td><td style="text-align: left">Extra flags to pass to rustc in exec configuration.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_register_toolchains-urls"></a>urls</td><td style="text-align: left">A list of mirror urls containing the tools from the Rust-lang static file server. These must contain the '{}' used to substitute the tool being fetched (using .format).</td><td style="text-align: left"><code>["https://static.rust-lang.org/dist/{}.tar.xz"]</code></td></tr>
-<tr><td style="text-align: left"><a id="rust_register_toolchains-versions"></a>versions</td><td style="text-align: left">A list of toolchain versions to download. This paramter only accepts one versions per channel. E.g. <code>["1.65.0", "nightly/2022-11-02", "beta/2020-12-30"]</code>.</td><td style="text-align: left"><code>["1.80.0", "nightly/2024-07-25"]</code></td></tr>
+<tr><td style="text-align: left"><a id="rust_register_toolchains-versions"></a>versions</td><td style="text-align: left">A list of toolchain versions to download. This paramter only accepts one versions per channel. E.g. <code>["1.65.0", "nightly/2022-11-02", "beta/2020-12-30"]</code>.</td><td style="text-align: left"><code>["1.81.0", "nightly/2024-09-05"]</code></td></tr>
 </tbody></table>
 </div>
 <p><a id="rust_repositories"></a></p>
@@ -3606,7 +3612,7 @@ cargo_bootstrap_repository(<a href="flatten.html#cargo_bootstrap_repository-name
 <tr><td style="text-align: left"><a id="cargo_bootstrap_repository-rust_toolchain_cargo_template"></a>rust_toolchain_cargo_template</td><td style="text-align: left">The template to use for finding the host <code>cargo</code> binary. <code>{version}</code> (eg. '1.53.0'), <code>{triple}</code> (eg. 'x86_64-unknown-linux-gnu'), <code>{arch}</code> (eg. 'aarch64'), <code>{vendor}</code> (eg. 'unknown'), <code>{system}</code> (eg. 'darwin'), <code>{channel}</code> (eg. 'stable'), and <code>{tool}</code> (eg. 'rustc.exe') will be replaced in the string if present.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@rust_{system}_{arch}__{triple}__{channel}_tools//:bin/{tool}"</code></td></tr>
 <tr><td style="text-align: left"><a id="cargo_bootstrap_repository-rust_toolchain_rustc_template"></a>rust_toolchain_rustc_template</td><td style="text-align: left">The template to use for finding the host <code>rustc</code> binary. <code>{version}</code> (eg. '1.53.0'), <code>{triple}</code> (eg. 'x86_64-unknown-linux-gnu'), <code>{arch}</code> (eg. 'aarch64'), <code>{vendor}</code> (eg. 'unknown'), <code>{system}</code> (eg. 'darwin'), <code>{channel}</code> (eg. 'stable'), and <code>{tool}</code> (eg. 'rustc.exe') will be replaced in the string if present.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@rust_{system}_{arch}__{triple}__{channel}_tools//:bin/{tool}"</code></td></tr>
 <tr><td style="text-align: left"><a id="cargo_bootstrap_repository-timeout"></a>timeout</td><td style="text-align: left">Maximum duration of the Cargo build command in seconds</td><td style="text-align: left">Integer</td><td style="text-align: left">optional</td><td style="text-align: left"><code>600</code></td></tr>
-<tr><td style="text-align: left"><a id="cargo_bootstrap_repository-version"></a>version</td><td style="text-align: left">The version of Rust the currently registered toolchain is using. Eg. <code>1.56.0</code>, or <code>nightly/2021-09-08</code></td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"1.80.0"</code></td></tr>
+<tr><td style="text-align: left"><a id="cargo_bootstrap_repository-version"></a>version</td><td style="text-align: left">The version of Rust the currently registered toolchain is using. Eg. <code>1.56.0</code>, or <code>nightly/2021-09-08</code></td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"1.81.0"</code></td></tr>
 </tbody></table>
 </div>
 <p><a id="rust_toolchain_repository_proxy"></a></p>
@@ -3953,7 +3959,7 @@ crate.spec(<a href="crate_universe_bzlmod.html#crate.spec-artifact">artifact</a>
 <tr><td style="text-align: left"><a id="crate.from_cargo-generate_binaries"></a>generate_binaries</td><td style="text-align: left">Whether to generate <code>rust_binary</code> targets for all the binary crates in every package. By default only the <code>rust_library</code> targets are generated.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>False</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-generate_build_scripts"></a>generate_build_scripts</td><td style="text-align: left">Whether or not to generate <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">cargo build scripts</a> by default.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-manifests"></a>manifests</td><td style="text-align: left">A list of Cargo manifests (<code>Cargo.toml</code> files).</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.from_cargo-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "i686-apple-darwin", "i686-pc-windows-msvc", "i686-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "aarch64-apple-darwin", "aarch64-apple-ios-sim", "aarch64-apple-ios", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-linux-android", "i686-unknown-freebsd", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-unknown-freebsd", "x86_64-unknown-none", "aarch64-unknown-nto-qnx710"]</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.from_cargo-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-apple-darwin", "aarch64-apple-ios", "aarch64-apple-ios-sim", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "aarch64-unknown-nto-qnx710", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-apple-darwin", "i686-linux-android", "i686-pc-windows-msvc", "i686-unknown-freebsd", "i686-unknown-linux-gnu", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-darwin", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-pc-windows-msvc", "x86_64-unknown-freebsd", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "x86_64-unknown-none"]</code></td></tr>
 </tbody></table>
 </div>
 <p><a id="crate.annotation"></a></p>
@@ -4009,7 +4015,7 @@ crate.spec(<a href="crate_universe_bzlmod.html#crate.spec-artifact">artifact</a>
 <tr><td style="text-align: left"><a id="crate.from_specs-cargo_config"></a>cargo_config</td><td style="text-align: left">A <a href="https://doc.rust-lang.org/cargo/reference/config.html">Cargo configuration</a> file.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-generate_binaries"></a>generate_binaries</td><td style="text-align: left">Whether to generate <code>rust_binary</code> targets for all the binary crates in every package. By default only the <code>rust_library</code> targets are generated.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>False</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-generate_build_scripts"></a>generate_build_scripts</td><td style="text-align: left">Whether or not to generate <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">cargo build scripts</a> by default.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.from_specs-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "i686-apple-darwin", "i686-pc-windows-msvc", "i686-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "aarch64-apple-darwin", "aarch64-apple-ios-sim", "aarch64-apple-ios", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-linux-android", "i686-unknown-freebsd", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-unknown-freebsd", "x86_64-unknown-none", "aarch64-unknown-nto-qnx710"]</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.from_specs-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-apple-darwin", "aarch64-apple-ios", "aarch64-apple-ios-sim", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "aarch64-unknown-nto-qnx710", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-apple-darwin", "i686-linux-android", "i686-pc-windows-msvc", "i686-unknown-freebsd", "i686-unknown-linux-gnu", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-darwin", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-pc-windows-msvc", "x86_64-unknown-freebsd", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "x86_64-unknown-none"]</code></td></tr>
 </tbody></table>
 </div>
 <p><a id="crate.spec"></a></p>
@@ -4346,7 +4352,7 @@ call against the generated workspace. The following table describes how to contr
 <tr><td style="text-align: left"><a id="crates_vendor-render_config"></a>render_config</td><td style="text-align: left">The configuration flags to use for rendering. Use <code>//crate_universe:defs.bzl\%render_config</code> to generate the value for this field. If unset, the defaults defined there will be used.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_vendor-repository_name"></a>repository_name</td><td style="text-align: left">The name of the repository to generate for <code>remote</code> vendor modes. If unset, the label name will be used</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_vendor-splicing_config"></a>splicing_config</td><td style="text-align: left">The configuration flags to use for splicing Cargo maniests. Use <code>//crate_universe:defs.bzl\%rsplicing_config</code> to generate the value for this field. If unset, the defaults defined there will be used.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
-<tr><td style="text-align: left"><a id="crates_vendor-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "i686-apple-darwin", "i686-pc-windows-msvc", "i686-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "aarch64-apple-darwin", "aarch64-apple-ios-sim", "aarch64-apple-ios", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-linux-android", "i686-unknown-freebsd", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-unknown-freebsd", "x86_64-unknown-none", "aarch64-unknown-nto-qnx710"]</code></td></tr>
+<tr><td style="text-align: left"><a id="crates_vendor-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-apple-darwin", "aarch64-apple-ios", "aarch64-apple-ios-sim", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "aarch64-unknown-nto-qnx710", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-apple-darwin", "i686-linux-android", "i686-pc-windows-msvc", "i686-unknown-freebsd", "i686-unknown-linux-gnu", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-darwin", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-pc-windows-msvc", "x86_64-unknown-freebsd", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "x86_64-unknown-none"]</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_vendor-vendor_path"></a>vendor_path</td><td style="text-align: left">The path to a directory to write files into. Absolute paths will be treated as relative to the workspace root</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"crates"</code></td></tr>
 </tbody></table>
 </div>
@@ -4397,13 +4403,13 @@ otherwise impact the contents of the returned list.</p>
 <h2 id="crateannotation"><a class="header" href="#crateannotation">crate.annotation</a></h2>
 <pre>
 crate.annotation(<a href="crate_universe.html#crate.annotation-version">version</a>, <a href="crate_universe.html#crate.annotation-additive_build_file">additive_build_file</a>, <a href="crate_universe.html#crate.annotation-additive_build_file_content">additive_build_file_content</a>, <a href="crate_universe.html#crate.annotation-alias_rule">alias_rule</a>,
-                 <a href="crate_universe.html#crate.annotation-build_script_data">build_script_data</a>, <a href="crate_universe.html#crate.annotation-build_script_tools">build_script_tools</a>, <a href="crate_universe.html#crate.annotation-build_script_data_glob">build_script_data_glob</a>, <a href="crate_universe.html#crate.annotation-build_script_deps">build_script_deps</a>,
-                 <a href="crate_universe.html#crate.annotation-build_script_env">build_script_env</a>, <a href="crate_universe.html#crate.annotation-build_script_proc_macro_deps">build_script_proc_macro_deps</a>, <a href="crate_universe.html#crate.annotation-build_script_rundir">build_script_rundir</a>,
-                 <a href="crate_universe.html#crate.annotation-build_script_rustc_env">build_script_rustc_env</a>, <a href="crate_universe.html#crate.annotation-build_script_toolchains">build_script_toolchains</a>, <a href="crate_universe.html#crate.annotation-compile_data">compile_data</a>, <a href="crate_universe.html#crate.annotation-compile_data_glob">compile_data_glob</a>,
-                 <a href="crate_universe.html#crate.annotation-crate_features">crate_features</a>, <a href="crate_universe.html#crate.annotation-data">data</a>, <a href="crate_universe.html#crate.annotation-data_glob">data_glob</a>, <a href="crate_universe.html#crate.annotation-deps">deps</a>, <a href="crate_universe.html#crate.annotation-extra_aliased_targets">extra_aliased_targets</a>, <a href="crate_universe.html#crate.annotation-gen_binaries">gen_binaries</a>,
-                 <a href="crate_universe.html#crate.annotation-disable_pipelining">disable_pipelining</a>, <a href="crate_universe.html#crate.annotation-gen_build_script">gen_build_script</a>, <a href="crate_universe.html#crate.annotation-patch_args">patch_args</a>, <a href="crate_universe.html#crate.annotation-patch_tool">patch_tool</a>, <a href="crate_universe.html#crate.annotation-patches">patches</a>,
-                 <a href="crate_universe.html#crate.annotation-proc_macro_deps">proc_macro_deps</a>, <a href="crate_universe.html#crate.annotation-rustc_env">rustc_env</a>, <a href="crate_universe.html#crate.annotation-rustc_env_files">rustc_env_files</a>, <a href="crate_universe.html#crate.annotation-rustc_flags">rustc_flags</a>, <a href="crate_universe.html#crate.annotation-shallow_since">shallow_since</a>,
-                 <a href="crate_universe.html#crate.annotation-override_targets">override_targets</a>)
+                 <a href="crate_universe.html#crate.annotation-build_script_compile_data">build_script_compile_data</a>, <a href="crate_universe.html#crate.annotation-build_script_data">build_script_data</a>, <a href="crate_universe.html#crate.annotation-build_script_tools">build_script_tools</a>,
+                 <a href="crate_universe.html#crate.annotation-build_script_data_glob">build_script_data_glob</a>, <a href="crate_universe.html#crate.annotation-build_script_deps">build_script_deps</a>, <a href="crate_universe.html#crate.annotation-build_script_env">build_script_env</a>,
+                 <a href="crate_universe.html#crate.annotation-build_script_proc_macro_deps">build_script_proc_macro_deps</a>, <a href="crate_universe.html#crate.annotation-build_script_rundir">build_script_rundir</a>, <a href="crate_universe.html#crate.annotation-build_script_rustc_env">build_script_rustc_env</a>,
+                 <a href="crate_universe.html#crate.annotation-build_script_toolchains">build_script_toolchains</a>, <a href="crate_universe.html#crate.annotation-compile_data">compile_data</a>, <a href="crate_universe.html#crate.annotation-compile_data_glob">compile_data_glob</a>, <a href="crate_universe.html#crate.annotation-crate_features">crate_features</a>, <a href="crate_universe.html#crate.annotation-data">data</a>,
+                 <a href="crate_universe.html#crate.annotation-data_glob">data_glob</a>, <a href="crate_universe.html#crate.annotation-deps">deps</a>, <a href="crate_universe.html#crate.annotation-extra_aliased_targets">extra_aliased_targets</a>, <a href="crate_universe.html#crate.annotation-gen_binaries">gen_binaries</a>, <a href="crate_universe.html#crate.annotation-disable_pipelining">disable_pipelining</a>,
+                 <a href="crate_universe.html#crate.annotation-gen_build_script">gen_build_script</a>, <a href="crate_universe.html#crate.annotation-patch_args">patch_args</a>, <a href="crate_universe.html#crate.annotation-patch_tool">patch_tool</a>, <a href="crate_universe.html#crate.annotation-patches">patches</a>, <a href="crate_universe.html#crate.annotation-proc_macro_deps">proc_macro_deps</a>, <a href="crate_universe.html#crate.annotation-rustc_env">rustc_env</a>,
+                 <a href="crate_universe.html#crate.annotation-rustc_env_files">rustc_env_files</a>, <a href="crate_universe.html#crate.annotation-rustc_flags">rustc_flags</a>, <a href="crate_universe.html#crate.annotation-shallow_since">shallow_since</a>, <a href="crate_universe.html#crate.annotation-override_targets">override_targets</a>)
 </pre>
 <p>A collection of extra attributes and settings for a particular crate</p>
 <p><strong>PARAMETERS</strong></p>
@@ -4412,6 +4418,7 @@ crate.annotation(<a href="crate_universe.html#crate.annotation-version">version<
 <tr><td style="text-align: left"><a id="crate.annotation-additive_build_file"></a>additive_build_file</td><td style="text-align: left">A file containing extra contents to write to the bottom of generated BUILD files.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-additive_build_file_content"></a>additive_build_file_content</td><td style="text-align: left">Extra contents to write to the bottom of generated BUILD files.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-alias_rule"></a>alias_rule</td><td style="text-align: left">Alias rule to use instead of <code>native.alias()</code>.  Overrides <a href="crate_universe.html#render_config">render_config</a>'s 'default_alias_rule'.</td><td style="text-align: left"><code>None</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.annotation-build_script_compile_data"></a>build_script_compile_data</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::compile_data</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_data"></a>build_script_data</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::data</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_tools"></a>build_script_tools</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::tools</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_data_glob"></a>build_script_data_glob</td><td style="text-align: left">A list of glob patterns to add to a crate's <code>cargo_build_script::data</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
@@ -4439,7 +4446,7 @@ crate.annotation(<a href="crate_universe.html#crate.annotation-version">version<
 <tr><td style="text-align: left"><a id="crate.annotation-rustc_env_files"></a>rustc_env_files</td><td style="text-align: left">A list of labels to set on a crate's <code>rust_library::rustc_env_files</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-rustc_flags"></a>rustc_flags</td><td style="text-align: left">A list of strings to set on a crate's <code>rust_library::rustc_flags</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-shallow_since"></a>shallow_since</td><td style="text-align: left">An optional timestamp used for crates originating from a git repository instead of a crate registry. This flag optimizes fetching the source code.</td><td style="text-align: left"><code>None</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.annotation-override_targets"></a>override_targets</td><td style="text-align: left">A dictionary of alternate tagets to use when something depends on this crate to allow the parent repo to provide its own version of this dependency. Keys can be <code>proc_marco</code>, <code>build_script</code>, <code>lib</code>, <code>bin</code>.</td><td style="text-align: left"><code>None</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.annotation-override_targets"></a>override_targets</td><td style="text-align: left">A dictionary of alternate targets to use when something depends on this crate to allow the parent repo to provide its own version of this dependency. Keys can be <code>proc-marco</code>, <code>custom-build</code>, <code>lib</code>, <code>bin</code>.</td><td style="text-align: left"><code>None</code></td></tr>
 </tbody></table>
 </div>
 <p><strong>RETURNS</strong></p>
@@ -4525,7 +4532,7 @@ crate_universe_dependencies(<a href="crate_universe.html#crate_universe_dependen
 <p>Define dependencies of the <code>cargo-bazel</code> Rust target</p>
 <p><strong>PARAMETERS</strong></p>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Description</th><th style="text-align: left">Default Value</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a id="crate_universe_dependencies-rust_version"></a>rust_version</td><td style="text-align: left">The version of rust to use when generating dependencies.</td><td style="text-align: left"><code>"1.80.0"</code></td></tr>
+<tr><td style="text-align: left"><a id="crate_universe_dependencies-rust_version"></a>rust_version</td><td style="text-align: left">The version of rust to use when generating dependencies.</td><td style="text-align: left"><code>"1.81.0"</code></td></tr>
 <tr><td style="text-align: left"><a id="crate_universe_dependencies-bootstrap"></a>bootstrap</td><td style="text-align: left">If true, a <code>cargo_bootstrap_repository</code> target will be generated.</td><td style="text-align: left"><code>False</code></td></tr>
 <tr><td style="text-align: left"><a id="crate_universe_dependencies-kwargs"></a>kwargs</td><td style="text-align: left">Arguments to pass through to cargo_bazel_bootstrap.</td><td style="text-align: left">none</td></tr>
 </tbody></table>
@@ -4685,9 +4692,9 @@ allowlist:</p>
 <tr><td style="text-align: left"><a id="crates_repository-repo_mapping"></a>repo_mapping</td><td style="text-align: left">In <code>WORKSPACE</code> context only: a dictionary from local repository name to global repository name. This allows controls over workspace dependency resolution for dependencies of this repository.<br><br>For example, an entry <code>"@foo": "@bar"</code> declares that, for any time this repository depends on <code>@foo</code> (such as a dependency on <code>@foo//some:target</code>, it should actually resolve that dependency within globally-declared <code>@bar</code> (<code>@bar//some:target</code>).<br><br>This attribute is <em>not</em> supported in <code>MODULE.bazel</code> context (when invoking a repository rule inside a module extension's implementation function).</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-rust_toolchain_cargo_template"></a>rust_toolchain_cargo_template</td><td style="text-align: left">The template to use for finding the host <code>cargo</code> binary. <code>{version}</code> (eg. '1.53.0'), <code>{triple}</code> (eg. 'x86_64-unknown-linux-gnu'), <code>{arch}</code> (eg. 'aarch64'), <code>{vendor}</code> (eg. 'unknown'), <code>{system}</code> (eg. 'darwin'), <code>{cfg}</code> (eg. 'exec'), <code>{channel}</code> (eg. 'stable'), and <code>{tool}</code> (eg. 'rustc.exe') will be replaced in the string if present.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@rust_{system}_{arch}__{triple}__{channel}_tools//:bin/{tool}"</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-rust_toolchain_rustc_template"></a>rust_toolchain_rustc_template</td><td style="text-align: left">The template to use for finding the host <code>rustc</code> binary. <code>{version}</code> (eg. '1.53.0'), <code>{triple}</code> (eg. 'x86_64-unknown-linux-gnu'), <code>{arch}</code> (eg. 'aarch64'), <code>{vendor}</code> (eg. 'unknown'), <code>{system}</code> (eg. 'darwin'), <code>{cfg}</code> (eg. 'exec'), <code>{channel}</code> (eg. 'stable'), and <code>{tool}</code> (eg. 'cargo.exe') will be replaced in the string if present.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@rust_{system}_{arch}__{triple}__{channel}_tools//:bin/{tool}"</code></td></tr>
-<tr><td style="text-align: left"><a id="crates_repository-rust_version"></a>rust_version</td><td style="text-align: left">The version of Rust the currently registered toolchain is using. Eg. <code>1.56.0</code>, or <code>nightly/2021-09-08</code></td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"1.80.0"</code></td></tr>
+<tr><td style="text-align: left"><a id="crates_repository-rust_version"></a>rust_version</td><td style="text-align: left">The version of Rust the currently registered toolchain is using. Eg. <code>1.56.0</code>, or <code>nightly/2021-09-08</code></td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"1.81.0"</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-splicing_config"></a>splicing_config</td><td style="text-align: left">The configuration flags to use for splicing Cargo maniests. Use <code>//crate_universe:defs.bzl\%rsplicing_config</code> to generate the value for this field. If unset, the defaults defined there will be used.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
-<tr><td style="text-align: left"><a id="crates_repository-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "i686-apple-darwin", "i686-pc-windows-msvc", "i686-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "aarch64-apple-darwin", "aarch64-apple-ios-sim", "aarch64-apple-ios", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-linux-android", "i686-unknown-freebsd", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-unknown-freebsd", "x86_64-unknown-none", "aarch64-unknown-nto-qnx710"]</code></td></tr>
+<tr><td style="text-align: left"><a id="crates_repository-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-apple-darwin", "aarch64-apple-ios", "aarch64-apple-ios-sim", "aarch64-fuchsia", "aarch64-linux-android", "aarch64-pc-windows-msvc", "aarch64-unknown-linux-gnu", "aarch64-unknown-nixos-gnu", "aarch64-unknown-nto-qnx710", "arm-unknown-linux-gnueabi", "armv7-linux-androideabi", "armv7-unknown-linux-gnueabi", "i686-apple-darwin", "i686-linux-android", "i686-pc-windows-msvc", "i686-unknown-freebsd", "i686-unknown-linux-gnu", "powerpc-unknown-linux-gnu", "riscv32imc-unknown-none-elf", "riscv64gc-unknown-none-elf", "s390x-unknown-linux-gnu", "thumbv7em-none-eabi", "thumbv8m.main-none-eabi", "wasm32-unknown-unknown", "wasm32-wasi", "x86_64-apple-darwin", "x86_64-apple-ios", "x86_64-fuchsia", "x86_64-linux-android", "x86_64-pc-windows-msvc", "x86_64-unknown-freebsd", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu", "x86_64-unknown-none"]</code></td></tr>
 </tbody></table>
 </div>
 <p><strong>ENVIRONMENT VARIABLES</strong></p>
@@ -4701,6 +4708,15 @@ allowlist:</p>
 <li><code>CARGO_BAZEL_ISOLATED</code></li>
 <li><code>CARGO_BAZEL_DEBUG</code></li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="upstream-tooling"><a class="header" href="#upstream-tooling">Upstream Tooling</a></h1>
+<p>rules_rust manages versions of things like rustc. If you want to manually run upstream tooling configured at the versions, plugins and such that rules_rust has configured, rules_rust exposes these as targets in <code>@rules_rust//tools/upstream_wrapper</code>:</p>
+<pre><code class="language-console">% bazel query @rules_rust//tools/upstream_wrapper
+@rules_rust//tools/upstream_wrapper:cargo
+@rules_rust//tools/upstream_wrapper:cargo_clippy
+@rules_rust//tools/upstream_wrapper:rustc
+@rules_rust//tools/upstream_wrapper:rustfmt
+</code></pre>
+<p>You can run them via <code>bazel run</code>, e.g. <code>bazel run @rules_rust//tools/upstream_wrapper:cargo -- check</code>.</p>
 
                     </main>
 
