@@ -8,7 +8,6 @@ To verify the processed cargo cc_args, we use cc_args_and_env_analysis_test().
 """
 
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
-load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@rules_cc//cc:action_names.bzl", "ACTION_NAME_GROUPS")
 load("@rules_cc//cc:cc_toolchain_config_lib.bzl", "feature", "flag_group", "flag_set")
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
@@ -48,7 +47,6 @@ def _test_cc_config_impl(ctx):
 test_cc_config = rule(
     implementation = _test_cc_config_impl,
     attrs = {
-        "with_features": attr.label_list(),
         "extra_cc_compile_flags": attr.string_list(),
     },
     provides = [CcToolchainConfigInfo],
@@ -106,9 +104,7 @@ cc_args_and_env_analysis_test = analysistest.make(
 def cargo_build_script_with_extra_cc_compile_flags(
         name,
         extra_cc_compile_flags):
-    """
-    Produces a test cargo_build_script target that's set up to use a
-    custom cc_toolchain with the extra_cc_compile_flags.
+    """Produces a test cargo_build_script target that's set up to use a custom cc_toolchain with the extra_cc_compile_flags.
 
     This is achieved by creating a cascade of targets:
     1. We generate a cc_toolchain target configured with the extra_cc_compile_flags.
