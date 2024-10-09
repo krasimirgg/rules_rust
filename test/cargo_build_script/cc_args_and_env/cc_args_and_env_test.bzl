@@ -93,9 +93,9 @@ def _cc_args_and_env_analysis_test_impl(ctx):
 
     return analysistest.end(env)
 
-"""An analysistest to examine the custom cargo flags of an cargo_build_script target."""
 cc_args_and_env_analysis_test = analysistest.make(
-    _cc_args_and_env_analysis_test_impl,
+    impl = _cc_args_and_env_analysis_test_impl,
+    doc = """An analysistest to examine the custom cargo flags of an cargo_build_script target.""",
     attrs = {
         "expected_cflags": attr.string_list(),
     },
