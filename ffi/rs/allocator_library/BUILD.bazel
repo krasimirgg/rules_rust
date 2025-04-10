@@ -20,6 +20,7 @@ rust_library(
     name = "allocator_library",
     srcs = srcs,
     allocator_libraries = "@rules_rust//ffi/rs:empty_allocator_libraries",
+    edition = "2024",
     tags = ["manual"],
 )
 
@@ -27,5 +28,6 @@ rust_library_without_process_wrapper(
     name = "allocator_library_without_process_wrapper",
     srcs = srcs,
     allocator_libraries = "@rules_rust//ffi/rs:empty_allocator_libraries",
+    edition = "2024",
     tags = ["manual"],
 )

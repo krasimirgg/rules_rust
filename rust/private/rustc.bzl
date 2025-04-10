@@ -1622,24 +1622,26 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
     #
     # When provided, the allocator_libraries attribute takes precedence over the
     # toolchain allocator attributes.
-    attr_alloc_libs = None
+    attr_allocator_library = None
+    attr_global_allocator_library = None
     if hasattr(ctx.attr, "allocator_libraries"):
-        attr_alloc_libs = ctx.attr.allocator_libraries[AllocatorLibrariesInfo]
+        attr_allocator_library = ctx.attr.allocator_libraries[AllocatorLibrariesInfo].allocator_library
+        attr_global_allocator_library = ctx.attr.allocator_libraries[AllocatorLibrariesInfo].global_allocator_library
     if is_exec_configuration(ctx):
-        if attr_alloc_libs.allocator_library:
-            return _merge_attr_and_toolchain_alloc_info(attr_alloc_libs.allocator_library, toolchain.libstd_no_allocator_ccinfo)
+        if attr_allocator_library:
+            return _merge_attr_and_toolchain_alloc_info(attr_allocator_library, toolchain.libstd_no_allocator_ccinfo)
         return toolchain.libstd_and_allocator_ccinfo
     if toolchain._experimental_use_global_allocator:
         if _is_no_std(ctx, toolchain, crate_info):
-            if attr_alloc_libs.global_allocator_library:
-                return _merge_attr_and_toolchain_alloc_info(attr_alloc_libs.global_allocator_library, toolchain.nostd_no_allocator_ccinfo)
+            if attr_global_allocator_library:
+                return _merge_attr_and_toolchain_alloc_info(attr_global_allocator_library, toolchain.nostd_no_allocator_ccinfo)
             return toolchain.nostd_and_global_allocator_cc_info
         else:
-            if attr_alloc_libs.global_allocator_library:
-                return _merge_attr_and_toolchain_alloc_info(attr_alloc_libs.global_allocator_library, toolchain.libstd_no_allocator_ccinfo)
+            if attr_global_allocator_library:
+                return _merge_attr_and_toolchain_alloc_info(attr_global_allocator_library, toolchain.libstd_no_allocator_ccinfo)
             return toolchain.libstd_and_global_allocator_ccinfo
-    if attr_alloc_libs.allocator_library:
-        return _merge_attr_and_toolchain_alloc_info(attr_alloc_libs.allocator_library, toolchain.libstd_no_allocator_ccinfo)
+    if attr_allocator_library:
+        return _merge_attr_and_toolchain_alloc_info(attr_allocator_library, toolchain.libstd_no_allocator_ccinfo)
     return toolchain.libstd_and_allocator_ccinfo
 
 def _is_dylib(dep):

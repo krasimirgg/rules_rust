@@ -19,7 +19,7 @@
 #![feature(rustc_attrs)]
 #![feature(linkage)]
 
-extern "C" {
+unsafe extern "C" {
     #[rustc_std_internal_symbol]
     fn __rdl_alloc(size: usize, align: usize) -> *mut u8;
 
