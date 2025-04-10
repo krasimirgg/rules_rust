@@ -3,5 +3,8 @@
 extern "C" int rdep();
 
 int main() {
-  printf("%d\n", rdep());
+  if (rdep() != 1001) {
+    return 1;
+  }
+  return 0;
 }
