@@ -15,7 +15,7 @@
 // later.
 //
 // This has been translated from our c++ version
-// rules_rust/ffi/cc/allocator_library/allocator_library.cc.
+// rules_rust/ffi/cc/global_allocator_library/global_allocator_library.cc.
 #![no_std]
 #![allow(warnings)]
 #![allow(internal_features)]
@@ -24,55 +24,17 @@
 
 unsafe extern "C" {
     #[rustc_std_internal_symbol]
-    fn __rdl_alloc(size: usize, align: usize) -> *mut u8;
-
-    #[rustc_std_internal_symbol]
-    fn __rdl_dealloc(ptr: *mut u8, size: usize, align: usize);
-
-    #[rustc_std_internal_symbol]
-    fn __rdl_realloc(ptr: *mut u8, old_size: usize, align: usize, new_size: usize) -> *mut u8;
-
-    #[rustc_std_internal_symbol]
-    fn __rdl_alloc_zeroed(size: usize, align: usize) -> *mut u8;
-}
-
-#[linkage = "weak"]
-#[rustc_std_internal_symbol]
-fn __rust_alloc(size: usize, align: usize) -> *mut u8 {
-    unsafe {
-        return __rdl_alloc(size, align);
-    }
-}
-
-#[linkage = "weak"]
-#[rustc_std_internal_symbol]
-fn __rust_dealloc(ptr: *mut u8, size: usize, align: usize) {
-    unsafe {
-        return __rdl_dealloc(ptr, size, align);
-    }
-}
-
-#[linkage = "weak"]
-#[rustc_std_internal_symbol]
-fn __rust_realloc(ptr: *mut u8, old_size: usize, align: usize, new_size: usize) -> *mut u8 {
-    unsafe {
-        return __rdl_realloc(ptr, old_size, align, new_size);
-    }
-}
-
-#[linkage = "weak"]
-#[rustc_std_internal_symbol]
-fn __rust_alloc_zeroed(size: usize, align: usize) -> *mut u8 {
-    unsafe {
-        return __rdl_alloc_zeroed(size, align);
-    }
+    fn __rg_oom(size: usize, align: usize) -> *mut u8;
 }
 
 #[linkage = "weak"]
 #[rustc_std_internal_symbol]
 fn __rust_alloc_error_handler(size: usize, align: usize) {
-    panic!();
+    unsafe {
+        __rg_oom(size, align);
+    }
 }
+
 
 // New feature as of https://github.com/rust-lang/rust/pull/88098.
 // This symbol is normally emitted by rustc. 0 means OOMs should abort, 1 means OOMs should panic.
