@@ -783,10 +783,6 @@ rust_toolchain = rule(
             default = Label("@rules_rust//rust/settings:experimental_link_std_dylib"),
             doc = "Label to a boolean build setting that controls whether whether to link libstd dynamically.",
         ),
-        "experimental_use_cc_common_link": attr.label(
-            default = Label("//rust/settings:experimental_use_cc_common_link"),
-            doc = "Label to a boolean build setting that controls whether cc_common.link is used to link rust binaries.",
-        ),
         "experimental_use_allocator_libraries_with_mangled_symbols": attr.int(
             doc = (
                 "Whether to use rust-based allocator libraries with " +
@@ -799,6 +795,10 @@ rust_toolchain = rule(
             ),
             values = [-1, 0, 1],
             default = -1,
+        ),
+        "experimental_use_cc_common_link": attr.label(
+            default = Label("//rust/settings:experimental_use_cc_common_link"),
+            doc = "Label to a boolean build setting that controls whether cc_common.link is used to link rust binaries.",
         ),
         "extra_exec_rustc_flags": attr.string_list(
             doc = "Extra flags to pass to rustc in exec configuration",
@@ -907,19 +907,19 @@ rust_toolchain = rule(
         "_experimental_use_coverage_metadata_files": attr.label(
             default = Label("//rust/settings:experimental_use_coverage_metadata_files"),
         ),
-        "_experimental_use_global_allocator": attr.label(
-            default = Label("//rust/settings:experimental_use_global_allocator"),
-            doc = (
-                "Label to a boolean build setting that informs the target build whether a global allocator is being used." +
-                "This flag is only relevant when used together with --@rules_rust//rust/settings:experimental_use_global_allocator."
-            ),
-        ),
         "_experimental_use_allocator_libraries_with_mangled_symbols_setting": attr.label(
             default = Label("//rust/settings:experimental_use_allocator_libraries_with_mangled_symbols"),
             providers = [BuildSettingInfo],
             doc = (
                 "Label to a boolean build setting that informs the target build whether to use rust-based " +
                 "allocator libraries that mangle symbols."
+            ),
+        ),
+        "_experimental_use_global_allocator": attr.label(
+            default = Label("//rust/settings:experimental_use_global_allocator"),
+            doc = (
+                "Label to a boolean build setting that informs the target build whether a global allocator is being used." +
+                "This flag is only relevant when used together with --@rules_rust//rust/settings:experimental_use_global_allocator."
             ),
         ),
         "_incompatible_change_rust_test_compilation_output_directory": attr.label(
