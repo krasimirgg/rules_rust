@@ -125,18 +125,20 @@ def experimental_use_global_allocator():
         build_setting_default = False,
     )
 
-def experimental_use_allocator_libraries_with_mangled_symbols():
+def experimental_use_allocator_libraries_with_mangled_symbols(name):
     """A flag used to select allocator libraries implemented in rust that are compatible with rustc's symbol mangling.
+
+    Also a corresponding config setting that can be used in selects().
 
     This currently requires nightly rustc from 2025-04-05 or later.
     """
     bool_flag(
-        name = "experimental_use_allocator_libraries_with_mangled_symbols",
+        name = name,
         build_setting_default = False,
     )
 
     native.config_setting(
-        name = "experimental_use_allocator_libraries_with_mangled_symbols_on",
+        name = "%s_on" % name,
         flag_values = {
             ":experimental_use_allocator_libraries_with_mangled_symbols": "true",
         },

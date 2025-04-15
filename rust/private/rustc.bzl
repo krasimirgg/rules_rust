@@ -1609,6 +1609,14 @@ def _merge_attr_and_toolchain_alloc_info(attr_alloc_cc_info, toolchain_alloc_cc_
         fail("empty attr_alloc_cc_info")
     return cc_common.merge_cc_infos(cc_infos = [attr_alloc_cc_info, toolchain_alloc_cc_info])
 
+def _should_use_rustc_allocator_libraries(toolchain):
+    use_or_default = toolchain._experimental_use_allocator_libraries_with_mangled_symbols
+    if use_or_default not in [-1, 0, 1]:
+        fail("unexpected value of experimental_use_allocator_libraries_with_mangled_symbols (should be one of [-1, 0, 1]): " + use_or_default)
+    if use_or_default == -1:
+        return toolchain._experimental_use_allocator_libraries_with_mangled_symbols_setting
+    return bool(use_or_default)
+
 def _get_std_and_alloc_info(ctx, toolchain, crate_info):
     # Handles standard libraries and allocator shims.
     #
@@ -1624,7 +1632,7 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
     # toolchain allocator attributes.
     attr_allocator_library = None
     attr_global_allocator_library = None
-    if hasattr(ctx.attr, "allocator_libraries"):
+    if _should_use_rustc_allocator_libraries(toolchain) and hasattr(ctx.attr, "allocator_libraries"):
         attr_allocator_library = ctx.attr.allocator_libraries[AllocatorLibrariesInfo].allocator_library
         attr_global_allocator_library = ctx.attr.allocator_libraries[AllocatorLibrariesInfo].global_allocator_library
     if is_exec_configuration(ctx):

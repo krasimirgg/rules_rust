@@ -528,6 +528,13 @@ def _stamp_attribute(default_value):
 
 # Internal attributes core to Rustc actions.
 RUSTC_ATTRS = {
+    # This is really internal. Not prefixed with `_` since we need to adapt this
+    # in bootstrapping situations, e.g., when building the process wrapper
+    # or allocator libraries themselves.
+    "allocator_libraries": attr.label(
+        default = "//ffi/rs:default_allocator_libraries",
+        providers = [AllocatorLibrariesInfo],
+    ),
     "_error_format": attr.label(
         default = Label("//rust/settings:error_format"),
     ),
@@ -718,10 +725,6 @@ _common_attrs = {
     "version": attr.string(
         doc = "A version to inject in the cargo environment variable.",
         default = "0.0.0",
-    ),
-    "allocator_libraries": attr.label(
-        default = "//ffi/rs:default_allocator_libraries",
-        providers = [AllocatorLibrariesInfo],
     ),
     "_stamp_flag": attr.label(
         doc = "A setting used to determine whether or not the `--stamp` flag is enabled",

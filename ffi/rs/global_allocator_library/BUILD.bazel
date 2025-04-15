@@ -1,8 +1,4 @@
 load("@rules_rust//rust:defs.bzl", "rust_library")
-load(
-    "@rules_rust//rust/private:rust.bzl",
-    "rust_library_without_process_wrapper",
-)
 
 package(
     default_visibility = ["@rules_rust//ffi/rs:__subpackages__"],
