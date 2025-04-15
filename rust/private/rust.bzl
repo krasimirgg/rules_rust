@@ -528,13 +528,6 @@ def _stamp_attribute(default_value):
 
 # Internal attributes core to Rustc actions.
 RUSTC_ATTRS = {
-    # This is really internal. Not prefixed with `_` since we need to adapt this
-    # in bootstrapping situations, e.g., when building the process wrapper
-    # or allocator libraries themselves.
-    "allocator_libraries": attr.label(
-        default = "//ffi/rs:default_allocator_libraries",
-        providers = [AllocatorLibrariesInfo],
-    ),
     "_error_format": attr.label(
         default = Label("//rust/settings:error_format"),
     ),
@@ -568,6 +561,19 @@ RUSTC_ATTRS = {
     ),
     "_rustc_output_diagnostics": attr.label(
         default = Label("//rust/settings:rustc_output_diagnostics"),
+    ),
+}
+
+# Attributes for rust-based allocator library support.
+# Can't add it directly to RUSTC_ATTRS above, as those are used as
+# aspect parameters and only support simple types ('bool', 'int' or 'string').
+_rustc_allocator_libraries_attrs = {
+    # This is really internal. Not prefixed with `_` since we need to adapt this
+    # in bootstrapping situations, e.g., when building the process wrapper
+    # or allocator libraries themselves.
+    "allocator_libraries": attr.label(
+        default = "//ffi/rs:default_allocator_libraries",
+        providers = [AllocatorLibrariesInfo],
     ),
 }
 
@@ -730,7 +736,7 @@ _common_attrs = {
         doc = "A setting used to determine whether or not the `--stamp` flag is enabled",
         default = Label("//rust/private:stamp"),
     ),
-} | RUSTC_ATTRS
+} | RUSTC_ATTRS | _rustc_allocator_libraries_attrs
 
 _coverage_attrs = {
     "_collect_cc_coverage": attr.label(
