@@ -904,9 +904,6 @@ rust_toolchain = rule(
         "_codegen_units": attr.label(
             default = Label("//rust/settings:codegen_units"),
         ),
-        "_experimental_use_coverage_metadata_files": attr.label(
-            default = Label("//rust/settings:experimental_use_coverage_metadata_files"),
-        ),
         "_experimental_use_allocator_libraries_with_mangled_symbols_setting": attr.label(
             default = Label("//rust/settings:experimental_use_allocator_libraries_with_mangled_symbols"),
             providers = [BuildSettingInfo],
@@ -914,6 +911,9 @@ rust_toolchain = rule(
                 "Label to a boolean build setting that informs the target build whether to use rust-based " +
                 "allocator libraries that mangle symbols."
             ),
+        ),
+        "_experimental_use_coverage_metadata_files": attr.label(
+            default = Label("//rust/settings:experimental_use_coverage_metadata_files"),
         ),
         "_experimental_use_global_allocator": attr.label(
             default = Label("//rust/settings:experimental_use_global_allocator"),
