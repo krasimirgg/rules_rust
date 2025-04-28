@@ -1643,7 +1643,7 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
         if _is_no_std(ctx, toolchain, crate_info):
             if attr_global_allocator_library:
                 return _merge_attr_and_toolchain_alloc_info(attr_global_allocator_library, toolchain.nostd_no_allocator_ccinfo)
-            return toolchain.nostd_and_global_allocator_cc_info
+            return toolchain.nostd_and_global_allocator_ccinfo
         else:
             if attr_global_allocator_library:
                 return _merge_attr_and_toolchain_alloc_info(attr_global_allocator_library, toolchain.libstd_no_allocator_ccinfo)

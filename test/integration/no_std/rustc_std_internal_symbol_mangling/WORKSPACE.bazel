@@ -1,0 +1,1 @@
+workspace(name = "rules_rust_test_no_std_rustc_std_internal_symbol_mangling")
