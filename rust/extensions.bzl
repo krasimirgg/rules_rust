@@ -61,10 +61,10 @@ def _rust_impl(module_ctx):
                 "edition": repository_set.edition,
                 "exec_triple": repository_set.exec_triple,
                 "extra_target_triples": {repository_set.target_triple: [str(v) for v in repository_set.target_compatible_with]},
-                "target_settings": [str(v) for v in repository_set.target_settings],
                 "name": repository_set.name,
                 "rustfmt_version": repository_set.rustfmt_version,
                 "sha256s": repository_set.sha256s,
+                "target_settings": [str(v) for v in repository_set.target_settings],
                 "urls": repository_set.urls,
                 "versions": repository_set.versions,
             }

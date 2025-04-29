@@ -534,6 +534,18 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+  cc_common_link_and_mangling_ubuntu2004:
+    name: Build via cc_common.link with rustc mangling alloc symbols
+    platform: ubuntu2004
+    working_directory: test/integration/cc_common_link
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=mangled_alloc_symbols"
+    test_flags:
+      - "--config=mangled_alloc_symbols"
   cc_common_link_with_global_alloc_ubuntu2004:
     name: Build via cc_common.link using a global allocator
     platform: ubuntu2004
