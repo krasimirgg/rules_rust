@@ -4,6 +4,7 @@
 
 build --@rules_rust//rust/settings:experimental_use_cc_common_link=True
 build:mangled_alloc_symbols --@rules_rust//rust/settings:experimental_use_allocator_libraries_with_mangled_symbols=True
+build:mangled_alloc_symbols --linkopt=bazel-out/k8-fastbuild/bin/external/rules_rust+/ffi/rs/allocator_library/liballocator_library-256964584.a
 
 ###############################################################################
 
