@@ -562,6 +562,18 @@ tasks:
       - "--config=no_std_alloc_using_cc_common_link"
     test_flags:
       - "--config=no_std_alloc_using_cc_common_link"
+  cc_common_link_no_std_and_mangling_ubuntu2004:
+    name: Build with no_std + alloc using cc_common.link infrastructure for linking with rust toolchain mangling alloc symbols
+    platform: ubuntu2004
+    working_directory: test/integration/no_std
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=no_std_alloc_using_cc_common_link_and_mangled_alloc_symbols"
+    test_flags:
+      - "--config=no_std_alloc_using_cc_common_link_and_mangled_alloc_symbols"
   no_std_ubuntu2004:
     name: Build with no_std + alloc
     platform: ubuntu2004
