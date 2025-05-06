@@ -1604,11 +1604,6 @@ def _is_no_std(ctx, toolchain, crate_info):
         return False
     return True
 
-def _merge_attr_and_toolchain_alloc_info(attr_alloc_cc_info, toolchain_alloc_cc_info):
-    if not attr_alloc_cc_info:
-        fail("empty attr_alloc_cc_info")
-    return cc_common.merge_cc_infos(cc_infos = [attr_alloc_cc_info, toolchain_alloc_cc_info])
-
 def _should_use_rustc_allocator_libraries(toolchain):
     use_or_default = toolchain._experimental_use_allocator_libraries_with_mangled_symbols
     if use_or_default not in [-1, 0, 1]:
@@ -1634,7 +1629,6 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
     attr_global_allocator_library = None
     if _should_use_rustc_allocator_libraries(toolchain) and hasattr(ctx.attr, "allocator_libraries"):
         libs = ctx.attr.allocator_libraries[AllocatorLibrariesInfo]
-        return libs.libstd_and_allocator_ccinfo
         attr_allocator_library = libs.allocator_library
         attr_global_allocator_library = libs.global_allocator_library
     if is_exec_configuration(ctx):
@@ -1651,7 +1645,6 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
                 return libs.libstd_and_global_allocator_ccinfo
             return toolchain.libstd_and_global_allocator_ccinfo
     if attr_allocator_library:
-        print("ret: ", attr_allocator_library)
         return libs.libstd_and_allocator_ccinfo
     return toolchain.libstd_and_allocator_ccinfo
 

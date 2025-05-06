@@ -188,14 +188,22 @@ def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label
 
     if rust_stdlib_info.std_rlibs:
         allocator_library_inputs = []
+
         if allocator_library and allocator_library.linking_context.linker_inputs:
-            allocator_library_inputs = [depset(
-                [
-                    l
-                    for inp in allocator_library.linking_context.linker_inputs.to_list()
-                    for l in inp.libraries
-                ],
-            )]
+            # Repackage the allocator library linker inputs as transitive
+            # inputs to the liballoc from the standard library.
+            # The pattern `linker_inputs.to_list()[0]` extracts the first
+            # `LinkerInput` from the context, which contains the allocator
+            # library artifacts. Later linker inputs contain extra linker
+            # information that was created while building the allocator library
+            # itself; this is redundant as it will be re-established by this
+            # function.
+            # The `to_list()` of the linker_inputs depset is OK, as it only
+            # happens once per allocator-library target in the build graph (and
+            # we usually only have a few).
+            link_inp = allocator_library.linking_context.linker_inputs.to_list()[0]
+            allocator_library_inputs = [depset(link_inp.libraries)]
+
         alloc_inputs = depset(
             [_ltl(f, actions, cc_toolchain, feature_configuration) for f in rust_stdlib_info.alloc_files],
             transitive = allocator_library_inputs,
@@ -684,8 +692,6 @@ def _rust_toolchain_impl(ctx):
         libstd_and_global_allocator_ccinfo = make_local_ccinfo(ctx.attr.global_allocator_library[CcInfo], "std"),
         nostd_and_global_allocator_ccinfo = make_local_ccinfo(ctx.attr.global_allocator_library[CcInfo], "no_std_with_alloc"),
         make_libstd_and_allocator_ccinfo = make_ccinfo,
-        libstd_no_allocator_ccinfo = make_local_ccinfo(None, "std"),
-        nostd_no_allocator_ccinfo = make_local_ccinfo(None, "no_std_with_alloc"),
         llvm_cov = ctx.file.llvm_cov,
         llvm_profdata = ctx.file.llvm_profdata,
         lto = lto,
