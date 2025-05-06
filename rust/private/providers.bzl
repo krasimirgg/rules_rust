@@ -194,5 +194,8 @@ AllocatorLibrariesInfo = provider(
     fields = {
         "allocator_library": "Optional[CcInfo]: used when the default rust allocator is used",
         "global_allocator_library": "Optional[CcInfo]: used when a global rust allocator is used",
+        "libstd_and_allocator_ccinfo": "Optional[CcInfo]: used when the default rust allocator is used",
+        "libstd_and_global_allocator_ccinfo": "Optional[CcInfo]: used when a global rust allocator is used",
+        "nostd_and_global_allocator_ccinfo": "Optional[CcInfo]: used when nostd with a global rust allocator is used",
     },
 )

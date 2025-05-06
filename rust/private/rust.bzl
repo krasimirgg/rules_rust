@@ -1587,12 +1587,18 @@ rust_library_group = rule(
 )
 
 def _rust_allocator_libraries_impl(ctx):
+    toolchain = find_toolchain(ctx)
     allocator_library = ctx.attr.allocator_library[CcInfo] if ctx.attr.allocator_library else None
     global_allocator_library = ctx.attr.global_allocator_library[CcInfo] if ctx.attr.global_allocator_library else None
+
+    make_ccinfo = lambda lib, std: toolchain.make_libstd_and_allocator_ccinfo(ctx.label, ctx.actions, lib, std)
 
     providers = [AllocatorLibrariesInfo(
         allocator_library = allocator_library,
         global_allocator_library = global_allocator_library,
+        libstd_and_allocator_ccinfo = make_ccinfo(allocator_library, "std"),
+        libstd_and_global_allocator_ccinfo = make_ccinfo(global_allocator_library, "std"),
+        nostd_and_global_allocator_ccinfo = make_ccinfo(global_allocator_library, "no_std_with_alloc"),
     )]
 
     return providers
@@ -1610,6 +1616,10 @@ rust_allocator_libraries = rule(
             providers = [CcInfo],
         ),
     },
+    toolchains = [
+        str(Label("//rust:toolchain_type")),
+        "@bazel_tools//tools/cpp:toolchain_type",
+    ],
 )
 
 def _replace_illlegal_chars(name):
