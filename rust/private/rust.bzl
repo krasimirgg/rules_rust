@@ -17,7 +17,13 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 load("//rust/private:common.bzl", "COMMON_PROVIDERS", "rust_common")
-load("//rust/private:providers.bzl", "AllocatorLibrariesInfo", "BuildInfo", "LintsInfo")
+load(
+    "//rust/private:providers.bzl",
+    "AllocatorLibrariesImplInfo",
+    "AllocatorLibrariesInfo",
+    "BuildInfo",
+    "LintsInfo",
+)
 load("//rust/private:rustc.bzl", "rustc_compile_action")
 load(
     "//rust/private:utils.bzl",
@@ -1588,10 +1594,15 @@ rust_library_group = rule(
 
 def _rust_allocator_libraries_impl(ctx):
     toolchain = find_toolchain(ctx)
-    allocator_library = ctx.attr.allocator_library[CcInfo] if ctx.attr.allocator_library else None
-    global_allocator_library = ctx.attr.global_allocator_library[CcInfo] if ctx.attr.global_allocator_library else None
+    allocator_library = ctx.attr.allocator_library[AllocatorLibrariesImplInfo] if ctx.attr.allocator_library else None
+    global_allocator_library = ctx.attr.global_allocator_library[AllocatorLibrariesImplInfo] if ctx.attr.global_allocator_library else None
 
-    make_ccinfo = lambda lib, std: toolchain.make_libstd_and_allocator_ccinfo(ctx.label, ctx.actions, lib, std)
+    make_ccinfo = lambda info, std: toolchain.make_libstd_and_allocator_ccinfo(
+        ctx.label,
+        ctx.actions,
+        struct(allocator_libraries_impl_info = info),
+        std,
+    )
 
     providers = [AllocatorLibrariesInfo(
         allocator_library = allocator_library,
@@ -1609,11 +1620,11 @@ rust_allocator_libraries = rule(
     attrs = {
         "allocator_library": attr.label(
             doc = "An optional library to provide when a default rust allocator is used.",
-            providers = [CcInfo],
+            providers = [AllocatorLibrariesImplInfo],
         ),
         "global_allocator_library": attr.label(
             doc = "An optional library to provide when a default rust allocator is used.",
-            providers = [CcInfo],
+            providers = [AllocatorLibrariesImplInfo],
         ),
     },
     toolchains = [

@@ -27,7 +27,7 @@ load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 load(":common.bzl", "rust_common")
 load(":compat.bzl", "abs")
 load(":lto.bzl", "construct_lto_arguments")
-load(":providers.bzl", "AllocatorLibrariesInfo", "LintsInfo", "RustcOutputDiagnosticsInfo", _BuildInfo = "BuildInfo")
+load(":providers.bzl", "AllocatorLibrariesImplInfo", "AllocatorLibrariesInfo", "LintsInfo", "RustcOutputDiagnosticsInfo", _BuildInfo = "BuildInfo")
 load(":rustc_resource_set.bzl", "get_rustc_resource_set", "is_codegen_units_enabled")
 load(":stamp.bzl", "is_stamping_enabled")
 load(
@@ -1713,7 +1713,8 @@ def establish_cc_info(ctx, attr, crate_info, toolchain, cc_toolchain, feature_co
         interface_library (File): Optional interface library for cdylib crates on Windows.
 
     Returns:
-        list: A list containing the CcInfo provider
+        list: A list containing the CcInfo provider and optionally AllocatorLibrariesImplInfo provider used when this crate is used as the rust allocator library implementation.
+
     """
 
     # A test will not need to produce CcInfo as nothing can depend on test targets
@@ -1728,6 +1729,8 @@ def establish_cc_info(ctx, attr, crate_info, toolchain, cc_toolchain, feature_co
     # https://github.com/bazelbuild/rules_rust/issues/771
     if getattr(attr, "out_binary", False):
         return []
+
+    dot_a = None
 
     if crate_info.type == "staticlib":
         library_to_link = cc_common.create_library_to_link(
@@ -1802,7 +1805,10 @@ def establish_cc_info(ctx, attr, crate_info, toolchain, cc_toolchain, feature_co
             # TODO: if we already have an rlib in our deps, we could skip this
             cc_infos.append(libstd_and_allocator_cc_info)
 
-    return [cc_common.merge_cc_infos(cc_infos = cc_infos)]
+    providers = [cc_common.merge_cc_infos(cc_infos = cc_infos)]
+    if dot_a:
+        providers += [AllocatorLibrariesImplInfo(static_archive = dot_a)]
+    return providers
 
 def add_edition_flags(args, crate):
     """Adds the Rust edition flag to an arguments object reference

@@ -199,3 +199,10 @@ AllocatorLibrariesInfo = provider(
         "nostd_and_global_allocator_ccinfo": "Optional[CcInfo]: used when nostd with a global rust allocator is used",
     },
 )
+
+AllocatorLibrariesImplInfo = provider(
+    doc = "AllocatorLibrariesImplInfo provides the rust-generated linker input for linking rust code with a non-rust linker.",
+    fields = {
+        "static_archive": "Optional[File]: the allocator library archive (typically .a file).",
+    },
+)

@@ -9,6 +9,7 @@ load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 load("//rust/platform:triple.bzl", "triple")
 load("//rust/private:common.bzl", "rust_common")
 load("//rust/private:lto.bzl", "RustLtoInfo")
+load("//rust/private:providers.bzl", "AllocatorLibrariesImplInfo")
 load("//rust/private:rust_analyzer.bzl", _rust_analyzer_toolchain = "rust_analyzer_toolchain")
 load(
     "//rust/private:rustfmt.bzl",
@@ -150,7 +151,10 @@ def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label
     Args:
         ctx (ctx): The rule's context object.
         rust_std: The Rust standard library.
-        allocator_library: The target to use for providing allocator functions.
+        allocator_library (struct): The target to use for providing allocator functions.
+          This should be a struct with either:
+          * a cc_info field of type CcInfo
+          * an allocator_libraries_impl_info field, which should be None or of type AllocatorLibrariesImplInfo.
         std: Standard library flavor. Currently only "std" and "no_std_with_alloc" are supported,
              accompanied with the default panic behavior.
 
@@ -159,6 +163,10 @@ def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label
         A CcInfo object for the required libraries, or None if no such libraries are available.
     """
     cc_infos = []
+    if not type(allocator_library) == "struct":
+        fail("todo")
+    if not any([hasattr(allocator_library, field) for field in ["cc_info", "allocator_libraries_impl_info"]]):
+        fail("todo")
 
     if not rust_common.stdlib_info in rust_std:
         fail(dedent("""\
@@ -189,20 +197,11 @@ def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label
     if rust_stdlib_info.std_rlibs:
         allocator_library_inputs = []
 
-        if allocator_library and allocator_library.linking_context.linker_inputs:
-            # Repackage the allocator library linker inputs as transitive
-            # inputs to the liballoc from the standard library.
-            # The pattern `linker_inputs.to_list()[0]` extracts the first
-            # `LinkerInput` from the context, which contains the allocator
-            # library artifacts. Later linker inputs contain extra linker
-            # information that was created while building the allocator library
-            # itself; this is redundant as it will be re-established by this
-            # function.
-            # The `to_list()` of the linker_inputs depset is OK, as it only
-            # happens once per allocator-library target in the build graph (and
-            # we usually only have a few).
-            link_inp = allocator_library.linking_context.linker_inputs.to_list()[0]
-            allocator_library_inputs = [depset(link_inp.libraries)]
+        if hasattr(allocator_library, "allocator_libraries_impl_info") and allocator_library.allocator_libraries_impl_info:
+            static_archive = allocator_library.allocator_libraries_impl_info.static_archive
+            allocator_library_inputs = [depset(
+                [_ltl(static_archive, actions, cc_toolchain, feature_configuration)],
+            )]
 
         alloc_inputs = depset(
             [_ltl(f, actions, cc_toolchain, feature_configuration) for f in rust_stdlib_info.alloc_files],
@@ -314,10 +313,15 @@ def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label
         else:
             fail("Requested '{}' std mode is currently not supported.".format(std))
 
+        allocator_inputs = None
+        if hasattr(allocator_library, "cc_info"):
+            allocator_inputs = [allocator_library.cc_info.linking_context.linker_inputs]
+
         cc_infos.append(CcInfo(
             linking_context = cc_common.create_linking_context(
                 linker_inputs = depset(
                     [link_inputs],
+                    transitive = allocator_inputs,
                     order = "topological",
                 ),
             ),
@@ -675,7 +679,12 @@ def _rust_toolchain_impl(ctx):
     make_ccinfo = lambda label, actions, allocator_library, std: (
         _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label, actions, experimental_link_std_dylib, rust_std, allocator_library, std)
     )
-    make_local_ccinfo = lambda allocator_library, std: make_ccinfo(ctx.label, ctx.actions, allocator_library, std)
+    make_local_ccinfo = lambda allocator_library, std: make_ccinfo(
+        ctx.label,
+        ctx.actions,
+        struct(cc_info = allocator_library),
+        std,
+    )
 
     toolchain = platform_common.ToolchainInfo(
         all_files = sysroot.all_files,
