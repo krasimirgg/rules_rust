@@ -165,7 +165,7 @@
 <h3 id="bzlmod"><a class="header" href="#bzlmod">Bzlmod</a></h3>
 <p>Note that rules_rust bzlmod support is still a work in progress. Most features should work, but bugs are more likely. This is not a desired end-state - please report (or better yet, help fix!) bugs you run into.</p>
 <p>To use <code>rules_rust</code> in a project using bzlmod, add the following to your <code>MODULE.bazel</code> file:</p>
-<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.59.0")
+<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.61.0")
 </code></pre>
 <p>Don't forget to substitute in your desired release's version number.</p>
 <h3 id="workspace"><a class="header" href="#workspace">WORKSPACE</a></h3>
@@ -188,7 +188,26 @@ rust_register_toolchains()
 </code></pre>
 <p>Don't forget to substitute in your desired release's version number and integrity hash.</p>
 <h2 id="specifying-rust-version"><a class="header" href="#specifying-rust-version">Specifying Rust version</a></h2>
-<p>To build with a particular version of the Rust compiler, pass that version to <a href="flatten.html#rust_register_toolchains"><code>rust_register_toolchains</code></a>:</p>
+<h3 id="bzlmod-1"><a class="header" href="#bzlmod-1">Bzlmod</a></h3>
+<p>To use a particular version of the Rust compiler, pass that version to the <code>toolchain</code> method of the <code>rust</code> extension, like this:</p>
+<pre><code class="language-python">rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2024",
+    versions = [ "1.85.0" ],
+)
+</code></pre>
+<p>As well as an exact version, <code>versions</code> can accept <code>nightly/{iso_date}</code> and <code>beta/{iso_date}</code> strings for toolchains from different release channels, as in</p>
+<pre><code class="language-python">rust.toolchain(
+    edition = "2021",
+    versions = [ "nightly/1.85.0" ],
+)
+</code></pre>
+<p>By default, a <code>stable</code> and <code>nightly</code> toolchain will be registered if no <code>toolchain</code> method is called (and thus no specific versions are registered). However, if only 1 version is passed and it is from the <code>nightly</code> or <code>beta</code> release channels (i.e. <strong>not</strong> <code>stable</code>), then the following build setting flag must be present, either on the command line or set in the project's <code>.bazelrc</code> file:</p>
+<pre><code class="language-text">build --@rules_rust//rust/toolchain/channel=nightly
+</code></pre>
+<p>Failure to do so will result in rules attempting to match a <code>stable</code> toolchain when one was not registered, thus raising an error.</p>
+<h3 id="workspace-1"><a class="header" href="#workspace-1">WORKSPACE</a></h3>
+<p>To build with a particular version of the Rust compiler when using a WORKSPACE file, pass that version to <code>rust_register_toolchains</code>:</p>
 <pre><code class="language-python">rust_register_toolchains(
     edition = "2021",
     versions = [
@@ -196,7 +215,7 @@ rust_register_toolchains()
     ],
 )
 </code></pre>
-<p>As well as an exact version, <code>versions</code> can accept <code>nightly/{iso_date}</code> and <code>beta/{iso_date}</code> strings for toolchains from different release channels.</p>
+<p>Like in the Bzlmod approach, as well as an exact version, <code>versions</code> can accept <code>nightly/{iso_date}</code> and <code>beta/{iso_date}</code> strings for toolchains from different release channels.</p>
 <pre><code class="language-python">rust_register_toolchains(
     edition = "2021",
     versions = [
@@ -204,12 +223,12 @@ rust_register_toolchains()
     ],
 )
 </code></pre>
-<p>By default, a <code>stable</code> and <code>nightly</code> toolchain will be registered if no versions are passed to <code>rust_register_toolchains</code>. However,
-if only 1 version is passed and it is from the <code>nightly</code> or <code>beta</code> release channels (i.e. <strong>not</strong> <code>stable</code>), then a build setting must
-also be set in the project's <code>.bazelrc</code> file.</p>
+<p>Here too a <code>stable</code> and <code>nightly</code> toolchain will be registered by default if no versions are passed to <code>rust_register_toolchains</code>. However,
+if only 1 version is passed and it is from the <code>nightly</code> or <code>beta</code> release channels (i.e. <strong>not</strong> <code>stable</code>), then the following build setting flag must
+also be set either in the command line or in the project's <code>.bazelrc</code> file.</p>
 <pre><code class="language-text">build --@rules_rust//rust/toolchain/channel=nightly
 </code></pre>
-<p>Failure to do so will result in rules attempting to match a <code>stable</code> toolchain when one was not registered.</p>
+<p>Failure to do so will result in rules attempting to match a <code>stable</code> toolchain when one was not registered, thus raising an error.</p>
 <h2 id="supported-bazel-versions"><a class="header" href="#supported-bazel-versions">Supported bazel versions</a></h2>
 <p>The oldest version of Bazel the <code>main</code> branch is tested against is <code>7.4.1</code>. Previous versions may still be functional in certain environments, but this is the minimum version we strive to fully support.</p>
 <p>We test these rules against the latest rolling releases of Bazel, and aim for compatibility with them, but prioritise stable releases over rolling releases where necessary.</p>
@@ -238,8 +257,6 @@ also be set in the project's <code>.bazelrc</code> file.</p>
 <li><a href="rust_protobuf.html">rust_protobuf</a>: rules for generating <a href="https://developers.google.com/protocol-buffers">protobuf</a> and <a href="https://grpc.io">gRPC</a> stubs with <a href="https://github.com/stepancheg/rust-protobuf/">rust-protobuf</a></li>
 <li><a href="rust_wasm_bindgen.html">rust_wasm_bindgen</a>: rules for generating <a href="https://www.rust-lang.org/what/wasm">WebAssembly</a> bindings.</li>
 </ul>
-<h2 id="full-api"><a class="header" href="#full-api">Full API</a></h2>
-<p>You can also browse the <a href="flatten.html">full API in one page</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
 <p>Public entry point to all Rust rules and supported APIs.</p>
 <h2 id="rules-1"><a class="header" href="#rules-1">Rules</a></h2>
@@ -1373,18 +1390,32 @@ at the root of the project that describes its structure or on build system speci
 The <code>rust_analyzer</code> rules facilitate both approaches.</p>
 <h2 id="rust-projectjson-approach"><a class="header" href="#rust-projectjson-approach">rust-project.json approach</a></h2>
 <h3 id="setup-3"><a class="header" href="#setup-3">Setup</a></h3>
-<p>First, ensure <code>rules_rust</code> is setup in your workspace. By default, <code>rust_register_toolchains</code> will
-ensure a <a href="rust_analyzer.html#rust_analyzer_toolchain">rust_analyzer_toolchain</a> is registered within the WORKSPACE.</p>
-<p>Next, load the dependencies for the <code>rust-project.json</code> generator tool:</p>
+<h4 id="bzlmod-2"><a class="header" href="#bzlmod-2">Bzlmod</a></h4>
+<p>First, ensure <code>rules_rust</code> is setup in your workspace:</p>
+<pre><code class="language-python"># MODULE.bazel
+
+# See releases page for available versions:
+# https://github.com/bazelbuild/rules_rust/releases
+bazel_dep(name = "rules_rust", version = "{SEE_RELEASES}")
+</code></pre>
+<p>Bazel will create the target <code>@rules_rust//tools/rust_analyzer:gen_rust_project</code>, which you can build
+with</p>
+<pre><code>bazel run @rules_rust//tools/rust_analyzer:gen_rust_project
+</code></pre>
+<p>whenever dependencies change to regenerate the <code>rust-project.json</code> file. It
+should be added to <code>.gitignore</code> because it is effectively a build artifact.
+Once the <code>rust-project.json</code> has been generated in the project root,
+rust-analyzer can pick it up upon restart.</p>
+<h4 id="workspace-2"><a class="header" href="#workspace-2">WORKSPACE</a></h4>
+<p>Alternatively, you can use the legacy WORKSPACE approach. As with Bzlmod, ensure <code>rules_rust</code> is
+setup in your workspace.</p>
+<p>Moreover, when loading the dependencies for the tool, you should call the function <code>rust_analyzer_dependencies()</code>:</p>
 <pre><code class="language-python">load("@rules_rust//tools/rust_analyzer:deps.bzl", "rust_analyzer_dependencies")
 
 rust_analyzer_dependencies()
 </code></pre>
-<p>Finally, run <code>bazel run @rules_rust//tools/rust_analyzer:gen_rust_project</code>
-whenever dependencies change to regenerate the <code>rust-project.json</code> file. It
-should be added to <code>.gitignore</code> because it is effectively a build artifact.
-Once the <code>rust-project.json</code> has been generated in the project root,
-rust-analyzer can pick it up upon restart.</p>
+<p>Again, you can now run <code>bazel run @rules_rust//tools/rust_analyzer:gen_rust_project</code>
+whenever dependencies change to regenerate the <code>rust-project.json</code> file.</p>
 <p>For users who do not use <code>rust_register_toolchains</code> to register toolchains, the following can be added
 to their WORKSPACE to register a <code>rust_analyzer_toolchain</code>. Please make sure the Rust version used in
 this toolchain matches the version used by the currently registered toolchain or the sources/documentation
@@ -1854,7 +1885,7 @@ it allows library dependencies to be unlocked much sooner, increasing parallelis
 <pre>
 load("@rules_rust//rust:toolchain.bzl", "rust_analyzer_toolchain")
 
-rust_analyzer_toolchain(<a href="rust_toolchains.html#rust_analyzer_toolchain-name">name</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-proc_macro_srv">proc_macro_srv</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-rustc">rustc</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-rustc_srcs">rustc_srcs</a>)
+rust_analyzer_toolchain(<a href="rust_toolchains.html#rust_analyzer_toolchain-name">name</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-proc_macro_srv">proc_macro_srv</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-rustc">rustc</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-rustc_srcs">rustc_srcs</a>, <a href="rust_toolchains.html#rust_analyzer_toolchain-rustc_srcs_path">rustc_srcs_path</a>)
 </pre>
 <p>A toolchain for <a href="https://rust-analyzer.github.io/">rust-analyzer</a>.</p>
 <p><strong>ATTRIBUTES</strong></p>
@@ -1863,6 +1894,7 @@ rust_analyzer_toolchain(<a href="rust_toolchains.html#rust_analyzer_toolchain-na
 <tr><td style="text-align: left"><a id="rust_analyzer_toolchain-proc_macro_srv"></a>proc_macro_srv</td><td style="text-align: left">The path to a <code>rust_analyzer_proc_macro_srv</code> binary.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_analyzer_toolchain-rustc"></a>rustc</td><td style="text-align: left">The path to a <code>rustc</code> binary.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="rust_analyzer_toolchain-rustc_srcs"></a>rustc_srcs</td><td style="text-align: left">The source code of rustc.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><a id="rust_analyzer_toolchain-rustc_srcs_path"></a>rustc_srcs_path</td><td style="text-align: left">The direct path to rustc srcs relative to rustc_srcs package root.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"library"</code></td></tr>
 </tbody></table>
 </div>
 <p><a id="rust_toolchain"></a></p>
@@ -2285,13 +2317,13 @@ rust_toolchain_tools_repository(<a href="rust_repositories.html#rust_toolchain_t
 <tr><td style="text-align: left"><a id="rust_toolchain_tools_repository-version"></a>version</td><td style="text-align: left">The version of the tool among "nightly", "beta", or an exact version.</td><td style="text-align: left">String</td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="external-dependencies"><a class="header" href="#external-dependencies">External Dependencies</a></h1>
-<p><a href="crate_universe.html">crate_universe</a> (<a href="crate_universe_bzlmod.html">crate_universe bzlmod</a>) is a tool built into <code>rules_rust</code> that can be used to fetch dependencies.</p>
+<p><a href="crate_universe_workspace.html">crate_universe workspace</a> (<a href="crate_universe_bzlmod.html">crate_universe bzlmod</a>) is a tool built into <code>rules_rust</code> that can be used to fetch dependencies.</p>
 <div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
 <h1 id="crate-universe"><a class="header" href="#crate-universe">Crate Universe</a></h1>
 <p>Crate Universe is a set of Bazel rule for generating Rust targets using Cargo.</p>
 <p>This doc describes using crate_universe with bzlmod.</p>
-<p>If you're using a WORKSPACE file, please see <a href="crate_universe.html">the WORKSPACE equivalent of this doc</a>.</p>
-<p>There are some examples of using crate_universe with bzlmod in the <a href="../examples/bzlmod">example folder</a>.</p>
+<p>If you're using a WORKSPACE file, please see <a href="crate_universe_workspace.html">the WORKSPACE equivalent of this doc</a>.</p>
+<p>There are some examples of using crate_universe with bzlmod in the <a href="https://github.com/bazelbuild/rules_rust/examples/bzlmod">example folder</a>.</p>
 <h1 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h1>
 <ol>
 <li><a href="crate_universe_bzlmod.html#Setup">Setup</a></li>
@@ -2312,10 +2344,10 @@ rust_toolchain_tools_repository(<a href="rust_repositories.html#rust_toolchain_t
 </ol>
 <h2 id="setup-5"><a class="header" href="#setup-5">Setup</a></h2>
 <p>To use rules_rust in a project using bzlmod, add the following to your MODULE.bazel file:</p>
-<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.60.0")
+<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.61.0")
 </code></pre>
 <p>You find the latest version on the <a href="https://github.com/bazelbuild/rules_rust/releases">release page</a>.</p>
-<p>After adding <code>rules_rust</code> in your MODULE.bazel, set the following to begin using <code>crate_universe</code>:</p>
+<p>After adding <code>rules_rust</code> in your <code>MODULE.bazel, set the following to begin using </code>crate_universe`:</p>
 <pre><code class="language-python">crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
 //  # ... Dependencies
 use_repo(crate, "crates")
@@ -2331,7 +2363,7 @@ use_repo(crate, "crates")
 <h3 id="cargo-workspaces"><a class="header" href="#cargo-workspaces">Cargo Workspaces</a></h3>
 <p>One of the simpler ways to wire up dependencies would be to first structure your project into a Cargo workspace.
 The crates_repository rule can ingest a root Cargo.toml file and generate Bazel dependencies from there.
-You find a complete example in the in the <a href="../examples/bzlmod/all_crate_deps">example folder</a>.</p>
+You find a complete example in the in the <a href="https://github.com/bazelbuild/rules_rust/examples/bzlmod/all_crate_deps">example folder</a>.</p>
 <pre><code class="language-python">crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
 
 crate.from_cargo(
@@ -2347,7 +2379,7 @@ make sure you set the <code>CARGO_BAZEL_ISOLATED=false bazel build //...</code> 
 will not be able to pull from your private registry.</p>
 <p>The generated crates_repository contains helper macros which make collecting dependencies for Bazel targets simpler.
 Notably, the all_crate_deps and aliases macros (
-see <a href="https://bazelbuild.github.io/rules_rust/crate_universe.html#dependencies-api">Dependencies API</a>) commonly allow the
+see <a href="https://bazelbuild.github.io/rules_rust/crate_universe_workspace.html#dependencies-api">Dependencies API</a>) commonly allow the
 Cargo.toml files to be the single source of truth for dependencies.
 Since these macros come from the generated repository, the dependencies and alias definitions
 they return will automatically update BUILD targets. In your BUILD files,
@@ -2400,12 +2432,12 @@ repin dependencies is to run:</p>
 </code></pre>
 <p>This will result in all dependencies being updated for a project. The <code>CARGO_BAZEL_REPIN</code>
 environment variable can also be used to customize how dependencies are updated.
-For more details about repin, <a href="https://bazelbuild.github.io/rules_rust/crate_universe.html#crates_vendor">please refer to the documentation</a>.</p>
+For more details about repin, <a href="https://bazelbuild.github.io/rules_rust/crate_universe_workspace.html#crates_vendor">please refer to the documentation</a>.</p>
 <h3 id="direct-dependencies"><a class="header" href="#direct-dependencies">Direct Dependencies</a></h3>
 <p>In cases where Rust targets have heavy interactions with other Bazel targets (<a href="https://docs.bazel.build/versions/main/be/c-cpp.html">Cc</a>, <a href="https://rules-proto-grpc.com/en/4.5.0/lang/rust.html">Proto</a>,
 etc.), maintaining Cargo.toml files may have diminishing returns as things like rust-analyzer
 begin to be confused about missing targets or environment variables defined only in Bazel.
-In situations like this, it may be desirable to have a "Cargo free" setup. You find an example in the in the <a href="../examples/bzlmod/hello_world_no_cargo">example folder</a>.</p>
+In situations like this, it may be desirable to have a "Cargo free" setup. You find an example in the in the <a href="https://github.com/bazelbuild/rules_rust/examples/bzlmod/hello_world_no_cargo">example folder</a>.</p>
 <p>crates_repository supports this through the packages attribute,
 as shown below.</p>
 <pre><code class="language-python">crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
@@ -2445,7 +2477,7 @@ which integrates well with bazel concepts.</p>
 <p>This method has the following consequences:</p>
 <ul>
 <li>if you use shared dependency tree with your project these binary dependencies will interfere with yours (may conflict)</li>
-<li>you have to use  nightly <code>host_tools_repo</code> to generate dependencies because</li>
+<li>you have to use  nightly <code>host_tools</code> to generate dependencies because</li>
 </ul>
 <p>Alternatively you can specify this in a separate <code>repo</code> with <code>cargo.from_specs</code> syntax:</p>
 <pre><code class="language-python">bindeps = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
@@ -2455,7 +2487,7 @@ bindeps.annotation(crate = "cargo-machete", gen_all_binaries = True)
 
 bindeps.from_specs(
   name = "bindeps",
-  host_tools_repo = "rust_host_tools_nightly",
+  host_tools = "@rust_host_tools_nightly",
 )
 
 use_repo(bindeps, "bindeps")
@@ -2469,8 +2501,8 @@ Only a cargo workspace needs updating whenever the underlying Cargo.toml file ch
 <p>In some cases, it is require that all external dependencies are vendored, meaning downloaded
 and stored in the workspace. This helps, for example, to conduct licence scans, apply custom patches,
 or to ensure full build reproducibility since no download error could possibly occur.
-You find a complete example in the in the <a href="../examples/bzlmod/all_deps_vendor">example folder</a>.</p>
-<p>For the setup, you need to add the skylib in addition to the rust rules to your MODUE.bazel.</p>
+You find a complete example in the in the <a href="https://github.com/bazelbuild/rules_rust/examples/bzlmod/all_deps_vendor">example folder</a>.</p>
+<p>For the setup, you need to add the skylib in addition to the rust rules to your <code>MODULE.bazel</code>.</p>
 <pre><code class="language-python">module(
     name = "deps_vendored",
     version = "0.0.0"
@@ -2482,7 +2514,7 @@ You find a complete example in the in the <a href="../examples/bzlmod/all_deps_v
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 
 # https://github.com/bazelbuild/rules_rust/releases
-bazel_dep(name = "rules_rust", version = "0.60.0")
+bazel_dep(name = "rules_rust", version = "0.61.0")
 
 ###############################################################################
 # T O O L C H A I N S
@@ -2598,9 +2630,9 @@ crate.annotation(<a href="crate_universe_bzlmod.html#crate.annotation-deps">deps
                  <a href="crate_universe_bzlmod.html#crate.annotation-proc_macro_deps">proc_macro_deps</a>, <a href="crate_universe_bzlmod.html#crate.annotation-repositories">repositories</a>, <a href="crate_universe_bzlmod.html#crate.annotation-rustc_env">rustc_env</a>, <a href="crate_universe_bzlmod.html#crate.annotation-rustc_env_files">rustc_env_files</a>, <a href="crate_universe_bzlmod.html#crate.annotation-rustc_flags">rustc_flags</a>,
                  <a href="crate_universe_bzlmod.html#crate.annotation-shallow_since">shallow_since</a>, <a href="crate_universe_bzlmod.html#crate.annotation-version">version</a>)
 crate.from_cargo(<a href="crate_universe_bzlmod.html#crate.from_cargo-name">name</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-cargo_config">cargo_config</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-cargo_lockfile">cargo_lockfile</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-generate_binaries">generate_binaries</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-generate_build_scripts">generate_build_scripts</a>,
-                 <a href="crate_universe_bzlmod.html#crate.from_cargo-host_tools_repo">host_tools_repo</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-isolated">isolated</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-lockfile">lockfile</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-manifests">manifests</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-supported_platform_triples">supported_platform_triples</a>)
+                 <a href="crate_universe_bzlmod.html#crate.from_cargo-host_tools">host_tools</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-isolated">isolated</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-lockfile">lockfile</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-manifests">manifests</a>, <a href="crate_universe_bzlmod.html#crate.from_cargo-supported_platform_triples">supported_platform_triples</a>)
 crate.from_specs(<a href="crate_universe_bzlmod.html#crate.from_specs-name">name</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-cargo_config">cargo_config</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-cargo_lockfile">cargo_lockfile</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-generate_binaries">generate_binaries</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-generate_build_scripts">generate_build_scripts</a>,
-                 <a href="crate_universe_bzlmod.html#crate.from_specs-host_tools_repo">host_tools_repo</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-isolated">isolated</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-lockfile">lockfile</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-supported_platform_triples">supported_platform_triples</a>)
+                 <a href="crate_universe_bzlmod.html#crate.from_specs-host_tools">host_tools</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-isolated">isolated</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-lockfile">lockfile</a>, <a href="crate_universe_bzlmod.html#crate.from_specs-supported_platform_triples">supported_platform_triples</a>)
 crate.render_config(<a href="crate_universe_bzlmod.html#crate.render_config-build_file_template">build_file_template</a>, <a href="crate_universe_bzlmod.html#crate.render_config-crate_alias_template">crate_alias_template</a>, <a href="crate_universe_bzlmod.html#crate.render_config-crate_label_template">crate_label_template</a>,
                     <a href="crate_universe_bzlmod.html#crate.render_config-crate_repository_template">crate_repository_template</a>, <a href="crate_universe_bzlmod.html#crate.render_config-crates_module_template">crates_module_template</a>, <a href="crate_universe_bzlmod.html#crate.render_config-default_alias_rule_bzl">default_alias_rule_bzl</a>,
                     <a href="crate_universe_bzlmod.html#crate.render_config-default_alias_rule_name">default_alias_rule_name</a>, <a href="crate_universe_bzlmod.html#crate.render_config-default_package_name">default_package_name</a>, <a href="crate_universe_bzlmod.html#crate.render_config-generate_cargo_toml_env_vars">generate_cargo_toml_env_vars</a>,
@@ -2678,7 +2710,7 @@ crate.splicing_config(<a href="crate_universe_bzlmod.html#crate.splicing_config-
 <tr><td style="text-align: left"><a id="crate.from_cargo-cargo_lockfile"></a>cargo_lockfile</td><td style="text-align: left">The path to an existing <code>Cargo.lock</code> file</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-generate_binaries"></a>generate_binaries</td><td style="text-align: left">Whether to generate <code>rust_binary</code> targets for all the binary crates in every package. By default only the <code>rust_library</code> targets are generated.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>False</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-generate_build_scripts"></a>generate_build_scripts</td><td style="text-align: left">Whether or not to generate <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">cargo build scripts</a> by default.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.from_cargo-host_tools_repo"></a>host_tools_repo</td><td style="text-align: left">The name of the <code>rust_host_tools</code> repository to use.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"rust_host_tools"</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.from_cargo-host_tools"></a>host_tools</td><td style="text-align: left">The <code>rust_host_tools</code> repository to use.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@@rules_rust++rust_host_tools+rust_host_tools//:rust_host_tools"</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-isolated"></a>isolated</td><td style="text-align: left">If true, <code>CARGO_HOME</code> will be overwritten to a directory within the generated repository in order to prevent other uses of Cargo from impacting having any effect on the generated targets produced by this rule. For users who either have multiple <code>crate_repository</code> definitions in a WORKSPACE or rapidly re-pin dependencies, setting this to false may improve build times. This variable is also controled by <code>CARGO_BAZEL_ISOLATED</code> environment variable.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-lockfile"></a>lockfile</td><td style="text-align: left">The path to a file to use for reproducible renderings. If set, this file must exist within the workspace (but can be empty) before this rule will work.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_cargo-manifests"></a>manifests</td><td style="text-align: left">A list of Cargo manifests (<code>Cargo.toml</code> files).</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
@@ -2695,7 +2727,7 @@ crate.splicing_config(<a href="crate_universe_bzlmod.html#crate.splicing_config-
 <tr><td style="text-align: left"><a id="crate.from_specs-cargo_lockfile"></a>cargo_lockfile</td><td style="text-align: left">The path to an existing <code>Cargo.lock</code> file</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-generate_binaries"></a>generate_binaries</td><td style="text-align: left">Whether to generate <code>rust_binary</code> targets for all the binary crates in every package. By default only the <code>rust_library</code> targets are generated.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>False</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-generate_build_scripts"></a>generate_build_scripts</td><td style="text-align: left">Whether or not to generate <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">cargo build scripts</a> by default.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.from_specs-host_tools_repo"></a>host_tools_repo</td><td style="text-align: left">The name of the <code>rust_host_tools</code> repository to use.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>"rust_host_tools"</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.from_specs-host_tools"></a>host_tools</td><td style="text-align: left">The <code>rust_host_tools</code> repository to use.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>"@@rules_rust++rust_host_tools+rust_host_tools//:rust_host_tools"</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-isolated"></a>isolated</td><td style="text-align: left">If true, <code>CARGO_HOME</code> will be overwritten to a directory within the generated repository in order to prevent other uses of Cargo from impacting having any effect on the generated targets produced by this rule. For users who either have multiple <code>crate_repository</code> definitions in a WORKSPACE or rapidly re-pin dependencies, setting this to false may improve build times. This variable is also controled by <code>CARGO_BAZEL_ISOLATED</code> environment variable.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-lockfile"></a>lockfile</td><td style="text-align: left">The path to a file to use for reproducible renderings. If set, this file must exist within the workspace (but can be empty) before this rule will work.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.from_specs-supported_platform_triples"></a>supported_platform_triples</td><td style="text-align: left">A set of all platform triples to consider when generating dependencies.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>["aarch64-apple-darwin", "aarch64-unknown-linux-gnu", "wasm32-unknown-unknown", "wasm32-wasip1", "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu", "x86_64-unknown-nixos-gnu"]</code></td></tr>
@@ -3113,11 +3145,11 @@ crate.annotation(<a href="crate_universe_workspace.html#crate.annotation-version
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_tools"></a>build_script_tools</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::tools</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_data_glob"></a>build_script_data_glob</td><td style="text-align: left">A list of glob patterns to add to a crate's <code>cargo_build_script::data</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_deps"></a>build_script_deps</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::deps</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.annotation-build_script_env"></a>build_script_env</td><td style="text-align: left">Additional environment variables to set on a crate's <code>cargo_build_script::env</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.annotation-build_script_env"></a>build_script_env</td><td style="text-align: left">Additional environment variables to set when running the crate's <code>cargo_build_script</code> - sets that target's <code>build_script_env</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_link_deps"></a>build_script_link_deps</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::link_deps</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_proc_macro_deps"></a>build_script_proc_macro_deps</td><td style="text-align: left">A list of labels to add to a crate's <code>cargo_build_script::proc_macro_deps</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_rundir"></a>build_script_rundir</td><td style="text-align: left">An override for the build script's rundir attribute.</td><td style="text-align: left"><code>None</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.annotation-build_script_rustc_env"></a>build_script_rustc_env</td><td style="text-align: left">Additional environment variables to set on a crate's <code>cargo_build_script::env</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.annotation-build_script_rustc_env"></a>build_script_rustc_env</td><td style="text-align: left">Additional environment variables to set when compiling the crate's <code>cargo_build_script</code> - sets that target's <code>rustc_env</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_toolchains"></a>build_script_toolchains</td><td style="text-align: left">A list of labels to set on a crates's <code>cargo_build_script::toolchains</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-build_script_use_default_shell_env"></a>build_script_use_default_shell_env</td><td style="text-align: left">Whether or not to include the default shell environment for the build script action.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-compile_data"></a>compile_data</td><td style="text-align: left">A list of labels to add to a crate's <code>rust_library::compile_data</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
@@ -3139,7 +3171,7 @@ crate.annotation(<a href="crate_universe_workspace.html#crate.annotation-version
 <tr><td style="text-align: left"><a id="crate.annotation-rustc_env_files"></a>rustc_env_files</td><td style="text-align: left">A list of labels to set on a crate's <code>rust_library::rustc_env_files</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-rustc_flags"></a>rustc_flags</td><td style="text-align: left">A list of strings to set on a crate's <code>rust_library::rustc_flags</code> attribute.</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crate.annotation-shallow_since"></a>shallow_since</td><td style="text-align: left">An optional timestamp used for crates originating from a git repository instead of a crate registry. This flag optimizes fetching the source code.</td><td style="text-align: left"><code>None</code></td></tr>
-<tr><td style="text-align: left"><a id="crate.annotation-override_targets"></a>override_targets</td><td style="text-align: left">A dictionary of alternate targets to use when something depends on this crate to allow the parent repo to provide its own version of this dependency. Keys can be <code>proc-marco</code>, <code>custom-build</code>, <code>lib</code>, <code>bin</code>.</td><td style="text-align: left"><code>None</code></td></tr>
+<tr><td style="text-align: left"><a id="crate.annotation-override_targets"></a>override_targets</td><td style="text-align: left">A dictionary of alternate targets to use when something depends on this crate to allow the parent repo to provide its own version of this dependency. Keys can be <code>proc-macro</code>, <code>custom-build</code>, <code>lib</code>, <code>bin</code>.</td><td style="text-align: left"><code>None</code></td></tr>
 </tbody></table>
 </div>
 <p><strong>RETURNS</strong></p>
@@ -3353,7 +3385,7 @@ allowlist:</p>
 <tr><td style="text-align: left"><a id="crates_repository-generator_sha256s"></a>generator_sha256s</td><td style="text-align: left">Dictionary of <code>host_triple</code> -&gt; <code>sha256</code> for a <code>cargo-bazel</code> binary.</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-generator_urls"></a>generator_urls</td><td style="text-align: left">URL template from which to download the <code>cargo-bazel</code> binary. <code>{host_triple}</code> and will be filled in according to the host platform.</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-isolated"></a>isolated</td><td style="text-align: left">If true, <code>CARGO_HOME</code> will be overwritten to a directory within the generated repository in order to prevent other uses of Cargo from impacting having any effect on the generated targets produced by this rule. For users who either have multiple <code>crate_repository</code> definitions in a WORKSPACE or rapidly re-pin dependencies, setting this to false may improve build times. This variable is also controled by <code>CARGO_BAZEL_ISOLATED</code> environment variable.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
-<tr><td style="text-align: left"><a id="crates_repository-lockfile"></a>lockfile</td><td style="text-align: left">The path to a file to use for reproducible renderings. If set, this file must exist within the workspace (but can be empty) before this rule will work.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
+<tr><td style="text-align: left"><a id="crates_repository-lockfile"></a>lockfile</td><td style="text-align: left">The path to a file to use for reproducible renderings. If set, this file must exist within the workspace (but can be empty) before this rule will work.If you already have a <code>MODULE.bazel.lock</code> file, you don't need this.If you don't have a <code>MODULE.bazel.lock</code> file, the <code>lockfile</code> will save you generation time.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>None</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-manifests"></a>manifests</td><td style="text-align: left">A list of Cargo manifests (<code>Cargo.toml</code> files).</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-packages"></a>packages</td><td style="text-align: left">A set of crates (packages) specifications to depend on. See <a href="crate_universe_workspace.html#crate.spec">crate.spec</a>.</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
 <tr><td style="text-align: left"><a id="crates_repository-quiet"></a>quiet</td><td style="text-align: left">If stdout and stderr should not be printed to the terminal.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>True</code></td></tr>
@@ -3398,7 +3430,7 @@ allowlist:</p>
 <li><a href="rust_bindgen.html#rust_bindgen_toolchain">rust_bindgen_toolchain</a></li>
 </ul>
 <h2 id="setup-7"><a class="header" href="#setup-7">Setup</a></h2>
-<h3 id="bzlmod-1"><a class="header" href="#bzlmod-1">Bzlmod</a></h3>
+<h3 id="bzlmod-3"><a class="header" href="#bzlmod-3">Bzlmod</a></h3>
 <p>To use the Rust bindgen rules, add the following to your <code>MODULE.bazel</code> file:</p>
 <pre><code class="language-python">bazel_dep(name = "rules_rust_bindgen", version = "{SEE_RELEASE_NOTES}")
 </code></pre>
@@ -3408,7 +3440,7 @@ You need to register either your own or the default toolchain by adding the foll
 </code></pre>
 <p>The default toolchain builds libclang from source via the <a href="https://registry.bazel.build/modules/llvm-project">llvm-project</a> bazel_dep.
 <a href="https://github.com/bazelbuild/rules_rust/tree/main/examples/bindgen_toolchain">examples/bindgen_toolchain</a> shows how to use a prebuilt libclang.</p>
-<h3 id="workspace-1"><a class="header" href="#workspace-1">Workspace</a></h3>
+<h3 id="workspace-3"><a class="header" href="#workspace-3">Workspace</a></h3>
 <p>Or add the following if you're still using <code>WORKSPACE</code> to add the
 external repositories for the Rust bindgen toolchain (in addition to the <a href="https://bazelbuild.github.io/rules_rust/#setup">rust rules setup</a>):</p>
 <pre><code class="language-python">load("@rules_rust_bindgen//:repositories.bzl", "rust_bindgen_dependencies", "rust_bindgen_register_toolchains")
@@ -3423,7 +3455,7 @@ rust_bindgen_transitive_dependencies()
 </code></pre>
 <p>Bindgen aims to be as hermetic as possible so will end up building <code>libclang</code> from <a href="https://github.com/llvm/llvm-project">llvm-project</a> from
 source. If this is found to be undesirable then no Bindgen related calls should be added to your WORKSPACE and instead
-users should define their own repositories using something akin to <a href="https://bazelbuild.github.io/rules_rust/crate_universe.html">crate_universe</a> and define their own
+users should define their own repositories using something akin to <a href="https://bazelbuild.github.io/rules_rust/crate_universe_workspace.html">crate_universe</a> and define their own
 toolchains following the instructions for <a href="rust_bindgen.html#rust_bindgen_toolchain">rust_bindgen_toolchain</a>.</p>
 <hr />
 <hr />
@@ -3517,10 +3549,10 @@ rust_bindgen_library(<a href="rust_bindgen.html#rust_bindgen_library-name">name<
 <li><a href="rust_mdbook.html#mdbook_toolchain">mdbook_toolchain</a></li>
 </ul>
 <h2 id="setup-8"><a class="header" href="#setup-8">Setup</a></h2>
-<h3 id="bzlmod-2"><a class="header" href="#bzlmod-2">bzlmod</a></h3>
+<h3 id="bzlmod-4"><a class="header" href="#bzlmod-4">bzlmod</a></h3>
 <pre><code class="language-python">bazel_dep(name = "rules_rust_mdbook", version = "{SEE_RELEASE_NOTES}")
 </code></pre>
-<h3 id="workspace-2"><a class="header" href="#workspace-2">WORKSPACE</a></h3>
+<h3 id="workspace-4"><a class="header" href="#workspace-4">WORKSPACE</a></h3>
 <pre><code class="language-python">load("@rules_rust_mdbook//:repositories.bzl", "mdbook_register_toolchains", "rules_mdbook_dependencies")
 
 rules_mdbook_dependencies()
@@ -3736,7 +3768,7 @@ rust_prost_toolchain(<a href="rust_prost.html#rust_prost_toolchain-name">name</a
 <pre>
 load("@rules_rust_prost//:defs.bzl", "rust_prost_transform")
 
-rust_prost_transform(<a href="rust_prost.html#rust_prost_transform-name">name</a>, <a href="rust_prost.html#rust_prost_transform-deps">deps</a>, <a href="rust_prost.html#rust_prost_transform-srcs">srcs</a>, <a href="rust_prost.html#rust_prost_transform-prost_opts">prost_opts</a>, <a href="rust_prost.html#rust_prost_transform-tonic_opts">tonic_opts</a>)
+rust_prost_transform(<a href="rust_prost.html#rust_prost_transform-name">name</a>, <a href="rust_prost.html#rust_prost_transform-deps">deps</a>, <a href="rust_prost.html#rust_prost_transform-srcs">srcs</a>, <a href="rust_prost.html#rust_prost_transform-crate_name">crate_name</a>, <a href="rust_prost.html#rust_prost_transform-prost_opts">prost_opts</a>, <a href="rust_prost.html#rust_prost_transform-tonic_opts">tonic_opts</a>)
 </pre>
 <p>A rule for transforming the outputs of <code>ProstGenProto</code> actions.</p>
 <p>This rule is used by adding it to the <code>data</code> attribute of <code>proto_library</code> targets. E.g.</p>
@@ -3773,6 +3805,7 @@ actions with minimal impact to other consumers.</p>
 <tr><td style="text-align: left"><a id="rust_prost_transform-name"></a>name</td><td style="text-align: left">A unique name for this target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels#target-names">Name</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="rust_prost_transform-deps"></a>deps</td><td style="text-align: left">Additional dependencies to add to the compiled crate.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_prost_transform-srcs"></a>srcs</td><td style="text-align: left">Additional source files to include in generated Prost source code.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
+<tr><td style="text-align: left"><a id="rust_prost_transform-crate_name"></a>crate_name</td><td style="text-align: left">The name of the crate generated by Prost. This is used to override the default name which is the name of the proto_library target.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_prost_transform-prost_opts"></a>prost_opts</td><td style="text-align: left">Additional options to add to Prost.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
 <tr><td style="text-align: left"><a id="rust_prost_transform-tonic_opts"></a>tonic_opts</td><td style="text-align: left">Additional options to add to Tonic.</td><td style="text-align: left">List of strings</td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
 </tbody></table>
