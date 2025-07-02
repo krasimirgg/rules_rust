@@ -1632,19 +1632,19 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
         attr_allocator_library = libs.allocator_library
         attr_global_allocator_library = libs.global_allocator_library
     if is_exec_configuration(ctx):
-        if attr_allocator_library:
+        if libs and attr_allocator_library:
             return libs.libstd_and_allocator_ccinfo
         return toolchain.libstd_and_allocator_ccinfo
     if toolchain._experimental_use_global_allocator:
         if _is_no_std(ctx, toolchain, crate_info):
-            if attr_global_allocator_library:
+            if libs and attr_global_allocator_library:
                 return libs.nostd_and_global_allocator_ccinfo
             return toolchain.nostd_and_global_allocator_ccinfo
         else:
-            if attr_global_allocator_library:
+            if libs and attr_global_allocator_library:
                 return libs.libstd_and_global_allocator_ccinfo
             return toolchain.libstd_and_global_allocator_ccinfo
-    if attr_allocator_library:
+    if libs and attr_allocator_library:
         return libs.libstd_and_allocator_ccinfo
     return toolchain.libstd_and_allocator_ccinfo
 
@@ -1807,7 +1807,7 @@ def establish_cc_info(ctx, attr, crate_info, toolchain, cc_toolchain, feature_co
 
     providers = [cc_common.merge_cc_infos(cc_infos = cc_infos)]
     if dot_a:
-        providers += [AllocatorLibrariesImplInfo(static_archive = dot_a)]
+        providers.append(AllocatorLibrariesImplInfo(static_archive = dot_a))
     return providers
 
 def add_edition_flags(args, crate):

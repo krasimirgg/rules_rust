@@ -9,7 +9,6 @@ load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 load("//rust/platform:triple.bzl", "triple")
 load("//rust/private:common.bzl", "rust_common")
 load("//rust/private:lto.bzl", "RustLtoInfo")
-load("//rust/private:providers.bzl", "AllocatorLibrariesImplInfo")
 load("//rust/private:rust_analyzer.bzl", _rust_analyzer_toolchain = "rust_analyzer_toolchain")
 load(
     "//rust/private:rustfmt.bzl",
@@ -130,7 +129,7 @@ def _ltl(library, actions, cc_toolchain, feature_configuration):
 
     Args:
         library (File): A rust library file to link.
-        ctx (ctx): The rule's context object.
+        actions: The rule's ctx.actions object.
         cc_toolchain (CcToolchainInfo): A cc toolchain provider to be used.
         feature_configuration (feature_configuration): feature_configuration to be queried.
 
@@ -145,11 +144,23 @@ def _ltl(library, actions, cc_toolchain, feature_configuration):
         pic_static_library = library,
     )
 
-def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label, actions, experimental_link_std_dylib, rust_std, allocator_library, std = "std"):
+def _make_libstd_and_allocator_ccinfo(
+        cc_toolchain,
+        feature_configuration,
+        label,
+        actions,
+        experimental_link_std_dylib,
+        rust_std,
+        allocator_library,
+        std = "std"):
     """Make the CcInfo (if possible) for libstd and allocator libraries.
 
     Args:
-        ctx (ctx): The rule's context object.
+        cc_toolchain (CcToolchainInfo): A cc toolchain provider to be used.
+        feature_configuration (feature_configuration): feature_configuration to be queried.
+        label (Label): The rule's label.
+        actions: The rule's ctx.actions object.
+        experimental_link_std_dylib (boolean): The value of the standard library's `_experimental_link_std_dylib(ctx)`.
         rust_std: The Rust standard library.
         allocator_library (struct): The target to use for providing allocator functions.
           This should be a struct with either:
@@ -164,9 +175,9 @@ def _make_libstd_and_allocator_ccinfo(cc_toolchain, feature_configuration, label
     """
     cc_infos = []
     if not type(allocator_library) == "struct":
-        fail("todo")
+        fail("Unexpected type of allocator_library, it must be a struct.")
     if not any([hasattr(allocator_library, field) for field in ["cc_info", "allocator_libraries_impl_info"]]):
-        fail("todo")
+        fail("Unexpected contents of allocator_library, it must provide either a cc_info or an allocator_libraries_impl_info.")
 
     if not rust_common.stdlib_info in rust_std:
         fail(dedent("""\
