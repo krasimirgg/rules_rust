@@ -1625,6 +1625,7 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
     #
     # When provided, the allocator_libraries attribute takes precedence over the
     # toolchain allocator attributes.
+    libs = None
     attr_allocator_library = None
     attr_global_allocator_library = None
     if _should_use_rustc_allocator_libraries(toolchain) and hasattr(ctx.attr, "allocator_libraries"):
@@ -1632,19 +1633,19 @@ def _get_std_and_alloc_info(ctx, toolchain, crate_info):
         attr_allocator_library = libs.allocator_library
         attr_global_allocator_library = libs.global_allocator_library
     if is_exec_configuration(ctx):
-        if libs and attr_allocator_library:
+        if attr_allocator_library:
             return libs.libstd_and_allocator_ccinfo
         return toolchain.libstd_and_allocator_ccinfo
     if toolchain._experimental_use_global_allocator:
         if _is_no_std(ctx, toolchain, crate_info):
-            if libs and attr_global_allocator_library:
+            if attr_global_allocator_library:
                 return libs.nostd_and_global_allocator_ccinfo
             return toolchain.nostd_and_global_allocator_ccinfo
         else:
-            if libs and attr_global_allocator_library:
+            if attr_global_allocator_library:
                 return libs.libstd_and_global_allocator_ccinfo
             return toolchain.libstd_and_global_allocator_ccinfo
-    if libs and attr_allocator_library:
+    if attr_allocator_library:
         return libs.libstd_and_allocator_ccinfo
     return toolchain.libstd_and_allocator_ccinfo
 
