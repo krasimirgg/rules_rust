@@ -1,1 +1,8 @@
 workspace(name = "rules_rust_prost")
+
+# Keep this comment section as-is; the RBE presubmits
+# modify this file.
+# To run with RBE on Bazel CI, uncomment the following lines.
+#
+# load("@bazel_ci_rules//:rbe_repo.bzl", "rbe_preconfig")
+# rbe_preconfig(name = "buildkite_config", toolchain = "ubuntu2204")
