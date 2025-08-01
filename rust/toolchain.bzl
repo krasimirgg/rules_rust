@@ -536,7 +536,7 @@ def _experimental_use_cc_common_link(ctx):
 def _expand_flags(ctx, flags, targets):
     expanded_flags = []
     for flag in flags:
-        expanded_lags.append(dedup_expand_location(ctx, flag, targets))
+        expanded_flags.append(dedup_expand_location(ctx, flag, targets))
     return expanded_flags
 
 def _rust_toolchain_impl(ctx):
