@@ -3,7 +3,7 @@
 # Usage: util/release.sh [version]
 #
 # where version (optional) is the new version of rules_rust.
-set -eux
+set -xeuo pipefail
 
 # Normalize working directory to root of repository.
 cd "$(dirname "${BASH_SOURCE[0]}")"/..
@@ -19,15 +19,24 @@ function new_from_old() {
 
 readonly NEW="${1:-$(new_from_old)}"
 
-sed -i "s/$OLD/$NEW/" \
-  version.bzl \
-  MODULE.bazel \
-  crate_universe/extensions.bzl \
-  docs/src/index.md \
-  extensions/bindgen/MODULE.bazel \
-  extensions/mdbook/MODULE.bazel \
-  extensions/prost/MODULE.bazel \
-  extensions/protobuf/MODULE.bazel \
-  extensions/wasm_bindgen/MODULE.bazel \
-  extensions/pyo3/MODULE.bazel \
-  extensions/pyo3/version.bzl
+# Update matching VERSION constants in version.bzl files.
+function version_pattern() {
+  local version_quoted="\"$1\""
+  echo "VERSION = $version_quoted"
+}
+
+grep -rl \
+  --include='version.bzl' \
+  "$(version_pattern $OLD)" \
+  | xargs sed -i "s/^$(version_pattern $OLD)$/$(version_pattern $NEW)/g"
+
+# Update matching bazel_dep(name = "rules_rust", version = ...) declarations.
+function bazel_dep_pattern() {
+  local version_quoted="\"$1\""
+  echo "bazel_dep(name = \"rules_rust\", version = $version_quoted)"
+}
+
+grep -rl \
+  --include='MODULE.bazel' --include='*.bzl' --include='*.md' \
+  "$(bazel_dep_pattern $OLD)" \
+  | xargs sed -i "s/^$(bazel_dep_pattern $OLD)$/$(bazel_dep_pattern $NEW)/"
