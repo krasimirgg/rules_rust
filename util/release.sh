@@ -40,3 +40,42 @@ grep -rl \
   --include='MODULE.bazel' --include='*.bzl' --include='*.md' \
   "$(bazel_dep_pattern $OLD)" \
   | xargs sed -i "s/^$(bazel_dep_pattern $OLD)$/$(bazel_dep_pattern $NEW)/"
+
+# Update module() declarations:
+# module(
+#     name = "rules_rust",
+#     version = "...",
+# )
+function update_module_version() {
+  local file=$1
+
+  local out="$(awk -v old=$OLD -v new=$NEW '
+  BEGIN {
+    VERSION_PATTERN = "version = \"" old "\"";
+    NAME_PATTERN = "name = \"rules_rust.*\"";
+    CLOSING_PAREN_PATTERN = "^)$";
+
+    inside_module = 0;
+    name_matches = 0;
+  }
+  /^module\($/ {
+    inside_module = 1;
+  }
+  inside_module {
+    if ($0 ~ NAME_PATTERN) {
+      name_matches = 1;
+    } else if ($0 ~ VERSION_PATTERN && name_matches) {
+      gsub(old, new);
+    } else if ($0 ~ CLOSING_PAREN_PATTERN) {
+      inside_module = 0;
+      name_matches = 0;
+    }
+  }
+  { print }
+  ' "$file")"
+  echo "$out" > "$file"
+}
+
+find . -name MODULE.bazel -print0 | while IFS= read -r -d $'\0' file; do
+  update_module_version "$file"
+done
