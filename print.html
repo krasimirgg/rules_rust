@@ -165,7 +165,7 @@
 <h3 id="bzlmod"><a class="header" href="#bzlmod">Bzlmod</a></h3>
 <p>Note that rules_rust bzlmod support is still a work in progress. Most features should work, but bugs are more likely. This is not a desired end-state - please report (or better yet, help fix!) bugs you run into.</p>
 <p>To use <code>rules_rust</code> in a project using bzlmod, add the following to your <code>MODULE.bazel</code> file:</p>
-<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.66.0")
+<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.67.0")
 </code></pre>
 <p>Don't forget to substitute in your desired release's version number.</p>
 <h3 id="workspace"><a class="header" href="#workspace">WORKSPACE</a></h3>
@@ -2440,7 +2440,7 @@ rust_toolchain_tools_repository(<a href="rust_repositories.html#rust_toolchain_t
 </ol>
 <h2 id="setup-5"><a class="header" href="#setup-5">Setup</a></h2>
 <p>To use rules_rust in a project using bzlmod, add the following to your MODULE.bazel file:</p>
-<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.66.0")
+<pre><code class="language-python">bazel_dep(name = "rules_rust", version = "0.67.0")
 </code></pre>
 <p>You find the latest version on the <a href="https://github.com/bazelbuild/rules_rust/releases">release page</a>.</p>
 <p>After adding <code>rules_rust</code> in your <code>MODULE.bazel, set the following to begin using </code>crate_universe`:</p>
@@ -2607,10 +2607,10 @@ You find a complete example in the in the <a href="https://github.com/bazelbuild
 # B A Z E L  C E N T R A L  R E G I S T R Y # https://registry.bazel.build/
 ###############################################################################
 # https://github.com/bazelbuild/bazel-skylib/releases/
-bazel_dep(name = "bazel_skylib", version = "1.8.1")
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
 
 # https://github.com/bazelbuild/rules_rust/releases
-bazel_dep(name = "rules_rust", version = "0.66.0")
+bazel_dep(name = "rules_rust", version = "0.67.0")
 
 ###############################################################################
 # T O O L C H A I N S
@@ -3561,6 +3561,22 @@ allowlist:</p>
 @rules_rust//tools/upstream_wrapper:rustfmt
 </code></pre>
 <p>You can run them via <code>bazel run</code>, e.g. <code>bazel run @rules_rust//tools/upstream_wrapper:cargo -- check</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ide-integrations"><a class="header" href="#ide-integrations">IDE Integrations</a></h1>
+<h2 id="vscode-1"><a class="header" href="#vscode-1">VSCode</a></h2>
+<h3 id="intellisense"><a class="header" href="#intellisense">Intellisense</a></h3>
+<p>The best intellisense integrations to date are documented for <a href="./rust_analyzer.html">rust-analyzer</a>. Please refer to this documentation for setup instructions.</p>
+<h3 id="debugging"><a class="header" href="#debugging">Debugging</a></h3>
+<p><code>rules_rust</code> offers tooling to generate VSCode targets for running <code>rust_binary</code> and <code>rust_test</code> targets with a debugger in VSCode.</p>
+<h4 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h4>
+<p>Install <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb">CodeLLDB</a> extension in VSCode.</p>
+<h4 id="generate-launch-configurations"><a class="header" href="#generate-launch-configurations">Generate Launch Configurations</a></h4>
+<p>Generate VSCode <code>launch.json</code> for debugging all Rust targets in the current workspace:</p>
+<pre><code class="language-bash">bazel run @rules_rust//tools/vscode:gen_launch_json
+</code></pre>
+<p>To scope debug generated <code>launch.json</code> targets, query patterns can be passed:</p>
+<pre><code class="language-bash">bazel run @rules_rust//tools/vscode:gen_launch_json -- //path/to/...
+</code></pre>
+<p>Bazel targets should now be available for debugging via the "Run and Debug" menu.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extensions"><a class="header" href="#extensions">Extensions</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><!-- Generated with Stardoc: http://skydoc.bazel.build -->
 <h1 id="rules_rust_bindgen"><a class="header" href="#rules_rust_bindgen">rules_rust_bindgen</a></h1>
