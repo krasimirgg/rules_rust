@@ -10,12 +10,12 @@ module(
 ###############################################################################
 
 bazel_dep(name = "bazel_features", version = "1.32.0")
-bazel_dep(name = "bazel_skylib", version = "1.8.1")
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.4")
 bazel_dep(name = "rules_license", version = "1.0.0")
-bazel_dep(name = "rules_shell", version = "0.4.0")
-bazel_dep(name = "apple_support", version = "1.23.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+bazel_dep(name = "apple_support", version = "1.24.1", repo_name = "build_bazel_apple_support")
 
 internal_deps = use_extension("//rust/private:internal_extensions.bzl", "i")
 use_repo(
@@ -69,6 +69,9 @@ use_repo(
     "rtra",
     "rtra__serde-1.0.219",
     "rtra__serde_json-1.0.143",
+    "rtvsc",
+    "rtvsc__serde-1.0.228",
+    "rtvsc__serde_json-1.0.145",
     "rules_rust_test_load_arbitrary_tool",
     "rules_rust_toolchain_test_target_json",
 )
