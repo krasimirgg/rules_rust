@@ -271,10 +271,9 @@ attributes, with sample targets like <code>@rules_rust//ffi/cc/allocator_library
 and <code>@rules_rust//ffi/cc/global_allocator_library</code>.</p>
 <p>Recent versions of rustc started mangling these allocator symbols (https://github.com/rust-lang/rust/pull/127173).
 The mangling uses a scheme that is specific to the exact version of the compiler.
-This makes the cc allocator library definitions ineffective. To work around
-this, we provide rust versions of the symbol definitions annotated with
-an unstable language attribute that instructs rustc to mangle them consistently.
-Because of that, this is only compatible with nightly versions of the compiler.</p>
+This makes the cc allocator library definitions ineffective. When rustc builds a
+staticlib it provides the mapping definitions. We rely on this and build an empty
+staticlib as a basis for the allocator definitions.</p>
 <p>Since the new symbol definitions are written in rust, we cannot just attach
 them as attributes on the <code>rust_toolchain</code> as the old cc versions, as that
 would create a build graph cycle (we need a <code>rust_toolchain</code> to build a
@@ -288,10 +287,9 @@ rust toolchains, repository and supporting tools used for them.</p>
 the result of building the rust allocator libraries via a provider, which
 can be consumed by the rust build actions. We attach an instance of this
 as a common attribute to the rust rule set.</p>
-<p>TODO: how this interacts with stdlibs</p>
 <p><strong>PARAMETERS</strong></p>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Description</th><th style="text-align: left">Options</th></tr></thead><tbody>
-<tr><td style="text-align: left"><a id="experimental_use_allocator_libraries_with_mangled_symbols-name"></a>name</td><td style="text-align: left"><p align="center"> - </p></td><td style="text-align: left">none</td></tr>
+<tr><td style="text-align: left"><a id="experimental_use_allocator_libraries_with_mangled_symbols-name"></a>name</td><td style="text-align: left"><p align="center"> - </p></td><td style="text-align: left"><code>"experimental_use_allocator_libraries_with_mangled_symbols"</code></td></tr>
 </tbody></table>
 </div>
 <p><a id="experimental_use_cc_common_link"></a></p>
@@ -374,18 +372,18 @@ to that target. This can be useful for passing build-wide options such as LTO.</
 <p>A flag to enable the <code>clippy_error_format</code> setting.</p>
 <p>If this flag is true, Clippy uses the format set in <code>clippy_error_format</code> to
 format its diagnostics; otherwise, it uses the format set in <code>error_format</code>.</p>
-<p><a id="incompatible_change_rust_test_compilation_output_directory"></a></p>
-<h2 id="incompatible_change_rust_test_compilation_output_directory"><a class="header" href="#incompatible_change_rust_test_compilation_output_directory">incompatible_change_rust_test_compilation_output_directory</a></h2>
-<pre>
---@rules_rust//rust/settings:incompatible_change_rust_test_compilation_output_directory
-</pre>
-<p>A flag to put rust_test compilation outputs in the same directory as the rust_library compilation outputs.</p>
 <p><a id="incompatible_do_not_include_data_in_compile_data"></a></p>
 <h2 id="incompatible_do_not_include_data_in_compile_data"><a class="header" href="#incompatible_do_not_include_data_in_compile_data">incompatible_do_not_include_data_in_compile_data</a></h2>
 <pre>
 --@rules_rust//rust/settings:incompatible_do_not_include_data_in_compile_data
 </pre>
 <p>A flag to control whether to include data files in compile_data.</p>
+<p><a id="incompatible_do_not_include_transitive_data_in_compile_inputs"></a></p>
+<h2 id="incompatible_do_not_include_transitive_data_in_compile_inputs"><a class="header" href="#incompatible_do_not_include_transitive_data_in_compile_inputs">incompatible_do_not_include_transitive_data_in_compile_inputs</a></h2>
+<pre>
+--@rules_rust//rust/settings:incompatible_do_not_include_transitive_data_in_compile_inputs
+</pre>
+<p>A flag to control whether transitive data dependencies are included in compile inputs.</p>
 <p><a id="lto"></a></p>
 <h2 id="lto"><a class="header" href="#lto">lto</a></h2>
 <pre>
@@ -489,12 +487,6 @@ is available.</li>
 <li><code>mir</code></li>
 <li><code>normal</code></li>
 </ul>
-<p><a id="use_real_import_macro"></a></p>
-<h2 id="use_real_import_macro"><a class="header" href="#use_real_import_macro">use_real_import_macro</a></h2>
-<pre>
---@rules_rust//rust/settings:use_real_import_macro
-</pre>
-<p>A flag to control whether rust_library and rust_binary targets should     implicitly depend on the <em>real</em> import macro, or on a no-op target.</p>
 
                     </main>
 
