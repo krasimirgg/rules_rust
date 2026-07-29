@@ -436,6 +436,7 @@ def _linker_input_owner_test_rule_impl(ctx):
         cc_toolchain = None,
         feature_configuration = None,
         interface_library = None,
+        use_pic = False,
     )
 
     return providers
