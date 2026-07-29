@@ -411,7 +411,7 @@ def _linker_input_owner_test_rule_impl(ctx):
     if ctx.attr.set_owner_to_none:
         crate_info_kwargs["owner"] = None
     elif expected_owner:
-        crate_info_kwargs["owner"] = expected_owner
+        crate_info_kwargs["owner"] = expected_owner.label
 
     crate_info = rust_common.create_crate_info(
         **crate_info_kwargs
@@ -457,10 +457,12 @@ def _linker_input_owner_test_impl(ctx):
     linker_input = linker_inputs[0]
 
     expected_owner = ctx.attr.expected_owner
-    if not expected_owner:
-        expected_owner = tut.label
+    if expected_owner:
+        expected_owner_label = expected_owner.label
+    else:
+        expected_owner_label = tut.label
 
-    asserts.equals(env, expected_owner, linker_input.owner)
+    asserts.equals(env, expected_owner_label, linker_input.owner)
 
     return analysistest.end(env)
 
