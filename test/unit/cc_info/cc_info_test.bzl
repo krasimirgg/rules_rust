@@ -8,7 +8,7 @@ load(
 load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
 load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 load("//rust:defs.bzl", "rust_binary", "rust_common", "rust_library", "rust_proc_macro", "rust_shared_library", "rust_static_library")
-load("//rust/private:rustc.bzl", "establish_cc_info")
+load("//rust/private:rustc.bzl", "establish_cc_info")  # buildifier: disable=bzl-visibility
 
 def _is_windows(ctx):
     return ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo])
