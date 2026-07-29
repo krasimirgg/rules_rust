@@ -1,6 +1,7 @@
 //! Crate specific information embedded into [crate::context::Context] objects.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::str::FromStr;
 
 use camino::Utf8PathBuf;
 use cargo_metadata::{Node, Package, PackageId};
@@ -268,6 +269,9 @@ pub(crate) struct BuildScriptAttributes {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) use_default_shell_env: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) use_cc_toolchain: Option<i32>,
 }
 
 impl Default for BuildScriptAttributes {
@@ -298,6 +302,7 @@ impl Default for BuildScriptAttributes {
             links: Default::default(),
             toolchains: Default::default(),
             use_default_shell_env: None,
+            use_cc_toolchain: None,
         }
     }
 }
@@ -500,16 +505,8 @@ impl CrateContext {
 
         let build_script_attrs = if let Some(target) = build_script_target {
             // Track the build script dependency
-            common_attrs.deps.insert(
-                CrateDependency {
-                    id: current_crate_id,
-                    target: target.crate_name.clone(),
-                    alias: None,
-                    local_path: match source_annotations.get(&annotation.node.id) {
-                        Some(SourceAnnotation::Path { path }) => Some(path.clone()),
-                        _ => None,
-                    },
-                },
+            common_attrs.extra_deps.insert(
+                Label::from_str(&format!(":{}", target.crate_name)).unwrap(),
                 None,
             );
 
@@ -722,6 +719,11 @@ impl CrateContext {
                 // Default Shell Env
                 if let Some(extra) = &crate_extra.build_script_use_default_shell_env {
                     attrs.use_default_shell_env = Some(*extra);
+                }
+
+                // Use cc toolchain
+                if let Some(extra) = &crate_extra.build_script_use_cc_toolchain {
+                    attrs.use_cc_toolchain = Some(*extra);
                 }
 
                 if let Some(rundir) = &crate_extra.build_script_rundir {
