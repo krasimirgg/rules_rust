@@ -363,9 +363,9 @@ def _cc_info_test():
         target_under_test = ":rust_dylib_with_interface_lib_dep",
     )
 
-    linker_input_owner_test_rule(
+    mock_rust_library_with_custom_owner(
         name = "custom_owner_target",
-        expected_owner = ":rlib",
+        owner = ":rlib",
     )
 
     linker_input_owner_test(
@@ -374,7 +374,7 @@ def _cc_info_test():
         expected_owner = ":rlib",
     )
 
-    linker_input_owner_test_rule(
+    mock_rust_library_with_custom_owner(
         name = "none_owner_target",
         set_owner_to_none = True,
     )
@@ -384,7 +384,7 @@ def _cc_info_test():
         target_under_test = ":none_owner_target",
     )
 
-    linker_input_owner_test_rule(
+    mock_rust_library_with_custom_owner(
         name = "absent_owner_target",
     )
 
@@ -393,11 +393,11 @@ def _cc_info_test():
         target_under_test = ":absent_owner_target",
     )
 
-def _linker_input_owner_test_rule_impl(ctx):
+def _mock_rust_library_with_custom_owner_impl(ctx):
     output = ctx.actions.declare_file(ctx.label.name + ".rlib")
     ctx.actions.write(output, "")
 
-    expected_owner = ctx.attr.expected_owner
+    owner = ctx.attr.owner
 
     crate_info_kwargs = dict(
         name = "mock_crate",
@@ -413,8 +413,8 @@ def _linker_input_owner_test_rule_impl(ctx):
     )
     if ctx.attr.set_owner_to_none:
         crate_info_kwargs["owner"] = None
-    elif expected_owner:
-        crate_info_kwargs["owner"] = expected_owner.label
+    elif owner:
+        crate_info_kwargs["owner"] = owner.label
 
     crate_info = rust_common.create_crate_info(
         **crate_info_kwargs
@@ -441,10 +441,10 @@ def _linker_input_owner_test_rule_impl(ctx):
 
     return providers
 
-linker_input_owner_test_rule = rule(
-    implementation = _linker_input_owner_test_rule_impl,
+mock_rust_library_with_custom_owner = rule(
+    implementation = _mock_rust_library_with_custom_owner_impl,
     attrs = {
-        "expected_owner": attr.label(mandatory = False),
+        "owner": attr.label(mandatory = False),
         "set_owner_to_none": attr.bool(default = False),
     },
 )
