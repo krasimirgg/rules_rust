@@ -1778,11 +1778,22 @@ def rustc_compile_action(
         elif ctx.attr.require_explicit_unstable_features == -1:
             require_explicit_unstable_features = toolchain.require_explicit_unstable_features
 
-    use_split_debuginfo = (
+    use_split_debuginfo = False
+    if (
         feature_configuration and
         cc_common.is_enabled(feature_configuration = feature_configuration, feature_name = "per_object_debug_info") and
         ctx.fragments.cpp.fission_active_for_current_compilation_mode()
-    )
+    ):
+        if toolchain._skip_fission_for_rust:
+            use_split_debuginfo = False
+        elif toolchain.channel == "nightly":
+            use_split_debuginfo = True
+        else:
+            fail(
+                "Split debug info (fission) was requested, but `-Zsplit-dwarf-out-dir` requires a nightly Rust toolchain " +
+                "(current toolchain channel is \"{}\"). ".format(toolchain.channel) +
+                "To skip fission for Rust objects and suppress this error, set `--@rules_rust//rust/settings:skip_fission_for_rust`.",
+            )
     if use_split_debuginfo:
         rust_flags = rust_flags + [
             "--codegen=split-debuginfo=unpacked",
