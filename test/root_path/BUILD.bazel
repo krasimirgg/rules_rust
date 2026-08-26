@@ -58,4 +58,3 @@ build_test(
         ":my_lib",
     ],
 )
-
