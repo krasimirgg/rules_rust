@@ -134,6 +134,7 @@ def rust_clippy_action(ctx, clippy_executable, process_wrapper, crate_info, conf
         deps = crate_info.deps.to_list(),
         proc_macro_deps = crate_info.proc_macro_deps.to_list(),
         aliases = crate_info.aliases,
+        extra_named_deps = crate_info.extra_named_deps,
     )
 
     # Gather the necessary rust flags to apply lints, if they were provided.
@@ -352,7 +353,7 @@ rust_clippy_aspect = aspect(
             default = "//rust/settings:incompatible_change_clippy_error_format",
         ),
         "_per_crate_rustc_flag": attr.label(
-            default = Label("//rust/settings:experimental_per_crate_rustc_flag"),
+            default = Label("//rust/settings:per_crate_rustc_flag"),
         ),
         "_process_wrapper": attr.label(
             doc = "A process wrapper for running clippy on all platforms",

@@ -110,11 +110,17 @@ def _should_prefix_pwd(path):
     if paths.is_absolute(path):
         return False
 
+    if path.startswith("${pwd}"):
+        return False
+
     for placeholder in _BAZEL_PATH_PLACEHOLDERS:
         if path.startswith(placeholder):
             return False
 
     return True
+
+def _expects_space_separated_arg(flag):
+    return not (flag.endswith("=") or flag.endswith(":"))
 
 def _prefix_pwd_to_flag(args, flag_variations):
     """Prefix execroot-relative paths for flags that support both concatenated and space-separated forms (unless it ends with `=` or `:`).
@@ -144,18 +150,16 @@ def _prefix_pwd_to_flag(args, flag_variations):
         handled = False
         new_prefix_next_arg = False
 
-        for flag in flag_variations:
+        for flag in sorted(flag_variations, key = len, reverse = True):
             # Check for exact match first
             if arg == flag:
-                if flag.endswith("=") or flag.endswith(":"):
-                    # Flag ending with '=' or ':' and empty path: keep as-is
-                    res.append(arg)
-                    handled = True
-                    break
-                else:
+                if _expects_space_separated_arg(flag):
                     # Flag without '=' or ':': next arg might be space-separated path
                     new_prefix_next_arg = True
-                continue
+
+                res.append(arg)
+                handled = True
+                break
 
             # Check for concatenated form (flag with path)
             if arg.startswith(flag):
@@ -168,8 +172,10 @@ def _prefix_pwd_to_flag(args, flag_variations):
                 handled = True
                 break
 
-            # Check for space-separated form (only for flags without '=' or ':')
-            if not flag.endswith("=") and not flag.endswith(":") and prefix_next_arg and _should_prefix_pwd(arg.strip()):
+            # Check for space-separated form (only for flags without '=' or ':').
+            # A leading '-' means the flag's value was omitted and this is
+            # actually the next flag, not a path; leave it untouched.
+            if _expects_space_separated_arg(flag) and prefix_next_arg and not arg.strip().startswith("-") and _should_prefix_pwd(arg.strip()):
                 res.append("${{pwd}}/{}".format(arg.strip()))
                 handled = True
                 break
@@ -221,6 +227,14 @@ def _pwd_flags_B(args):
     """Prefix execroot-relative paths in -B arguments with ${pwd}."""
     return _prefix_pwd_to_flag(args, ["-B"])
 
+def _pwd_flags_compiler_response_file(args):
+    """Prefix execroot-relative compiler response file paths with ${pwd}."""
+
+    # Only the path *to* the response file is fixed. Its contents are left untouched
+    # and won't be resolved by the compiler if they contain execroot-relative paths.
+    # Fixing its content requires reading the file at exec time from cargo_build_script_runner/bin.rs.
+    return _prefix_pwd_to_flag(args, ["@"])
+
 def _pwd_flags_resource_dir(args):
     """Prefix execroot-relative paths in -resource-dir arguments with ${pwd}."""
     return _prefix_pwd_to_flag(args, ["-resource-dir=", "-resource-dir"])
@@ -260,8 +274,22 @@ def _pwd_paths(args):
     """Prefix execroot-relative paths with ${pwd}."""
     return _prefix_pwd_to_paths(args)
 
+_PWD_FLAG_PASSES = [
+    _pwd_flags_sysroot,
+    _pwd_flags_resource_dir,
+    _pwd_flags_B,
+    _pwd_flags_L,
+    _pwd_flags_compiler_response_file,
+    _pwd_flags_isystem,
+    _pwd_flags_fsanitize_ignorelist,
+    _pwd_flags_imacros,
+    _pwd_flags_direct_libs,
+]
+
 def _pwd_flags(args):
-    return _pwd_flags_direct_libs(_pwd_flags_imacros(_pwd_flags_fsanitize_ignorelist(_pwd_flags_isystem(_pwd_flags_L(_pwd_flags_B(_pwd_flags_resource_dir(_pwd_flags_sysroot(args))))))))
+    for pwd_flags_pass in _PWD_FLAG_PASSES:
+        args = pwd_flags_pass(args)
+    return args
 
 def _feature_enabled(ctx, feature_name, default = False):
     """Check if a feature is enabled.
@@ -285,6 +313,24 @@ def _feature_enabled(ctx, feature_name, default = False):
         return True
 
     return default
+
+def _resolve_tristate(attr_value, default_flag_target):
+    """Resolve a tri-state `int` attribute (`-1`/`0`/`1`) to a `bool`.
+
+    `-1` defers to the `BuildSettingInfo` on `default_flag_target`; any other
+    value is treated as truthy/falsy directly.
+
+    Args:
+        attr_value (int): The tri-state attribute value (`-1`, `0`, or `1`).
+        default_flag_target (Target): The `bool_flag` target providing the
+            default when `attr_value` is `-1`.
+
+    Returns:
+        bool: The resolved value.
+    """
+    if attr_value == -1:
+        return default_flag_target[BuildSettingInfo].value
+    return bool(attr_value)
 
 def _rlocationpath(file, workspace_name):
     if file.short_path.startswith("../"):
@@ -390,12 +436,10 @@ def _cargo_build_script_impl(ctx):
 
     env = {}
 
-    if ctx.attr.use_default_shell_env == -1:
-        use_default_shell_env = ctx.attr._default_use_default_shell_env[BuildSettingInfo].value
-    elif ctx.attr.use_default_shell_env == 0:
-        use_default_shell_env = False
-    else:
-        use_default_shell_env = True
+    use_default_shell_env = _resolve_tristate(
+        ctx.attr.use_default_shell_env,
+        ctx.attr._default_use_default_shell_env,
+    )
 
     # If enabled, start with the default shell env, which contains any --action_env
     # settings passed in on the command line and defaults like $PATH.
@@ -433,9 +477,17 @@ def _cargo_build_script_impl(ctx):
         env["CARGO_PKG_VERSION_PRE"] = patch[1] if len(patch) > 1 else ""
         env["CARGO_PKG_VERSION"] = ctx.attr.version
 
+    use_cc_toolchain = _resolve_tristate(
+        ctx.attr.use_cc_toolchain,
+        ctx.attr._default_use_cc_toolchain,
+    )
+
     # Pull in env vars which may be required for the cc_toolchain to work (e.g. on OSX, the SDK version).
     # We hope that the linker env is sufficient for the whole cc_toolchain.
-    cc_toolchain, feature_configuration = find_cc_toolchain(ctx)
+    if use_cc_toolchain:
+        cc_toolchain, feature_configuration = find_cc_toolchain(ctx)
+    else:
+        cc_toolchain, feature_configuration = None, None
     linker, _, link_args, linker_env = get_linker_and_args(ctx, "bin", toolchain, cc_toolchain, feature_configuration, None)
     env.update(**linker_env)
     env["LD"] = linker
@@ -784,6 +836,31 @@ cargo_build_script = rule(
             allow_files = True,
             cfg = "exec",
         ),
+        "use_cc_toolchain": attr.int(
+            doc = dedent("""\
+                Whether or not to pull in the resolved `cc_toolchain` when
+                running the build script.
+
+                When enabled, the resolved `cc_toolchain`'s `all_files` are
+                added to the action inputs and the `CC`, `CXX`, `AR`,
+                `CFLAGS`, `CXXFLAGS`, `LDFLAGS`, and `INCLUDE` environment
+                variables are populated from that toolchain (matching Cargo's
+                normal behavior).
+
+                When disabled, the `cc_toolchain` is not requested for the
+                build script action. This can significantly shrink the input
+                trees of `cargo_build_script` actions (particularly with
+                hermetic sysroots) but breaks any build script that needs to
+                compile C/C++ code.
+
+                Unset (`-1`, the default) defers to the
+                `@rules_rust//cargo/settings:use_cc_toolchain` build setting
+                which itself defaults to enabled. Set to `1` to force enable
+                or `0` to force disable for a specific target.
+            """),
+            default = -1,
+            values = [-1, 0, 1],
+        ),
         "use_default_shell_env": attr.int(
             doc = dedent("""\
                 Whether or not to include the default shell environment for the build
@@ -807,6 +884,9 @@ cargo_build_script = rule(
         ),
         "_debug_std_streams_output_group": attr.label(
             default = Label("//cargo/settings:debug_std_streams_output_group"),
+        ),
+        "_default_use_cc_toolchain": attr.label(
+            default = Label("//cargo/settings:use_cc_toolchain"),
         ),
         "_default_use_default_shell_env": attr.label(
             default = Label("//cargo/settings:use_default_shell_env"),

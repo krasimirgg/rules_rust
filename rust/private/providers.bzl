@@ -27,6 +27,7 @@ CrateInfo = provider(
         "data": "depset[File]: Runtime data associated with the target. Not passed to `Rustc` actions, except for `proc-macro` targets where `Rustc` is the runtime.",
         "deps": "depset[DepVariantInfo]: This crate's direct (rust or cc) dependencies' providers.",
         "edition": "str: The edition of this crate.",
+        "extra_named_deps": "depset[AliasableDepInfo]: Extra named dependencies.",
         "is_test": "bool: If the crate is being compiled in a test context",
         "metadata": "File: The output from rustc from producing the output file. It is optional.",
         "metadata_supports_pipelining": "bool: If the metadata in 'metadata' (if present) is " +
@@ -220,6 +221,8 @@ AllocatorLibrariesInfo = provider(
         "global_allocator_library": "Optional[CcInfo]: used when a global rust allocator is used",
         "libstd_and_allocator_ccinfo": "Optional[CcInfo]: used when the default rust allocator is used",
         "libstd_and_global_allocator_ccinfo": "Optional[CcInfo]: used when a global rust allocator is used",
+        "libstd_dylib_and_allocator_ccinfo": "Optional[CcInfo]: used when the default rust allocator is used with a dylib stdlib",
+        "libstd_dylib_and_global_allocator_ccinfo": "Optional[CcInfo]: used when a global rust allocator is used with a dylib stdlib",
         "nostd_and_global_allocator_ccinfo": "Optional[CcInfo]: used when nostd with a global rust allocator is used",
     },
 )
