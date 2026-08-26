@@ -426,6 +426,7 @@ def _mock_rust_library_with_custom_owner_impl(ctx):
         _experimental_use_global_allocator = False,
         _experimental_use_allocator_libraries_with_mangled_symbols = 0,
         _no_std = "off",
+        _link_std_dylib = False,
     )
 
     providers = establish_cc_info(
